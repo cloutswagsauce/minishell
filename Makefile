@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lfaria-m <lfaria-m@student.42lausanne.c    +#+  +:+       +#+         #
+#    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2024/12/02 12:33:49 by lfaria-m         ###   ########.fr        #
+#    Updated: 2024/12/02 17:19:24 by lfaria-m         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 # Program name
 NAME = minishell
@@ -19,7 +19,7 @@ OBJ_DIR = objs
 LIB_DIR = includes/libft
 
 # Source files (explicitly listed)
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/parser.c
+SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/parser.c $(SRC_DIR)/utils.c
        
        
 
