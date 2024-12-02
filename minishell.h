@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfaria-m <lfaria-m@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/02 12:44:06 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:01:00 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -43,7 +43,7 @@ typedef struct s_com
 	int is_builtin;
 }				t_com;
 
-void parse_input(char *str);
+t_com  parse_input(char *str);
 
 
 
