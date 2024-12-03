@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/03 15:18:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:18:41 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct	s_com
 void	parse_input(char *str);
 int		join_len(char *s1, char*s2);
 void    free_double(char **arr);
+int		exec_command(char *exec_path, t_com command);
 
 
 
