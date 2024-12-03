@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/02 19:12:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:07:10 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int main(void)
 
 	while (1)
 	{
-
 		input = readline("mini$hell: ");
 		if (*input)
 		{
@@ -29,7 +28,6 @@ int main(void)
 			{
 				parse_input(input);
 				add_history(input);
-
 				exit(0);
 			}
 			wait(0);

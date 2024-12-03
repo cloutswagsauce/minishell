@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/02 17:19:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:18:10 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,16 @@
 #include <curses.h>     // Often provides termcap functionality
 #include <termcap.h>    // Specific termcap header (may vary by system)
 
-typedef struct s_com
+typedef struct	s_com
 {
 	//int argc;
 	char **argv;
 	int is_builtin;
 }				t_com;
 
-t_com	parse_input(char *str);
+void	parse_input(char *str);
 int		join_len(char *s1, char*s2);
+void    free_double(char **arr);
 
 
 

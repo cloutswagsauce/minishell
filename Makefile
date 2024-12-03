@@ -6,7 +6,7 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2024/12/02 17:19:24 by lfaria-m         ###   ########.fr        #
+#    Updated: 2024/12/03 14:38:28 by lfaria-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -fsanitize=address -Werror
 
 # To link readline
 RD = -lreadline -lncurses
