@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/03 15:25:34 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:45:25 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ int	is_valid_path(char *exec_path, t_com command)
 {
 	if (!access(exec_path, F_OK))
 	{
-		printf("found it: %s\n", exec_path);
-		execv(exec_path, command.argv);
+		handle_command(exec_path, command);
 		free(exec_path);
 		return (1);
 	}
