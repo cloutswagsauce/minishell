@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
@@ -6,29 +6,28 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:15:53 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/03 15:02:41 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:17:30 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
 
-int join_len(char *s1, char*s2)
+int	join_len(char *s1, char *s2)
 {
-    return ((int)ft_strlen(s1) + ft_strlen(s2));
+	return ((int)ft_strlen(s1) + ft_strlen(s2));
 }
 
-void    free_double(char **arr)
+void	free_double(char **arr)
 {
-    char **temp;
+	char	**temp;
 
-    if (!arr)
-        return ;
-    temp = arr;
-    while (*temp)
-    {
-        free(*temp);
-        temp++;
-    }
-    free(arr);
+	if (!arr)
+		return ;
+	temp = arr;
+	while (*temp)
+	{
+		free(*temp);
+		temp++;
+	}
+	free(arr);
 }
-
