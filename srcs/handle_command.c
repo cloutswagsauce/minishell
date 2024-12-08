@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 15:23:53 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/08 16:14:03 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	execute_builtin_command(t_com *command)
 
 void	handle_command(char *exec_path, t_com *command)
 {
-	if (execv(exec_path, command->argv))
-		printf("not a valid command");
+	if (command->is_builtin)
+		execv(exec_path, command->argv);
+	else
+		return ;
 }

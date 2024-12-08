@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 15:20:34 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/08 16:04:56 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	is_command_builtin(t_com *com)
 	{
 		if (!ft_strncmp(com->argv[0], g_builtin_list[i],
 				ft_strlen(com->argv[0])))
-			return (1);
+				{
+					com->is_valid_command = 1;
+					return (1);
+				}
 		i++;
 	}
 	return (0);
@@ -32,13 +35,12 @@ int	is_valid_path(char *exec_path, t_com *command)
 	if (!access(exec_path, F_OK))
 	{
 		handle_command(exec_path, command);
+		command->is_valid_command = 1;
 		free(exec_path);
 		return (1);
 	}
 	else
-	{
 		return (0);
-	}
 }
 
 void	path_split_append(t_com *command)
