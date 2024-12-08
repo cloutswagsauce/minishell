@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_command.c                                   :+:      :+:    :+:   */
+/*   free_stuff.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 15:23:53 by lfaria-m         ###   ########.fr       */
+/*   Created: 2024/12/08 14:49:57 by lfaria-m          #+#    #+#             */
+/*   Updated: 2024/12/08 15:16:21 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_builtin_command(t_com *command)
+void	free_command(t_com *command)
 {
-	printf("%s\n", command->argv[0]);
-}
+	char	**temp;
 
-void	handle_command(char *exec_path, t_com *command)
-{
-	if (execv(exec_path, command->argv))
-		printf("not a valid command");
+	temp = command->argv;
+	while (*temp)
+		free(*temp++);
+	free(command->argv);
 }

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/04 16:45:04 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/08 15:05:06 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,21 @@
 
 typedef struct	s_com
 {
-	int argc;
-	char **argv;
-	int is_builtin;
+	int		argc;
+	char	**argv;
+	int		is_builtin;
 }				t_com;
 
-/*static const char *builtin_list[] = 
-{
-	"echo",
-	"cd",
-	"pwd",
-	"export",
-	"unset",
-	"env",
-	"exit",
-	NULL
+extern const char *g_builtin_list[];
 
-};*/
-
-void	parse_input(char *str);
+void	parse_input(char *str, t_com *command);
 int		join_len(char *s1, char*s2);
 void    free_double(char **arr);
-void	handle_command(char *str, t_com command);
+void	handle_command(char *str, t_com *command);
+int		is_command_builtin(t_com *com);
+void	execute_builtin_command(t_com *command);
+void	path_split_append(t_com *command);
+void	free_command(t_com *command);
 
 
 
