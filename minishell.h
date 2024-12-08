@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 16:19:30 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/08 17:51:18 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int		is_command_builtin(t_com *com);
 void	execute_builtin_command(t_com *command);
 void	path_split_append(t_com *command);
 void	free_command(t_com *command);
+void	ft_echo(t_com command);
 
 
 

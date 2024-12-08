@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 16:18:12 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/08 17:53:07 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	execute_builtin_command(t_com *command)
 {
-	printf("%s\n", command->argv[0]);
+	if (!ft_strncmp(command->argv[0], "echo", ft_strlen(command->argv[0])))
+		ft_echo(*command);
 }
 
 void	handle_command(char *exec_path, t_com *command)
 {
 		execv(exec_path, command->argv);
-	
 }
