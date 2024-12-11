@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/11 17:48:00 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:59:18 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -57,6 +57,7 @@ void	ft_echo(t_com command);
 void	ft_env(char *env_var);
 void	ft_pwd(void);
 void	ft_cd(t_com command);
+void	ft_exit();
 
 
 

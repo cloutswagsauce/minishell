@@ -6,11 +6,12 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/11 17:34:25 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:00:08 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
+
 
 void	execute_builtin_command(t_com *command)
 {
@@ -22,11 +23,11 @@ void	execute_builtin_command(t_com *command)
 		ft_pwd();
 	else if (!ft_strncmp(command->argv[0], "cd", ft_strlen(command->argv[0])))
 		ft_cd(*command);
-	else if (!ft_strncmp(command->argv[0], "history", ft_strlen(command->argv[0])))
-		ft_cd(*command);
-	else if (!ft_strncmp(command->argv[0], "cd", ft_strlen(command->argv[0])))
-		ft_cd(*command);
-	else if (!ft_strncmp(command->argv[0], "cd", ft_strlen(command->argv[0])))
+	//else if (!ft_strncmp(command->argv[0], "export", ft_strlen(command->argv[0])))
+		//ft_export(*command);
+	else if (!ft_strncmp(command->argv[0], "exit", ft_strlen(command->argv[0])))
+		ft_exit();
+	else if (!ft_strncmp(command->argv[0], "unset", ft_strlen(command->argv[0])))
 		ft_cd(*command);
 }
 
