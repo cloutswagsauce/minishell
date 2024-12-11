@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 16:20:29 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:47:52 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
 
@@ -40,7 +40,7 @@ int	is_valid_path(char *exec_path, t_com *command)
 		return (0);
 }
 
-void	path_split_append(t_com *command)
+int	path_split_append(t_com *command)
 {
 	char	**path_split;
 	char	*exec_path;
@@ -57,13 +57,16 @@ void	path_split_append(t_com *command)
 		ft_strlcat(exec_path, "/", len);
 		ft_strlcat(exec_path, command->argv[0], len);
 		exec_path[len - 1] = '\0';
-		if (is_valid_path(exec_path, command))
+		if (is_valid_path(exec_path, command)){
 			break ;
+			return (1);
+		}
 		else
 			free(exec_path);
 		current_path_split++;
 	}
 	free_double(path_split);
+	return (0);
 }
 
 void	parse_input(char *str, t_com *command)
@@ -77,5 +80,6 @@ void	parse_input(char *str, t_com *command)
 		command->is_builtin = 1;
 	else
 		command->is_builtin = 0;
+
 	return ;
 }

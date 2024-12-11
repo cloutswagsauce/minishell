@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 15:15:32 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:50:54 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
 
@@ -31,6 +31,7 @@ int	main(void)
 
 	while (1)
 	{
+		rl_on_new_line();
 		input = readline("mini$hell: ");
 		if (*input)
 		{
@@ -40,12 +41,12 @@ int	main(void)
 				if (!fork())
 				{
 					path_split_append(&command);
-					add_history(input);
 					exit(0);
 				}
 			}
 			else
 				execute_builtin_command(&command);
+			add_history(input);
 			free_command(&command);
 			wait(0);
 		}
