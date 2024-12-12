@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/11 17:59:18 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:31:38 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -43,6 +43,13 @@ typedef struct	s_com
 	int		is_builtin;
 }				t_com;
 
+typedef struct	s_list
+{
+	char			*name;
+	char			*value;
+	struct s_list	*next;
+}				t_list;
+
 extern const char *g_builtin_list[];
 
 void	parse_input(char *str, t_com *command);
@@ -50,14 +57,18 @@ int		join_len(char *s1, char*s2);
 void    free_double(char **arr);
 void	handle_command(char *str, t_com *command);
 int		is_command_builtin(t_com *com);
-void	execute_builtin_command(t_com *command);
+void	execute_builtin_command(t_com *command, t_list **local_env, char **envp);
 int		path_split_append(t_com *command);
 void	free_command(t_com *command);
 void	ft_echo(t_com command);
-void	ft_env(char *env_var);
+void	ft_env(char **envp, t_list *local_env);
 void	ft_pwd(void);
+void	ft_export(char *name_and_value, t_list **local_env);
 void	ft_cd(t_com command);
 void	ft_exit();
+t_list	*ft_lstnew(char *name, char *value);
+void	ft_lstdelone(t_list *lst, void (*del)(void*));
+void	ft_lstadd_back(t_list **lst, t_list *new);
 
 
 

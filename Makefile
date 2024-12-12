@@ -6,7 +6,7 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2024/12/11 16:24:55 by lfaria-m         ###   ########.fr        #
+#    Updated: 2024/12/12 12:55:43 by lfaria-m         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,7 +22,7 @@ LIB_DIR = includes/libft
 SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/parser.c $(SRC_DIR)/utils.c \
 $(SRC_DIR)/handle_command.c $(SRC_DIR)/free_stuff.c $(SRC_DIR)/ft_cd.c \
 $(SRC_DIR)/ft_echo.c $(SRC_DIR)/ft_env.c $(SRC_DIR)/ft_exit.c $(SRC_DIR)/ft_export.c \
-$(SRC_DIR)/ft_unset.c $(SRC_DIR)/ft_pwd.c  
+$(SRC_DIR)/ft_unset.c $(SRC_DIR)/ft_pwd.c  $(SRC_DIR)/ft_lst.c 
        
 
 # Object files

@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
@@ -6,19 +6,32 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 18:24:46 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:23:16 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
+extern char **environ;
 
-void ft_env(char *env_var)
+void ft_env(char **envp, t_list *local_env)
 {
-    if (!getenv(env_var))
-    {
-        ft_printf("env: %s is not a env variable!\n", env_var);
-        return ;
-    }
-   ft_putstr_fd(getenv(env_var), 1);
-   write(1, "\n", 1);
+   int	i;
+
+   i = 0;
+   (void)local_env;
+   while (envp[i])
+   {
+	ft_printf(envp[i++]);
+	write(1, "\n", 1);
+   }
+   while (local_env)
+   {
+	ft_printf(local_env->name);
+	write(1, "=", 1);
+	ft_printf(local_env->value);
+	write(1, "\n", 1);
+	local_env = local_env->next;
+   }
+		
+	
 }

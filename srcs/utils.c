@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:15:53 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/08 15:13:17 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:00:04 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
 
@@ -30,4 +30,21 @@ void	free_double(char **arr)
 		temp++;
 	}
 	free(arr);
+}
+void ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+    if (!lst)
+        return;
+
+    // Free the dynamically allocated name and value
+    if (del) {
+        del(lst->name);
+        del(lst->value);
+    } else {
+        free(lst->name);
+        free(lst->value);
+    }
+
+    // Free the list node itself
+    free(lst);
 }
