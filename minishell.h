@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/12 18:31:38 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/13 11:42:50 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
@@ -69,6 +69,7 @@ void	ft_exit();
 t_list	*ft_lstnew(char *name, char *value);
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstadd_back(t_list **lst, t_list *new);
+void command_has_variable(t_com *com, t_list *local_env)
 
 
 
