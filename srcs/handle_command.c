@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/13 13:18:13 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:32:09 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -29,7 +29,7 @@ void	execute_builtin_command(t_com *command, t_list **local_env, char **envp)
 	else if (!ft_strncmp(command->argv[0], "exit", ft_strlen(command->argv[0])))
 		ft_exit();
 	else if (!ft_strncmp(command->argv[0], "unset", ft_strlen(command->argv[0])))
-		ft_cd(*command);
+		ft_unset(command, local_env, envp);
 }
 
 void	handle_command(char *exec_path, t_com *command, t_list *local_env)

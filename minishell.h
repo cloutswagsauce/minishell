@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/13 13:18:52 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:48:30 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -69,7 +69,8 @@ void	ft_exit();
 t_list	*ft_lstnew(char *name, char *value);
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstadd_back(t_list **lst, t_list *new);
-void command_has_variable(t_com *com, t_list *local_env);
+void	command_has_variable(t_com *com, t_list *local_env);
+void	ft_unset(t_com *com, t_list **lenv, char **envp);
 
 
 
