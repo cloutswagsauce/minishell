@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/12 18:29:25 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:19:00 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -24,9 +24,9 @@ const char	*g_builtin_list[] =
 	NULL
 };
 
-void call_child_action(t_com command)
+void call_child_action(t_com command, t_list *local_env)
 {
-	path_split_append(&command);
+	path_split_append(&command, local_env);
 	exit(0);
 	
 }
@@ -57,7 +57,7 @@ int	main(int argc, char **argv, char **envp)
 			if (!command.is_builtin)
 			{
 				if (!fork())
-					call_child_action(command);
+					call_child_action(command, local_env);
 			}
 			else
 				execute_builtin_command(&command, &local_env, envp);

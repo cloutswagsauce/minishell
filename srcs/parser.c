@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/13 12:54:06 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:19:06 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -28,11 +28,11 @@ int	is_command_builtin(t_com *com)
 	return (0);
 }
 
-int	is_valid_path(char *exec_path, t_com *command)
+int	is_valid_path(char *exec_path, t_com *command, t_list *local_env)
 {
 	if (!access(exec_path, F_OK))
 	{
-		handle_command(exec_path, command);
+		handle_command(exec_path, command, local_env);
 		free(exec_path);
 		return (1);
 	}
@@ -40,7 +40,7 @@ int	is_valid_path(char *exec_path, t_com *command)
 		return (0);
 }
 
-int	path_split_append(t_com *command)
+int	path_split_append(t_com *command, t_list *local_env)
 {
 	char	**path_split;
 	char	*exec_path;
@@ -57,7 +57,7 @@ int	path_split_append(t_com *command)
 		ft_strlcat(exec_path, "/", len);
 		ft_strlcat(exec_path, command->argv[0], len);
 		exec_path[len - 1] = '\0';
-		if (is_valid_path(exec_path, command)){
+		if (is_valid_path(exec_path, command, local_env)){
 			break ;
 			return (1);
 		}
