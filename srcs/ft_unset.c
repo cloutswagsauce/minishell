@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:57:09 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/13 13:54:35 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/15 14:47:31 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -20,6 +20,7 @@ void	del_node_contents(void *vars)
 	free(node->name);
 	free(node->value);
 }
+
 void	check_local(t_com *com, t_list **vars)
 {
 	while (*vars)
@@ -33,13 +34,9 @@ void	check_local(t_com *com, t_list **vars)
 		(*vars) = (*vars)->next;
 	}
 }
-/*void check_shell(t_com *com, char **envp)
-{
 
-}*/
 void	ft_unset(t_com *com, t_list **lenv, char **envp)
 {
 	(void)envp;
 	check_local(com, lenv);
-	// check_shell(com, envp);
 }

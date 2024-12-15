@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:15:53 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/12 17:00:04 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/15 14:49:22 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -31,20 +31,20 @@ void	free_double(char **arr)
 	}
 	free(arr);
 }
-void ft_lstdelone(t_list *lst, void (*del)(void*))
+
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-    if (!lst)
-        return;
-
-    // Free the dynamically allocated name and value
-    if (del) {
-        del(lst->name);
-        del(lst->value);
-    } else {
-        free(lst->name);
-        free(lst->value);
-    }
-
-    // Free the list node itself
-    free(lst);
+	if (!lst)
+		return ;
+	if (del)
+	{
+		del(lst->name);
+		del(lst->value);
+	}
+	else
+	{
+		free(lst->name);
+		free(lst->value);
+	}
+	free(lst);
 }

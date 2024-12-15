@@ -6,13 +6,13 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 17:56:41 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/11 17:59:03 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/15 14:50:29 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
 
-void ft_exit()
+void	ft_exit(void)
 {
-	kill(0,9);
+	kill(0, 9);
 }
