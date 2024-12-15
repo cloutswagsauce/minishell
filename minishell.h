@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/13 13:48:30 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:27:56 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -50,7 +50,7 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
-extern const char *g_builtin_list[];
+
 
 void	parse_input(char *str, t_com *command);
 int		join_len(char *s1, char*s2);

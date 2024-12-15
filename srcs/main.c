@@ -6,23 +6,13 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/13 13:19:00 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:27:42 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
 
-const char	*g_builtin_list[] =
-{
-	"echo",
-	"cd",
-	"pwd",
-	"export",
-	"unset",
-	"env",
-	"exit",
-	NULL
-};
+
 
 void call_child_action(t_com command, t_list *local_env)
 {

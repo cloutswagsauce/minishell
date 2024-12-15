@@ -6,20 +6,37 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/13 13:19:06 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:31:08 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
 
+char  **get_builtin_list(void)
+{
+	static char	*builtin_list[] =
+{
+	"echo",
+	"cd",
+	"pwd",
+	"export",
+	"unset",
+	"env",
+	"exit",
+	NULL
+};
+return (char **)builtin_list;
+}
 int	is_command_builtin(t_com *com)
 {
-	int	i;
+	int		i;
+	char	** builtin_list;
 
 	i = 0;
+	builtin_list = get_builtin_list();
 	while (i < 7)
 	{
-		if (!ft_strncmp(com->argv[0], g_builtin_list[i],
+		if (!ft_strncmp(com->argv[0], builtin_list[i],
 				ft_strlen(com->argv[0])))
 				return (1);
 
