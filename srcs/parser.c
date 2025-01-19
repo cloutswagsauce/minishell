@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/15 14:43:30 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:44:12 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -74,16 +74,42 @@ void	path_split_append(t_com *command, t_list *local_env)
 	free_double(path_split);
 }
 
-void	parse_input(char *str, t_com *command)
+t_com	*parse_input(char *str)
 {
-	command->argv = ft_split(str, ' ');
-	if (!command->argv)
+	char	**temp;
+	int		i;
+	t_com	*command;
+	int		num_of_commands;
+	
+	temp = ft_split(str, '|');
+	
+	command = malloc_commands(temp);
+	num_of_commands = num_commands(temp);
+	i = 0;
+	while (i < num_of_commands)
 	{
-		printf("split failed");
+		command[i].argv = ft_split(temp[i], ' ');
+		if (!command[i].argv)
+			printf("split failed");
+		command[i].total_commands = num_of_commands;
+		command[i].total_pipes = 0;
+		command[i].total_redirects = 0;
+		i++;
 	}
-	if (is_command_builtin(command))
-		command->is_builtin = 1;
+	i = 0;
+	while (i < num_of_commands)
+	{
+		if (is_command_builtin(&command[i]))
+			command[i].is_builtin = 1;
+		else
+			command[i].is_builtin = 0;
+		check_if_pipe(str, &command[i]);
+		i++;
+	}
+	if (i == 1)
+		command[0].is_stand_alone = 1;
 	else
-		command->is_builtin = 0;
-	return ;
+		command[0].is_stand_alone = 0;
+	
+	return (command);
 }

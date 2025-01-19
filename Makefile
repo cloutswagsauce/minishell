@@ -1,4 +1,4 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,9 +6,9 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2024/12/13 11:33:07 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/01/19 18:17:49 by lfaria-m         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 # Program name
 NAME = minishell
@@ -22,7 +22,8 @@ LIB_DIR = includes/libft
 SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/parser.c $(SRC_DIR)/utils.c \
 $(SRC_DIR)/handle_command.c $(SRC_DIR)/free_stuff.c $(SRC_DIR)/ft_cd.c \
 $(SRC_DIR)/ft_echo.c $(SRC_DIR)/ft_env.c $(SRC_DIR)/ft_exit.c $(SRC_DIR)/ft_export.c \
-$(SRC_DIR)/ft_unset.c $(SRC_DIR)/ft_pwd.c  $(SRC_DIR)/ft_lst.c $(SRC_DIR)/handle_variable.c
+$(SRC_DIR)/ft_unset.c $(SRC_DIR)/ft_pwd.c  $(SRC_DIR)/ft_lst.c $(SRC_DIR)/handle_variable.c \
+$(SRC_DIR)/execute_process.c $(SRC_DIR)/ft_pipex.c
        
 
 # Object files

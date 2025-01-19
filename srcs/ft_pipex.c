@@ -1,42 +1,34 @@
 /******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_pipex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/08 17:45:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/18 22:17:25 by lfaria-m         ###   ########.fr       */
+/*   Created: 2025/01/18 09:34:58 by lfaria-m          #+#    #+#             */
+/*   Updated: 2025/01/19 18:18:06 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
 
-void	ft_echo(t_com command)
+int check_if_pipe(char *str, t_com *com)
 {
-	int	i;
+	//int	i;
+	//int	j;
 
-	if (!ft_strncmp(command.argv[1], "-n", 2))
+	if (ft_strnstr(str, "|", ft_strlen(str)))
 	{
-		i = 2;
-		while (command.argv[i])
-		{
-			ft_putstr_fd(command.argv[i], 1);
-			write(1, " ", 1);
-			i++;
-		}
-		return ;
+		com->total_pipes++;
+		printf("pipe found");
+		return (1);
 	}
-	else
-	{
-		i = 1;
-		while (command.argv[i])
-		{
-			ft_putstr_fd(command.argv[i], 1);
-			write(1, " ", 1);
-			i++;
-		}
-		write(1, "\n", 1);
-		return ;
-	}
+	return (0);
+		
 }
+/*void ft_pipex(t_com *commands)
+{
+	
+	
+	
+}*/

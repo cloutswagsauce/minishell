@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/12 20:49:47 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/19 16:49:26 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -41,6 +41,26 @@ char	*get_value(char *equals)
 	value[i] = '\0';
 	return (value);
 }
+int update_var(char *name, char *value,  t_list **local_env)
+{
+	t_list **current;
+	char *new_value;
+
+	current = local_env;
+	while (*current)
+	{
+		if (!ft_memcmp((*current)->name, name, ft_strlen(name)))
+		{
+			new_value = ft_strdup(value);
+			free((*current)->value);
+			(*current)->value = new_value;
+			return (1);
+		}
+		(*current) = (*current) -> next;
+	}
+	return (0);
+	
+}
 
 void	ft_export(char *name_and_value, t_list **local_env)
 {
@@ -49,11 +69,15 @@ void	ft_export(char *name_and_value, t_list **local_env)
 	char	*value;
 	t_list	*new;
 
+
 	equals = ft_strchr(name_and_value, '=');
+	
 	if (!equals)
 		return ;
 	name = get_name(name_and_value, equals);
 	value = get_value(equals);
+	if (update_var(name, value, local_env))
+		return ;
 	if (!name || !value)
 	{
 		free(name);

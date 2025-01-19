@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2024/12/15 14:55:58 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:15:20 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -38,6 +38,10 @@ typedef struct s_com
 	int				argc;
 	char			**argv;
 	int				is_builtin;
+	int				is_stand_alone;
+	int				total_commands;
+	int				total_pipes;
+	int				total_redirects;
 }					t_com;
 
 typedef struct s_list
@@ -47,7 +51,7 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-void				parse_input(char *str, t_com *command);
+t_com				*parse_input(char *str);
 int					join_len(char *s1, char *s2);
 void				free_double(char **arr);
 void				handle_command(char *str, t_com *command,
@@ -68,5 +72,10 @@ void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstadd_back(t_list **lst, t_list *new);
 void				command_has_variable(t_com *com, t_list *local_env);
 void				ft_unset(t_com *com, t_list **lenv, char **envp);
+t_com				*malloc_commands(char **str);
+void				execute_process(t_com *commands, t_list **local_env, char **envp);
+void				call_child_action(t_com command, t_list *local_env);
+int					num_commands(char **str);
+int					check_if_pipe(char *str, t_com *com);
 
 #endif
