@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:13 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/19 18:44:13 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:51:12 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -17,7 +17,6 @@ void	expand_variable(t_com *com, int j, t_list *vars)
 	char	*new_value;
 
 	printf("expand variable called");
-
 	if (getenv(com->argv[j] + 1))
 	{
 		new_value = ft_strdup(getenv(com->argv[j] + 1));
@@ -42,27 +41,17 @@ void	expand_variable(t_com *com, int j, t_list *vars)
 	com->argv[j] = ft_strdup("");
 }
 
-void command_has_variable(t_com *com, t_list *local_env)
+void	command_has_variable(t_com *com, t_list *local_env)
 {
-   int i;
-   int j;
+	int	j;
 
-   i = 0;
-	
-while (i < com[0].total_commands)
-{
 	j = 0;
-	while (com[i].argv[j])
+	printf("the command is: %s", com->argv[0]);
+	while (com->argv[j])
 	{
-		printf("the command is: %s", com[i].argv[0]);
-		if (com[i].argv[j] && ft_strchr(com[i].argv[j], '$'))
-			expand_variable(&com[i], j, local_env);
-		j++;
+		if (com->argv[j] && ft_strchr(com->argv[j], '$'))
+			expand_variable(com, j, local_env);
+	j++;
 	}
-	printf("in the mofo loop");
-	i++;
-}
 	
 }
-
-

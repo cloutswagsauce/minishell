@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/19 16:19:00 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:59:07 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -18,10 +18,10 @@ void	call_child_action(t_com command, t_list *local_env)
 	exit(0);
 }
 
-void	finish_execution(t_com command, char *input)
+void	finish_execution(t_com *command, char *input)
 {
 	add_history(input);
-	free_command(&command);
+	free_command(command);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			commands = parse_input(input);
 			execute_process(commands, &local_env, envp);
-			//finish_execution(command, input);
+			finish_execution(commands, input);
 			wait(0);
 		}
 	}
