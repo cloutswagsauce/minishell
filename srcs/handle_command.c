@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   handle_command.c                                   :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/19 18:21:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/21 15:56:59 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -36,6 +36,6 @@ void	handle_command(char *exec_path, t_com *command, t_list *local_env)
 {
 	
 	command_has_variable(command, local_env);
-	//command_has_pips()
+	//command_has_pipes(command);
 	execv(exec_path, command->argv);
 }
