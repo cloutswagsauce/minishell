@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/19 18:15:20 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/22 21:55:16 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -33,15 +33,15 @@
 # include <unistd.h>    // For write, access, read, close
 # include <unistd.h>    // For getcwd, chdir, unlink
 
+
+// restructure time  - we gonna get fucking linked lists in the way
 typedef struct s_com
 {
-	int				argc;
-	char			**argv;
-	int				is_builtin;
-	int				is_stand_alone;
-	int				total_commands;
-	int				total_pipes;
-	int				total_redirects;
+	char			*cmd;
+	char			**args;
+	int				fd_in;
+	int				fd_out;
+	s_com			*next;
 }					t_com;
 
 typedef struct s_list
