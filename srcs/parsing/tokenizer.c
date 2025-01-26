@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/26 21:43:41 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/26 22:30:03 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,16 +14,18 @@
 
 t_token	*new_token(char *value, int type)
 {
-	t_token *token;
-	
+	t_token	*token;
+	size_t len;
+
+	len = ft_strlen(value);
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->value = malloc(ft_strlen(value) + 1);
+	token->value = malloc(len + 1);
 	ft_memcpy(token->value, value, ft_strlen(value));
-	token->value[ft_strlen(value)] = '\0';
-	//token->value = ft_strdup(value);
-	 // Duplicate string value
+	token->value[len] = '\0';
+	// token->value = ft_strdup(value);
+	// Duplicate string value
 	token->type = type;
 	token->next = NULL;
 	return (token);
@@ -32,12 +34,15 @@ t_token	*new_token(char *value, int type)
 // Add token to linked list
 void	add_token(t_token **tokens, char *value, int type)
 {
-	t_token *new;
-	t_token *temp;
-
+	t_token	*new;
+	t_token	*temp;
 	new = new_token(value, type);
 	if (!new)
+	{
+		free(value);
 		return ;
+	}
+		
 	if (!*tokens) // If list is empty, set first token
 		*tokens = new;
 	else
@@ -48,123 +53,102 @@ void	add_token(t_token **tokens, char *value, int type)
 		temp->next = new;
 	}
 }
-int handle_quotes(char *input, int *i, t_token **tokens)
+int	handle_quotes(char *input, int *i, t_token **tokens)
 {
-	int	start;
-	char quote;
-	char buf[256];
+	int		start;
+	char	quote;
+	char	*buf;
 
 	if (input[*i] == '"' || input[*i] == '\'')
+	{
+		quote = input[(*i)++];
+		start = *i;
+		while (input[*i] && input[*i] != quote)
+			(*i)++;
+		if (!input[*i])
 		{
-			quote = input[(*i)++];
-			start = i;
-			while (input[*i] && input[*i] != quote)
-				i++;
-			if (!input[*i])
-			{
-				printf("you forgot to close the damn quote!\n");
-				return 0;
-			}
-			// use libft function
-			strncpy(buf, &input[start], i - start);
-			buf[*i - start] = '\0';
-			add_token(&tokens, buf, TOKEN_WORD);
-			if (input[*i])
-				i++;
+			printf("you forgot to close the damn quote!\n");
+			return (0);
 		}
-	
-	
+		buf = ft_substr(input, start, (*i) - start);
+		add_token(tokens, buf, TOKEN_WORD);
+		if (input[*i])
+			(*i)++;
+	}
+	return (1);
 }
-void handle_operators(char a)
+void	handle_redirections(char *input, int *i, t_token **tokens)
 {
-	
+	if (input[*i + 1] && input[*i + 1] == '<')
+	{
+		add_token(tokens, "<<", TOKEN_HEREDOC);
+		(*i) += 2;
+	}
+	else
+	{
+		add_token(tokens, "<", TOKEN_REDIRECT_IN);
+		(*i)++;
+	}
 }
-t_token *tokenize_input(char *input)
+void	handle_operators(char *input, int *i, t_token **tokens)
 {
-	t_token *tokens;
+	if (input[*i] == '|')
+	{
+		add_token(tokens, "|", TOKEN_PIPE);
+		(*i)++;
+	}
+	else if (input[*i] == '<')
+		handle_redirections(input, i, tokens);
+	else if (input[*i] == '>')
+	{
+		if (input[(*i) + 1] == '>')
+		{
+			add_token(tokens, ">>", TOKEN_APPEND);
+			(*i) += 2;
+		}
+		else
+		{
+			add_token(tokens, ">", TOKEN_REDIRECT_OUT);
+			(*i)++;
+		}
+	}
+}
+
+t_token	*tokenize_input(char *input)
+{
+	t_token	*tokens;
 	int		i;
 	int		start;
-	char	buf[256];
+	char	*buf;
 
 	tokens = 0;
 	i = 0;
-
 	while (input[i])
 	{
 		// Skip whitespace
 		while (input[i] && isspace((char)input[i]))
 			i++;
 		if (!input[i])
-			break;
+			break ;
 		// Handle quotes
-		if (input[i] == '"' || input[i] == '\'')
-		{
-			char quote = input[i++];
-			start = i;
-			while (input[i] && input[i] != quote)
-				i++;
-			if (!input[i])
-			{
-				printf("you forgot to close the damn quote!\n");
-				return 0;
-			}
-			// use libft function
-			strncpy(buf, &input[start], i - start);
-			buf[i - start] = '\0';
-			add_token(&tokens, buf, TOKEN_WORD);
-			if (input[i])
-				i++;
-			continue;
-		}
-
-		// Handle pipes and redirections
 		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
+			handle_operators(input, &i, &tokens);
+		else if (input[i] == '"' || input[i] == '\'')
 		{
-			if (input[i] == '|')
-			{
-				add_token(&tokens, "|", TOKEN_PIPE);
-				i++;
-			}
-			else if (input[i] == '<')
-			{
-				if (input[i + 1] == '<')
-				{
-					add_token(&tokens, "<<", TOKEN_HEREDOC);
-					i += 2;
-				}
-				else
-				{
-					add_token(&tokens, "<", TOKEN_REDIRECT_IN);
-					i++;
-				}
-			}
-			else if (input[i] == '>')
-			{
-				if (input[i + 1] == '>')
-				{
-					add_token(&tokens, ">>", TOKEN_APPEND);
-					i += 2;
-				}
-				else
-				{
-					add_token(&tokens, ">", TOKEN_REDIRECT_OUT);
-					i++;
-				}
-			}
+			if (!handle_quotes(input, &i, &tokens))
+				return (NULL);
 			continue;
 		}
-
 		// Handle words (commands, arguments, etc)
 		start = i;
-		while (input[i] && !isspace((char)input[i]) && 
-			   input[i] != '|' && input[i] != '<' && input[i] != '>' &&
-			   input[i] != '"' && input[i] != '\'')
+		while (input[i] && !isspace((char)input[i]) && input[i] != '|'
+			&& input[i] != '<' && input[i] != '>' && input[i] != '"'
+			&& input[i] != '\'')
 			i++;
 		// use libft function
-		strncpy(buf, &input[start], i - start);
+		buf = ft_substr(input, start, i -start);
 		buf[i - start] = '\0';
 		add_token(&tokens, buf, TOKEN_WORD);
 	}
-
-	return tokens;
+	return (tokens);
 }
