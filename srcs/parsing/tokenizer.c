@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/26 22:30:03 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/26 22:38:41 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -145,9 +145,7 @@ t_token	*tokenize_input(char *input)
 			&& input[i] != '<' && input[i] != '>' && input[i] != '"'
 			&& input[i] != '\'')
 			i++;
-		// use libft function
 		buf = ft_substr(input, start, i -start);
-		buf[i - start] = '\0';
 		add_token(&tokens, buf, TOKEN_WORD);
 	}
 	return (tokens);
