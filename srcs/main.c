@@ -6,11 +6,13 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/24 18:53:23 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:40:12 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
+
+// i should create a data struct to contain localenv and envp cuz if not, it will be a fucking pain to pass everything in
 
 void	call_child_action(t_com command, t_list *local_env)
 {

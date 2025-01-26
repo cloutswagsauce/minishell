@@ -6,24 +6,79 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:34:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/24 16:43:28 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:42:27 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
 
-int check_if_pipe(char *str, t_com *com)
+void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
+		t_list **local_env, char **envp)
 {
-	(void)str;
-	(void)com;
-	return (0);
-	
-		
+	if (cmd->has_inpipe)
+	{
+		dup2(fd_in, STDIN_FILENO);
+		close(fd_in);
+	}
+	if (cmd->has_outpipe)
+	{
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
+	if (is_command_builtin(cmd))
+		execute_builtin_command(cmd, local_env, envp);
+	else
+		execvp(cmd->argv[0], cmd->argv);
+	perror("exec failed");
+	exit(1);
 }
-void ft_pipex(t_com *commands)
+
+void	parent_pipe_process(t_com *cmd, int *fd_in, int *pipe_fd)
 {
-	(void) commands;
-	printf("command has pipes");
-	
-	
+	if (cmd->has_inpipe)
+		close(*fd_in);
+	if (cmd->has_outpipe)
+	{
+		close(pipe_fd[1]);
+		*fd_in = pipe_fd[0];
+	}
+}
+void	check_if_failed(t_com *cmd, int *pipe_fd)
+{
+	if (cmd->has_outpipe)
+	{
+		if (pipe(pipe_fd) == -1)
+		{
+			perror("pipe failed");
+			exit(1);
+		}
+	}
+}
+
+void	execute_pipeline(t_com *commands, t_list **local_env, char **envp)
+{
+	int		pipe_fd[2];
+	int		fd_in;
+	pid_t	pid;
+	t_com	*cmd;
+
+	fd_in = 0;
+	cmd = commands;
+	while (cmd)
+	{
+		check_if_failed(cmd, pipe_fd);
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork failed");
+			exit(1);
+		}
+		else if (pid == 0)
+			child_pipe_process(cmd, fd_in, pipe_fd, local_env, envp);
+		parent_pipe_process(cmd, &fd_in, pipe_fd);
+		cmd = cmd->next;
+	}
+	while (wait(NULL) > 0)
+		;
 }

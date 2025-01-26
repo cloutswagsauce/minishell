@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/24 18:53:49 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:35:22 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -95,7 +95,6 @@ t_com				*malloc_commands(char **str);
 void				execute_process(t_com *commands, t_list **local_env, char **envp);
 void				call_child_action(t_com command, t_list *local_env);
 int					num_commands(char **str);
-int					check_if_pipe(char *str, t_com *com);
 t_token				*tokenize_input(char *input);
 void				free_tokens(t_token *tokens);
 void				execute_pipeline(t_com *commands, t_list **local_env, char **envp);
