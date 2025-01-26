@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/26 15:35:38 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:44:47 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -20,7 +20,7 @@ void	execute_process(t_com *commands, t_list **local_env, char **envp)
 	i = 0;
 	while (commands)
 	{
-		if (!commands[i].is_builtin)
+		if (!commands->is_builtin)
 		{
 			if (!fork())
 				call_child_action(commands[i], *local_env);

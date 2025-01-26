@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/24 18:37:11 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:45:24 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,7 +14,6 @@
 
 void	execute_builtin_command(t_com *com, t_list **local_env, char **envp)
 {
-	printf("we are here");
 	command_has_variable(com, *local_env);
 
 	if (!ft_strncmp(com->argv[0], "echo", ft_strlen(com->argv[0])))
@@ -37,6 +36,5 @@ void	handle_command(char *exec_path, t_com *command, t_list *local_env)
 {
 	
 	command_has_variable(command, local_env);
-	//ft_pipex(command);
 	execv(exec_path, command->argv);
 }
