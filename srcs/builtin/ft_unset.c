@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:57:09 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/24 13:11:29 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:29:09 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -35,8 +35,32 @@ void	check_local(t_com *com, t_list **vars)
 	}
 }
 
+void check_env(t_com *com, char ***envp)
+{
+	char **arr;
+	int i;
+	int	j;
+
+	i = 0;
+	j = 0;
+
+	arr = *envp;
+	while (arr[i])
+	{
+		if (!ft_memcmp(com->argv[1], arr[i], ft_strlen(com->argv[1])))
+		{
+			i++;
+			continue;
+		}
+		arr[j++] = arr[i++];
+	}
+	arr[j] = 0;
+}
+
 void	ft_unset(t_com *com, t_list **lenv, char **envp)
 {
-	(void)envp;
+	printf("called unset\n");
 	check_local(com, lenv);
+	check_env(com, &envp);
 }
+
