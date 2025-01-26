@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/21 15:36:51 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/24 18:53:23 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
 
@@ -21,7 +21,7 @@ void	call_child_action(t_com command, t_list *local_env)
 void	finish_execution(t_com *command, char *input)
 {
 	add_history(input);
-	free_command(command);
+	free_commands(command);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -40,7 +40,10 @@ int	main(int argc, char **argv, char **envp)
 		if (*input)
 		{
 			commands = parse_input(input);
-			execute_process(commands, &local_env, envp);
+			if (commands && commands->has_outpipe)
+				execute_pipeline(commands, &local_env, envp);
+			else
+				execute_process(commands, &local_env, envp);
 			finish_execution(commands, input);
 			wait(0);
 		}

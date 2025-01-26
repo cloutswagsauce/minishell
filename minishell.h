@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/19 18:15:20 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/24 18:53:49 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -32,17 +32,36 @@
 # include <termios.h>   // For tcsetattr, tcgetattr
 # include <unistd.h>    // For write, access, read, close
 # include <unistd.h>    // For getcwd, chdir, unlink
+# include <ctype.h>
+
+# define TOKEN_WORD 1
+# define TOKEN_PIPE 2
+# define TOKEN_REDIRECT_IN 3
+# define TOKEN_REDIRECT_OUT 4
+# define TOKEN_APPEND 6
+# define TOKEN_HEREDOC 5
+# define TOKEN_DQUOTES 7
+
 
 typedef struct s_com
 {
 	int				argc;
 	char			**argv;
-	int				is_builtin;
-	int				is_stand_alone;
 	int				total_commands;
-	int				total_pipes;
-	int				total_redirects;
+	int				is_builtin;
+	int				has_inpipe;
+	int				has_outpipe;
+	int				input_fd;
+	int				output_fd;
+	struct s_com	*next;
 }					t_com;
+
+typedef struct s_token
+{
+	char	*value;
+	int		type;
+	struct s_token *next;
+}				t_token;
 
 typedef struct s_list
 {
@@ -60,7 +79,7 @@ int					is_command_builtin(t_com *com);
 void				execute_builtin_command(t_com *command, t_list **local_env,
 						char **envp);
 void				path_split_append(t_com *command, t_list *local_env);
-void				free_command(t_com *command);
+void				free_commands(t_com *cmd);
 void				ft_echo(t_com command);
 void				ft_env(char **envp, t_list *local_env);
 void				ft_pwd(void);
@@ -77,5 +96,8 @@ void				execute_process(t_com *commands, t_list **local_env, char **envp);
 void				call_child_action(t_com command, t_list *local_env);
 int					num_commands(char **str);
 int					check_if_pipe(char *str, t_com *com);
+t_token				*tokenize_input(char *input);
+void				free_tokens(t_token *tokens);
+void				execute_pipeline(t_com *commands, t_list **local_env, char **envp);
 
 #endif
