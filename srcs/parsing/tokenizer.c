@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/26 22:38:41 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:11:01 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -53,6 +53,7 @@ void	add_token(t_token **tokens, char *value, int type)
 		temp->next = new;
 	}
 }
+
 int	handle_quotes(char *input, int *i, t_token **tokens)
 {
 	int		start;
@@ -77,9 +78,10 @@ int	handle_quotes(char *input, int *i, t_token **tokens)
 	}
 	return (1);
 }
+
 void	handle_redirections(char *input, int *i, t_token **tokens)
 {
-	if (input[*i + 1] && input[*i + 1] == '<')
+	if (input[(*i) + 1] && input[(*i) + 1] == '<')
 	{
 		add_token(tokens, "<<", TOKEN_HEREDOC);
 		(*i) += 2;
@@ -90,6 +92,7 @@ void	handle_redirections(char *input, int *i, t_token **tokens)
 		(*i)++;
 	}
 }
+
 void	handle_operators(char *input, int *i, t_token **tokens)
 {
 	if (input[*i] == '|')
@@ -114,23 +117,32 @@ void	handle_operators(char *input, int *i, t_token **tokens)
 	}
 }
 
+void handle_word(char *input, int *i, t_token **tokens)
+{
+	int start;
+	char *buf;
+	start = *i;
+		while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|'
+			&& input[*i] != '<' && input[*i] != '>' && input[*i] != '"'
+			&& input[*i] != '\'')
+			(*i)++;
+		buf = ft_substr(input, start, (*i) -start);
+		add_token(tokens, buf, TOKEN_WORD);
+}
+
 t_token	*tokenize_input(char *input)
 {
 	t_token	*tokens;
 	int		i;
-	int		start;
-	char	*buf;
-
+	
 	tokens = 0;
 	i = 0;
 	while (input[i])
 	{
-		// Skip whitespace
 		while (input[i] && isspace((char)input[i]))
 			i++;
 		if (!input[i])
 			break ;
-		// Handle quotes
 		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
 			handle_operators(input, &i, &tokens);
 		else if (input[i] == '"' || input[i] == '\'')
@@ -139,14 +151,7 @@ t_token	*tokenize_input(char *input)
 				return (NULL);
 			continue;
 		}
-		// Handle words (commands, arguments, etc)
-		start = i;
-		while (input[i] && !isspace((char)input[i]) && input[i] != '|'
-			&& input[i] != '<' && input[i] != '>' && input[i] != '"'
-			&& input[i] != '\'')
-			i++;
-		buf = ft_substr(input, start, i -start);
-		add_token(&tokens, buf, TOKEN_WORD);
+		handle_word(input, &i, &tokens);
 	}
 	return (tokens);
 }

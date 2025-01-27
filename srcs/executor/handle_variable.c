@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   handle_variable.c                                  :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:13 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/24 13:10:25 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:13:25 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -16,7 +16,6 @@ void	expand_variable(t_com *com, int j, t_list *vars)
 {
 	char	*new_value;
 
-	printf("expand variable called");
 	if (getenv(com->argv[j] + 1))
 	{
 		new_value = ft_strdup(getenv(com->argv[j] + 1));
@@ -54,3 +53,4 @@ void	command_has_variable(t_com *com, t_list *local_env)
 	}
 	
 }
+
