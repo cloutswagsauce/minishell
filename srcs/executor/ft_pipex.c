@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:34:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/26 16:42:27 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:55:27 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,6 +25,10 @@ void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
+	}
+	if (cmd->output_file)
+	{
+		handle_redirect_out(cmd);
 	}
 	if (is_command_builtin(cmd))
 		execute_builtin_command(cmd, local_env, envp);

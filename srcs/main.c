@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/26 15:40:12 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/28 20:55:41 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -41,6 +41,7 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("mini$hell 🤖: ");
 		if (*input)
 		{
+			// export error w no args located in parse_input
 			commands = parse_input(input);
 			if (commands && commands->has_outpipe)
 				execute_pipeline(commands, &local_env, envp);

@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/27 18:26:39 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/28 20:52:11 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -51,7 +51,7 @@ typedef struct s_com
 	int				is_builtin;
 	int				has_inpipe;
 	int				has_outpipe;
-	char 				*output_file;
+	char 			*output_file;
 	int				append_output;
 	int				input_fd;
 	int				output_fd;
@@ -85,7 +85,7 @@ void				free_commands(t_com *cmd);
 void				ft_echo(t_com command);
 void				ft_env(char **envp, t_list *local_env);
 void				ft_pwd(void);
-void				ft_export(char *name_and_value, t_list **local_env);
+void				ft_export(char *name_and_value, t_list **local_env, char **envp, int flag);
 void				ft_cd(t_com command);
 void				ft_exit(void);
 t_list				*ft_lstnew(char *name, char *value);
@@ -103,5 +103,6 @@ void				execute_pipeline(t_com *commands, t_list **local_env, char **envp);
 char				**get_builtin_list(void);
 int					is_command_builtin(t_com *com);
 int					is_valid_path(char *exec_path, t_com *command, t_list *local_env);
+int					handle_redirect_out(t_com *cmd);
 
 #endif

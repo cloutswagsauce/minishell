@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/26 16:45:24 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/28 20:52:01 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,7 +25,12 @@ void	execute_builtin_command(t_com *com, t_list **local_env, char **envp)
 	else if (!ft_strncmp(com->argv[0], "cd", ft_strlen(com->argv[0])))
 		ft_cd(*com);
 	else if (!ft_strncmp(com->argv[0], "export", ft_strlen(com->argv[0])))
-		ft_export(com->argv[1], local_env);
+	{
+		if (com->argv[1])
+			ft_export(com->argv[1], local_env, envp, 0);
+		else
+			ft_export(com->argv[0], local_env, envp, 1);
+	}
 	else if (!ft_strncmp(com->argv[0], "exit", ft_strlen(com->argv[0])))
 		ft_exit();
 	else if (!ft_strncmp(com->argv[0], "unset", ft_strlen(com->argv[0])))

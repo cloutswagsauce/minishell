@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/27 13:11:01 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/28 20:55:25 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -126,12 +126,13 @@ void handle_word(char *input, int *i, t_token **tokens)
 			&& input[*i] != '<' && input[*i] != '>' && input[*i] != '"'
 			&& input[*i] != '\'')
 			(*i)++;
-		buf = ft_substr(input, start, (*i) -start);
+		buf = ft_substr(input, start, (*i) - start);
 		add_token(tokens, buf, TOKEN_WORD);
 }
 
 t_token	*tokenize_input(char *input)
 {
+	printf("tokenize input called");
 	t_token	*tokens;
 	int		i;
 	
@@ -151,6 +152,8 @@ t_token	*tokenize_input(char *input)
 				return (NULL);
 			continue;
 		}
+		while (input[i] && isspace((char)input[i]))
+			i++;
 		handle_word(input, &i, &tokens);
 	}
 	return (tokens);

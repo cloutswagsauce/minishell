@@ -1,4 +1,4 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,9 +6,9 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2025/01/27 14:07:21 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/01/28 20:32:34 by lfaria-m         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 # Program name
 NAME = minishell
@@ -19,11 +19,13 @@ OBJ_DIR = objs
 LIB_DIR = includes/libft
 
 # Source files (explicitly listed)
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/parsing/parser.c $(SRC_DIR)/utils/utils.c \
+SRCS = $(SRC_DIR)/main.c  $(SRC_DIR)/utils/utils.c \
 $(SRC_DIR)/executor/handle_command.c $(SRC_DIR)/end/free_stuff.c $(SRC_DIR)/builtin/ft_cd.c \
 $(SRC_DIR)/builtin/ft_echo.c $(SRC_DIR)/builtin/ft_env.c $(SRC_DIR)/builtin/ft_exit.c $(SRC_DIR)/builtin/ft_export.c \
 $(SRC_DIR)/builtin/ft_unset.c $(SRC_DIR)/builtin/ft_pwd.c $(SRC_DIR)/ft_lst.c $(SRC_DIR)/executor/handle_variable.c \
-$(SRC_DIR)/executor/execute_process.c $(SRC_DIR)/executor/ft_pipex.c $(SRC_DIR)/parsing/tokenizer.c $(SRC_DIR)/parsing/parser_utils.c 
+$(SRC_DIR)/executor/execute_process.c $(SRC_DIR)/executor/ft_pipex.c $(SRC_DIR)/parsing/tokenizer.c $(SRC_DIR)/parsing/parser_utils.c \
+$(SRC_DIR)/executor/ft_redirect.c $(SRC_DIR)/parsing/parser.c
+
 
 # Object files (stored in objs/)
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -33,7 +35,7 @@ DIRS = $(sort $(dir $(OBJS)))
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -fsanitize=address -Werror
 
 # To link readline
 RD = -lreadline -lncurses
@@ -54,7 +56,8 @@ $(NAME): $(OBJS) $(LIB)
 	$(CC) $(CFLAGS) $(OBJS) $(LIB_FLAGS) $(RD) -o $(NAME)
 
 # Compile source files to object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(DIRS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(dir $@)  # Ensure the directory exists
 	$(CC) $(CFLAGS) -I$(LIB_DIR) -c $< -o $@
 
 # Ensure all necessary subdirectories exist before compiling
