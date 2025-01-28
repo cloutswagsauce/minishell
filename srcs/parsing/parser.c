@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 20:48:48 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/28 22:14:39 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -136,10 +136,8 @@ t_com	*parse_input(char *str)
 					commands = current_cmd;
 			}
 			else
-			{
-				printf("right before arg creator");
 				create_new_arg(&arg_count, current_cmd, cur_token);
-			}
+			
 		}
 		else if (cur_token->type == TOKEN_PIPE)
 		{

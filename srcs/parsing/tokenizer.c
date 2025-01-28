@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 20:55:25 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/28 22:14:18 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -132,7 +132,6 @@ void handle_word(char *input, int *i, t_token **tokens)
 
 t_token	*tokenize_input(char *input)
 {
-	printf("tokenize input called");
 	t_token	*tokens;
 	int		i;
 	

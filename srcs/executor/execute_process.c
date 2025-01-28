@@ -6,28 +6,33 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 20:37:56 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/01/28 22:30:48 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
 
 
-void	execute_process(t_com *commands, t_list **local_env, char **envp)
+void	execute_process(t_com *cmd, t_list **local_env, char **envp)
 {
+	pid_t pid;
 	
 		/*if (commands->output_file)
 		{
-			printf("YESS");
 			handle_redirect_out(commands);
 		}*/
-		if (!commands->is_builtin)
+		if (!cmd->is_builtin)
 		{
-			if (!fork())
-				call_child_action(*commands, *local_env);
+			pid = fork();
+			if (pid == 0)
+			{
+				if (cmd->output_file)
+					handle_redirect_out(cmd);
+				call_child_action(*cmd, *local_env);
+			}
 		}
 		else
-			execute_builtin_command(commands, local_env, envp);
+			execute_builtin_command(cmd, local_env, envp);
 		
 	}
 
