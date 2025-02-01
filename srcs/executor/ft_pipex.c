@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:34:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 15:55:27 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:27:20 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -48,6 +48,7 @@ void	parent_pipe_process(t_com *cmd, int *fd_in, int *pipe_fd)
 		*fd_in = pipe_fd[0];
 	}
 }
+
 void	check_if_failed(t_com *cmd, int *pipe_fd)
 {
 	if (cmd->has_outpipe)
@@ -66,7 +67,7 @@ void	execute_pipeline(t_com *commands, t_list **local_env, char **envp)
 	int		fd_in;
 	pid_t	pid;
 	t_com	*cmd;
-
+	
 	fd_in = 0;
 	cmd = commands;
 	while (cmd)
@@ -83,6 +84,5 @@ void	execute_pipeline(t_com *commands, t_list **local_env, char **envp)
 		parent_pipe_process(cmd, &fd_in, pipe_fd);
 		cmd = cmd->next;
 	}
-	while (wait(NULL) > 0)
-		;
+	while (wait(NULL) > 0);
 }

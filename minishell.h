@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 22:30:25 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:00:26 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -54,7 +54,6 @@ typedef struct s_com
 	char 			*output_file;
 	int				append_output;
 	int				input_fd;
-	int				output_fd;
 	struct s_com	*next;
 }					t_com;
 

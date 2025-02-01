@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 22:14:39 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:29:23 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -98,9 +98,10 @@ int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 	(*arg_count) = 0;
 	return (0);
 }
-int	handle_redirect_token(t_com *current_cmd, t_token *cur_token)
+
+int	handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append)
 {
-	if (cur_token->type == TOKEN_REDIRECT_OUT)
+	if (cur_token->type == TOKEN_REDIRECT_OUT || cur_token->type == TOKEN_APPEND)
 	{
 		if (!cur_token->next)
 		{
@@ -108,10 +109,16 @@ int	handle_redirect_token(t_com *current_cmd, t_token *cur_token)
 			return (1);
 		}
 		current_cmd->output_file = ft_strdup(cur_token->next->value);
-		current_cmd->append_output = 0;
+		if (append)
+			current_cmd->append_output = 1;
+		else
+			current_cmd->append_output = 0;
 	}
+	// we skip next token so we dont add it to command list
+	*cur_token = *cur_token->next;
 	return (0);
 }
+
 t_com	*parse_input(char *str)
 {
 	t_token	*tokens;
@@ -137,7 +144,6 @@ t_com	*parse_input(char *str)
 			}
 			else
 				create_new_arg(&arg_count, current_cmd, cur_token);
-			
 		}
 		else if (cur_token->type == TOKEN_PIPE)
 		{
@@ -154,9 +160,9 @@ t_com	*parse_input(char *str)
 				//handle_redirect_token(current_cmd, cur_token);
 		}*/
 		else if (cur_token->type == TOKEN_REDIRECT_OUT)
-		{
-			handle_redirect_token(current_cmd, cur_token);
-		}
+			handle_redirect_token(current_cmd, cur_token, 0);
+		else if (cur_token->type == TOKEN_APPEND)
+			handle_redirect_token(current_cmd, cur_token, 1);
 		cur_token = cur_token->next;
 	}
 	if (current_cmd)

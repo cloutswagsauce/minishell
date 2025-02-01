@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:18:05 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 22:15:28 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:13:50 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,15 +14,16 @@
 
 int handle_redirect_out(t_com *cmd)
 {
-	printf("ft handle redirect was called");
 	int fd;
-	fd = open(cmd->output_file, O_WRONLY | O_CREAT, 0666);
+	if (cmd->append_output)
+		fd = open(cmd->output_file, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	else
+		fd = open(cmd->output_file, O_WRONLY | O_CREAT, 0666);
 	if (fd == -1)
 	{
-		perror("Errorrrr: ");
+		perror("Error: ");
 		exit(1);
 	}
 	dup2(fd, STDOUT_FILENO);
-	close(fd);
 	return (0);
 }

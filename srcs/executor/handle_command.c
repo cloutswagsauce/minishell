@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 22:31:30 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:26:51 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,11 +14,11 @@
 
 void	execute_builtin_command(t_com *com, t_list **local_env, char **envp)
 {
+	int fd;
+	fd = dup(STDOUT_FILENO);
 	command_has_variable(com, *local_env);
-
 	if (com->output_file)
         handle_redirect_out(com);
-
 	if (!ft_strncmp(com->argv[0], "echo", ft_strlen(com->argv[0])))
 		ft_echo(*com);
 	else if (!ft_strncmp(com->argv[0], "env", ft_strlen(com->argv[0])))
@@ -38,6 +38,7 @@ void	execute_builtin_command(t_com *com, t_list **local_env, char **envp)
 		ft_exit();
 	else if (!ft_strncmp(com->argv[0], "unset", ft_strlen(com->argv[0])))
 		ft_unset(com, local_env, envp);
+	dup2(fd, STDOUT_FILENO);
 }
 
 void	handle_command(char *exec_path, t_com *command, t_list *local_env)

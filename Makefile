@@ -6,7 +6,7 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2025/01/28 20:32:34 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/01/29 14:39:31 by lfaria-m         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -35,7 +35,7 @@ DIRS = $(sort $(dir $(OBJS)))
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -fsanitize=address -Werror
+CFLAGS = -Wall -Wextra  -Werror
 
 # To link readline
 RD = -lreadline -lncurses
