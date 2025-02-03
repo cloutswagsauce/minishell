@@ -6,7 +6,7 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2025/01/29 14:39:31 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/02/03 21:53:22 by lfaria-m         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -24,7 +24,7 @@ $(SRC_DIR)/executor/handle_command.c $(SRC_DIR)/end/free_stuff.c $(SRC_DIR)/buil
 $(SRC_DIR)/builtin/ft_echo.c $(SRC_DIR)/builtin/ft_env.c $(SRC_DIR)/builtin/ft_exit.c $(SRC_DIR)/builtin/ft_export.c \
 $(SRC_DIR)/builtin/ft_unset.c $(SRC_DIR)/builtin/ft_pwd.c $(SRC_DIR)/ft_lst.c $(SRC_DIR)/executor/handle_variable.c \
 $(SRC_DIR)/executor/execute_process.c $(SRC_DIR)/executor/ft_pipex.c $(SRC_DIR)/parsing/tokenizer.c $(SRC_DIR)/parsing/parser_utils.c \
-$(SRC_DIR)/executor/ft_redirect.c $(SRC_DIR)/parsing/parser.c
+$(SRC_DIR)/executor/ft_redirect.c $(SRC_DIR)/parsing/parser.c $(SRC_DIR)/parsing/handle_tokens.c
 
 
 # Object files (stored in objs/)
@@ -35,7 +35,7 @@ DIRS = $(sort $(dir $(OBJS)))
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra  -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 # To link readline
 RD = -lreadline -lncurses

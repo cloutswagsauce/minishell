@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/01 23:00:26 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/03 21:00:26 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -52,6 +52,7 @@ typedef struct s_com
 	int				has_inpipe;
 	int				has_outpipe;
 	char 			*output_file;
+	char			*input_file;
 	int				append_output;
 	int				input_fd;
 	struct s_com	*next;
@@ -103,5 +104,7 @@ char				**get_builtin_list(void);
 int					is_command_builtin(t_com *com);
 int					is_valid_path(char *exec_path, t_com *command, t_list *local_env);
 int					handle_redirect_out(t_com *cmd);
+int					handle_pipe_token(t_com **current_cmd, int *arg_count);
+int					handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append);
 
 #endif

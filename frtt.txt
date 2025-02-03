@@ -1,0 +1,9 @@
+Makefile
+dop.txt
+fr.txt
+frtt.txt
+includes
+minishell
+minishell.h
+objs
+srcs
