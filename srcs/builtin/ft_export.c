@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 21:58:46 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 13:00:39 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -69,9 +69,10 @@ int	update_var(char *name, char *value, t_list **local_env)
 	return (0);
 }
 
-void	handle_no_args(char **envp)
+void	handle_no_args(char **envp, t_list **local_env)
 {
 	char	*equals;
+	t_list *temp;
 
 	while (*envp)
 	{
@@ -79,6 +80,13 @@ void	handle_no_args(char **envp)
 		printf("declare -x %s=\"%s\"\n", get_name(*envp, equals), get_value(equals));
 		envp++;
 	}
+	temp = *local_env;
+	while(temp)
+	{
+		printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
+		temp = temp->next;
+	}
+	
 }
 
 void	ft_export(char *name_and_value, t_list **local_env, char **envp,
@@ -91,13 +99,15 @@ void	ft_export(char *name_and_value, t_list **local_env, char **envp,
 
 	if (flag)
 	{
-		handle_no_args(envp);
+		handle_no_args(envp, local_env);
 		return ;
 	}
 	equals = ft_strchr(name_and_value, '=');
-	name = get_name(name_and_value, equals);
+	
+	
 	if (equals)
 	{
+		name = get_name(name_and_value, equals);
 		value = get_value(equals);
 		if (update_var(name, value, local_env))
 			return ;
@@ -112,7 +122,9 @@ void	ft_export(char *name_and_value, t_list **local_env, char **envp,
 	}
 	else
 	{
+		name = ft_strdup(name_and_value);
 		new = ft_lstnew(name, "");
+		printf("envp: %s", new->name);
 		ft_lstadd_back(local_env, new);
 	}
 }

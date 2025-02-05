@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/01 23:26:51 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 13:44:18 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -43,7 +43,6 @@ void	execute_builtin_command(t_com *com, t_list **local_env, char **envp)
 
 void	handle_command(char *exec_path, t_com *command, t_list *local_env)
 {
-	
 	command_has_variable(command, local_env);
 	execv(exec_path, command->argv);
 }

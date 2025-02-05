@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/02 14:07:54 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:11:07 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -24,6 +24,7 @@ void	finish_execution(t_com *command, char *input)
 {
 	add_history(input);
 	free_commands(command);
+		
 }
 
 // append and redirect and pipes are working
@@ -46,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 			commands = parse_input(input);
 			if (commands && commands->has_outpipe)
 				execute_pipeline(commands, &local_env, envp);
-			else
+			else if (commands)
 				execute_process(commands, &local_env, envp);
 			finish_execution(commands, input);
 			wait(0);

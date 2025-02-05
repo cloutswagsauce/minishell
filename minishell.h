@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/03 21:00:26 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:05:51 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -54,6 +54,7 @@ typedef struct s_com
 	char 			*output_file;
 	char			*input_file;
 	int				append_output;
+	char			*delim;
 	int				input_fd;
 	struct s_com	*next;
 }					t_com;
@@ -64,6 +65,13 @@ typedef struct s_token
 	int		type;
 	struct s_token *next;
 }				t_token;
+
+typedef struct s_hdline
+{
+	char	*value;
+	struct	s_hdline *next;
+}				t_hdline;
+
 
 typedef struct s_list
 {
@@ -106,5 +114,6 @@ int					is_valid_path(char *exec_path, t_com *command, t_list *local_env);
 int					handle_redirect_out(t_com *cmd);
 int					handle_pipe_token(t_com **current_cmd, int *arg_count);
 int					handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append);
+int					handle_heredoc_token(t_com *current_cmd, t_token *cur_token);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/28 22:14:18 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 14:39:31 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -79,7 +79,7 @@ int	handle_quotes(char *input, int *i, t_token **tokens)
 	return (1);
 }
 
-void	handle_redirections(char *input, int *i, t_token **tokens)
+void	handle_redirections_in(char *input, int *i, t_token **tokens)
 {
 	if (input[(*i) + 1] && input[(*i) + 1] == '<')
 	{
@@ -101,7 +101,7 @@ void	handle_operators(char *input, int *i, t_token **tokens)
 		(*i)++;
 	}
 	else if (input[*i] == '<')
-		handle_redirections(input, i, tokens);
+		handle_redirections_in(input, i, tokens);
 	else if (input[*i] == '>')
 	{
 		if (input[(*i) + 1] == '>')

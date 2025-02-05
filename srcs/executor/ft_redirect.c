@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:18:05 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/03 20:23:28 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:05:08 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,5 +25,12 @@ int handle_redirect_out(t_com *cmd)
 		exit(1);
 	}
 	dup2(fd, STDOUT_FILENO);
+	return (0);
+}
+
+int handle_redirect_heredoc(t_com *cmd)
+{
+	printf("called command executor\n");
+	printf("is heredoc flag on?: %s\n", cmd->delim);
 	return (0);
 }

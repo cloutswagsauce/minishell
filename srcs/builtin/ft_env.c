@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/24 13:11:16 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:56:50 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -27,10 +27,14 @@ void	ft_env(char **envp, t_list *local_env)
 	}
 	while (local_env)
 	{
-		ft_printf(local_env->name);
-		write(1, "=", 1);
-		ft_printf(local_env->value);
-		write(1, "\n", 1);
+		if (local_env->name && *local_env->value)
+		{
+			ft_printf(local_env->name);
+			write(1, "=", 1);
+			ft_printf(local_env->value);
+			write(1, "\n", 1);
+		}
+		
 		local_env = local_env->next;
 	}
 }

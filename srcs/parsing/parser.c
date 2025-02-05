@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/03 20:59:46 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:10:10 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -78,6 +78,7 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 	(*current_cmd)->has_outpipe = 0;
 	(*current_cmd)->input_file = 0;
 	(*current_cmd)->append_output = 0;
+	(*current_cmd)->delim = 0;
 	(*current_cmd)->output_file = 0;
 	(*current_cmd)->is_builtin = 0;
 	(*current_cmd)->next = NULL;
@@ -117,19 +118,16 @@ t_com	*parse_input(char *str)
 			if (current_cmd)
 				handle_pipe_token(&current_cmd, &arg_count);
 		}
-		/*else if (cur_token->type == TOKEN_REDIRECT_OUT
-			|| cur_token->type == TOKEN_REDIRECT_IN
-				|| cur_token->type == TOKEN_APPEND
-					|| cur_token->type == TOKEN_HEREDOC
-				)
-			{
-				printf("token redirect");
-				//handle_redirect_token(current_cmd, cur_token);
-		}*/
 		else if (cur_token->type == TOKEN_REDIRECT_OUT)
 			handle_redirect_token(current_cmd, cur_token, 0);
 		else if (cur_token->type == TOKEN_APPEND)
 			handle_redirect_token(current_cmd, cur_token, 1);
+		else if (cur_token->type == TOKEN_HEREDOC)
+		{
+			printf("we here no?");
+			handle_heredoc_token(current_cmd, cur_token);
+		}
+			
 		cur_token = cur_token->next;
 	}
 	if (current_cmd)
