@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/05 15:10:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:28:52 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -102,6 +102,7 @@ t_com	*parse_input(char *str)
 	arg_count = 0;
 	while (cur_token)
 	{
+		printf("%d", cur_token->type);
 		if (cur_token->type == TOKEN_WORD)
 		{
 			if (!current_cmd)
@@ -123,11 +124,7 @@ t_com	*parse_input(char *str)
 		else if (cur_token->type == TOKEN_APPEND)
 			handle_redirect_token(current_cmd, cur_token, 1);
 		else if (cur_token->type == TOKEN_HEREDOC)
-		{
-			printf("we here no?");
 			handle_heredoc_token(current_cmd, cur_token);
-		}
-			
 		cur_token = cur_token->next;
 	}
 	if (current_cmd)

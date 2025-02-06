@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/05 15:05:51 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:30:59 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -115,5 +115,6 @@ int					handle_redirect_out(t_com *cmd);
 int					handle_pipe_token(t_com **current_cmd, int *arg_count);
 int					handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append);
 int					handle_heredoc_token(t_com *current_cmd, t_token *cur_token);
+int 				handle_redirect_heredoc(t_com *cmd);
 
 #endif

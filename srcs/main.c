@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/05 15:11:07 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:55:08 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -40,10 +40,12 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	while (1)
 	{
+		//current issue: heredoc works but only with non built in commands
 		rl_on_new_line();
 		input = readline("mini$hell 🤖: ");
 		if (*input)
 		{
+			printf("we got input ofc");
 			commands = parse_input(input);
 			if (commands && commands->has_outpipe)
 				execute_pipeline(commands, &local_env, envp);
