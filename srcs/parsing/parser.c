@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/05 15:28:52 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:23:39 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -80,6 +80,8 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 	(*current_cmd)->append_output = 0;
 	(*current_cmd)->delim = 0;
 	(*current_cmd)->output_file = 0;
+	(*current_cmd)->input_fd = -1;
+	//(*current_cmd)->heredoc_content = 0;
 	(*current_cmd)->is_builtin = 0;
 	(*current_cmd)->next = NULL;
 	*arg_count = 1;
@@ -102,7 +104,6 @@ t_com	*parse_input(char *str)
 	arg_count = 0;
 	while (cur_token)
 	{
-		printf("%d", cur_token->type);
 		if (cur_token->type == TOKEN_WORD)
 		{
 			if (!current_cmd)

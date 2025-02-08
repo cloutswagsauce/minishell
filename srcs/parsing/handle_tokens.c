@@ -41,7 +41,6 @@ int	handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append)
 
 int handle_heredoc_token(t_com *current_cmd, t_token *cur_token)
 {
-	printf("handling heredoc");
 	if (cur_token->next->value)
 		current_cmd->delim = ft_strdup(cur_token->next->value);
 	*cur_token = *cur_token->next;
