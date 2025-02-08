@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/07 13:23:39 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/08 17:10:28 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -60,7 +60,8 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 	// use a libft function instead of strdup
 	temp_argv[(*arg_count) - 1] = strdup(cur_token->value);
 	temp_argv[(*arg_count)] = NULL;
-	free(current_cmd->argv);
+	if(current_cmd->argv)
+		free(current_cmd->argv);
 	current_cmd->argv = temp_argv;
 	return (0);
 }
@@ -81,7 +82,6 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 	(*current_cmd)->delim = 0;
 	(*current_cmd)->output_file = 0;
 	(*current_cmd)->input_fd = -1;
-	//(*current_cmd)->heredoc_content = 0;
 	(*current_cmd)->is_builtin = 0;
 	(*current_cmd)->next = NULL;
 	*arg_count = 1;

@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/07 13:30:34 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:07:51 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 		{
 			printf("no input im exiting");
-			exit(0);
+			//exit(0);
 		}
 		if (*input)
 		{
@@ -56,8 +56,8 @@ int	main(int argc, char **argv, char **envp)
 				execute_pipeline(commands, &local_env, envp);
 			else if (commands)
 				execute_process(commands, &local_env, envp);
-			//finish_execution(commands, input);
 			wait(0);
+			finish_execution(commands, input);
 		}
 	}
 }
