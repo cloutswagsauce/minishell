@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_pipex.c                                         :+:      :+:    :+:   */
@@ -6,11 +6,12 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:34:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/08 17:10:28 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/09 20:57:30 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
+
 
 void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
 		t_list **local_env, char **envp)
@@ -31,11 +32,33 @@ void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
 		handle_redirect_out(cmd);
 	}
 	if (is_command_builtin(cmd))
+	{
 		execute_builtin_command(cmd, local_env, envp);
+		exit(0);
+	}
 	else
+	{
+	/*	// DEBUG: Print command arguments
+		printf("\n=== EXECVE DEBUG INFO ===\n");
+		printf("Command Path: %s\n", cmd->argv[0]);
+
+		int i = 0;
+		while (cmd->argv[i])
+		{
+			printf("Arg[%d]: %s\n", i, cmd->argv[i]);
+			i++;
+		}
+		printf("Arg[%d]: (NULL)\n", i);  // Should be NULL*/
+
+	
+		// EXECVE CALL
 		execvp(cmd->argv[0], cmd->argv);
-	perror("exec failed");
-	exit(1);
+		//path_split_append(cmd, *local_env, envp);
+
+		// If execve fails
+		perror("execve failed");
+		exit(1);
+	}
 }
 
 void	parent_pipe_process(t_com *cmd, int *fd_in, int *pipe_fd)
@@ -81,6 +104,7 @@ void	execute_pipeline(t_com *commands, t_list **local_env, char **envp)
 		}
 		else if (pid == 0)
 			child_pipe_process(cmd, fd_in, pipe_fd, local_env, envp);
+			
 		parent_pipe_process(cmd, &fd_in, pipe_fd);
 		cmd = cmd->next;
 	}

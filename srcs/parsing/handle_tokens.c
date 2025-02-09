@@ -5,10 +5,19 @@ int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 	t_com	*new_cmd;
 
 	(*current_cmd)->has_outpipe = 1;
-	// Create new command for after pipe
+
 	new_cmd = malloc(sizeof(t_com));
 	if (!new_cmd)
 		return (1);
+	ft_memset(new_cmd, 0, sizeof(t_com));
+	new_cmd->argv = malloc(sizeof(char *) * 2);
+	if (!new_cmd->argv)
+	{
+		free(new_cmd);
+		return (1);
+	}
+	new_cmd->argv[0] = NULL;
+	new_cmd->argv[1] = NULL;
 	new_cmd->has_inpipe = 1;
 	new_cmd->has_outpipe = 0;
 	new_cmd->next = NULL;
@@ -17,6 +26,7 @@ int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 	(*arg_count) = 0;
 	return (0);
 }
+
 
 int	handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append)
 {
@@ -33,8 +43,6 @@ int	handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append)
 	}
 	else if(cur_token->type == TOKEN_HEREDOC)
 		handle_heredoc_token(current_cmd, cur_token);
-		
-	// we skip next token so we dont add it to command list
 	*cur_token = *cur_token->next;
 	return (0);
 }

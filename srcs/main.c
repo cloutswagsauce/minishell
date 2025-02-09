@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
@@ -6,17 +6,18 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/08 16:07:51 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/09 20:40:44 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
 
-// i should create a data struct to contain localenv and envp cuz if not, it will be a fucking pain to pass everything in
+// i should create a data struct to contain localenv and envp cuz if not, it will be a fucking pain to pass everything i
 
-void	call_child_action(t_com command, t_list *local_env)
+
+void	call_child_action(t_com command, t_list *local_env, char **envp)
 {
-	path_split_append(&command, local_env);
+	path_split_append(&command, local_env, envp);
 	exit(0);
 }
 
@@ -27,8 +28,6 @@ void	finish_execution(t_com *command, char *input)
 		
 }
 
-// append and redirect and pipes are working
-// when quote missing, we get error but also a little petit segfault oopsies
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
@@ -40,15 +39,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	while (1)
 	{
-		//current issue: heredoc works but only with non built in commands
-		//problem is because builtins dont take input same way as external commands.
 		rl_on_new_line();
 		input = readline("mini$hell 🤖: ");
-		if (!input)
-		{
-			printf("no input im exiting");
-			//exit(0);
-		}
 		if (*input)
 		{
 			commands = parse_input(input);

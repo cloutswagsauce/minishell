@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/07 12:49:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/09 20:36:01 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -85,11 +85,11 @@ t_com				*parse_input(char *str);
 int					join_len(char *s1, char *s2);
 void				free_double(char **arr);
 void				handle_command(char *str, t_com *command,
-						t_list *local_env);
+						t_list *local_env, char **envp);
 int					is_command_builtin(t_com *com);
 void				execute_builtin_command(t_com *command, t_list **local_env,
 						char **envp);
-void				path_split_append(t_com *command, t_list *local_env);
+void				path_split_append(t_com *command, t_list *local_env, char **envp);
 void				free_commands(t_com *cmd);
 void				ft_echo(t_com command);
 void				ft_env(char **envp, t_list *local_env);
@@ -104,14 +104,14 @@ void				command_has_variable(t_com *com, t_list *local_env);
 void				ft_unset(t_com *com, t_list **lenv, char **envp);
 t_com				*malloc_commands(char **str);
 void				execute_process(t_com *cmd, t_list **local_env, char **envp);
-void				call_child_action(t_com command, t_list *local_env);
+void				call_child_action(t_com command, t_list *local_env, char **envp);
 int					num_commands(char **str);
 t_token				*tokenize_input(char *input);
 void				free_tokens(t_token *tokens);
 void				execute_pipeline(t_com *commands, t_list **local_env, char **envp);
 char				**get_builtin_list(void);
 int					is_command_builtin(t_com *com);
-int					is_valid_path(char *exec_path, t_com *command, t_list *local_env);
+int					is_valid_path(char *exec_path, t_com *command, t_list *local_env, char **envp);
 int					handle_redirect_out(t_com *cmd);
 int					handle_pipe_token(t_com **current_cmd, int *arg_count);
 int					handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append);

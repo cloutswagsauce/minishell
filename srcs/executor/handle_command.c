@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   handle_command.c                                   :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/08 16:27:38 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/09 20:40:17 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -41,8 +41,8 @@ void	execute_builtin_command(t_com *com, t_list **local_env, char **envp)
 	dup2(fd, STDOUT_FILENO);
 }
 
-void	handle_command(char *exec_path, t_com *command, t_list *local_env)
+void	handle_command(char *exec_path, t_com *command, t_list *local_env, char **envp)
 {
 	command_has_variable(command, local_env);
-	execv(exec_path, command->argv);
+	execve(exec_path, command->argv, envp);
 }

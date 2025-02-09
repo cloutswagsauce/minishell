@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
@@ -6,13 +6,13 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/08 17:10:28 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/09 20:36:22 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
-void	path_split_append(t_com *command, t_list *local_env)
+void	path_split_append(t_com *command, t_list *local_env, char **envp)
 {
 	char	**path_split;
 	char	*exec_path;
@@ -20,6 +20,11 @@ void	path_split_append(t_com *command, t_list *local_env)
 	int		len;
 
 	path_split = ft_split(getenv("PATH"), ':');
+	if (!path_split)
+	{
+		perror("Path environment variabe not set");
+		return ;
+	}
 	current_path_split = path_split;
 	while (*current_path_split)
 	{
@@ -29,7 +34,7 @@ void	path_split_append(t_com *command, t_list *local_env)
 		ft_strlcat(exec_path, "/", len);
 		ft_strlcat(exec_path, command->argv[0], len);
 		exec_path[len - 1] = '\0';
-		if (is_valid_path(exec_path, command, local_env))
+		if (is_valid_path(exec_path, command, local_env, envp))
 			break ;
 		else
 			free(exec_path);
@@ -43,6 +48,9 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 	char	**temp_argv;
 	int		i;
 
+	if (!current_cmd)
+		return (1);
+
 	i = 0;
 	(*arg_count)++;
 	temp_argv = malloc(sizeof(char *) * ((*arg_count) + 1));
@@ -51,17 +59,32 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 		perror("temp argv failed:");
 		return (1);
 	}
-	while (i < (*arg_count) - 1)
+	if (current_cmd->argv)
 	{
-		// fix this - its no bueno
-		temp_argv[i] = current_cmd->argv[i];
+		while (i < (*arg_count) - 1)
+	{
+		if (current_cmd->argv && current_cmd->argv[0])
+			temp_argv[i] = ft_strdup(current_cmd->argv[i]);
+		else
+			temp_argv[i] = NULL;
 		i++;
 	}
-	// use a libft function instead of strdup
-	temp_argv[(*arg_count) - 1] = strdup(cur_token->value);
+	}
+	temp_argv[(*arg_count) - 1] = ft_strdup(cur_token->value);
 	temp_argv[(*arg_count)] = NULL;
 	if(current_cmd->argv)
+	{
+		i = 0;
+		while (current_cmd->argv[i])
+		{
+			free(current_cmd->argv[i]);
+			current_cmd->argv[i] = NULL;
+			i++;
+		}
+			
 		free(current_cmd->argv);
+		current_cmd->argv = NULL;
+	}
 	current_cmd->argv = temp_argv;
 	return (0);
 }
@@ -114,6 +137,7 @@ t_com	*parse_input(char *str)
 			}
 			else
 				create_new_arg(&arg_count, current_cmd, cur_token);
+				
 		}
 		else if (cur_token->type == TOKEN_PIPE)
 		{

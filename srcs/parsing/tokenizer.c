@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/05 14:39:31 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/09 18:42:45 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -24,14 +24,11 @@ t_token	*new_token(char *value, int type)
 	token->value = malloc(len + 1);
 	ft_memcpy(token->value, value, ft_strlen(value));
 	token->value[len] = '\0';
-	// token->value = ft_strdup(value);
-	// Duplicate string value
 	token->type = type;
 	token->next = NULL;
 	return (token);
 }
 
-// Add token to linked list
 void	add_token(t_token **tokens, char *value, int type)
 {
 	t_token	*new;
@@ -43,12 +40,12 @@ void	add_token(t_token **tokens, char *value, int type)
 		return ;
 	}
 		
-	if (!*tokens) // If list is empty, set first token
+	if (!*tokens) 
 		*tokens = new;
 	else
 	{
 		temp = *tokens;
-		while (temp->next) // Traverse to last token
+		while (temp->next)
 			temp = temp->next;
 		temp->next = new;
 	}

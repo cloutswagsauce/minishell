@@ -26,11 +26,11 @@ int	is_command_builtin(t_com *com)
 	return (0);
 }
 
-int	is_valid_path(char *exec_path, t_com *command, t_list *local_env)
+int	is_valid_path(char *exec_path, t_com *command, t_list *local_env, char **envp)
 {
 	if (!access(exec_path, F_OK))
 	{
-		handle_command(exec_path, command, local_env);
+		handle_command(exec_path, command, local_env, envp);
 		free(exec_path);
 		return (1);
 	}
