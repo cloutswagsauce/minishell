@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   handle_variable.c                                  :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:13 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/27 13:13:25 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:57:00 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -47,8 +47,11 @@ void	command_has_variable(t_com *com, t_list *local_env)
 	j = 0;
 	while (com->argv[j])
 	{
-		if (com->argv[j] && ft_strchr(com->argv[j], '$'))
-			expand_variable(com, j, local_env);
+		if (com->argv[j] && ft_strchr(com->argv[j], '$') )
+		{
+			if (!com->s_quotes)
+				expand_variable(com, j, local_env);
+		}
 	j++;
 	}
 	

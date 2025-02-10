@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/09 20:36:01 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:20:16 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -41,6 +41,7 @@
 # define TOKEN_APPEND 6
 # define TOKEN_HEREDOC 5
 # define TOKEN_DQUOTES 7
+# define TOKEN_SQUOTES 8
 
 
 typedef struct s_com
@@ -55,7 +56,7 @@ typedef struct s_com
 	char			*input_file;
 	int				append_output;
 	char			*delim;
-	char			*heredoc_content;
+	int				s_quotes;
 	int				input_fd;
 	struct s_com	*next;
 }					t_com;
@@ -66,12 +67,6 @@ typedef struct s_token
 	int		type;
 	struct s_token *next;
 }				t_token;
-
-typedef struct s_hdline
-{
-	char	*value;
-	struct	s_hdline *next;
-}				t_hdline;
 
 
 typedef struct s_list

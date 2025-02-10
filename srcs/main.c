@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/09 20:40:44 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/10 11:33:10 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -51,5 +51,5 @@ int	main(int argc, char **argv, char **envp)
 			wait(0);
 			finish_execution(commands, input);
 		}
-	}
+}
 }

@@ -26,23 +26,23 @@ void handle_absolute(t_com *command, char **envp)
 
 void	execute_process(t_com *cmd, t_list **local_env, char **envp)
 {
-		pid_t pid;
+	pid_t pid;
 	
-		if (!cmd->is_builtin)
+	if (!cmd->is_builtin)
+	{
+		pid = fork();
+		if (pid == 0)
 		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (cmd->output_file || cmd->delim)
-					handle_redirect_out(cmd);
-				if (cmd->argv[0][0] == '/')
-					handle_absolute(cmd, envp);
-				call_child_action(*cmd, *local_env, envp);
-			}
+			if (cmd->delim)
+				handle_redirect_heredoc(cmd);
+			if (cmd->output_file)
+				handle_redirect_out(cmd);
+			if (cmd->argv[0][0] == '/')
+				handle_absolute(cmd, envp);
+			call_child_action(*cmd, *local_env, envp);
 		}
-		else
-			execute_builtin_command(cmd, local_env, envp);
-			
-			
 	}
+	else
+		execute_builtin_command(cmd, local_env, envp);
+}
 

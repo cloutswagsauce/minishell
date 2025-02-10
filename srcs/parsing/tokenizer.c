@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/09 18:42:45 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:57:29 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -69,7 +69,10 @@ int	handle_quotes(char *input, int *i, t_token **tokens)
 			return (0);
 		}
 		buf = ft_substr(input, start, (*i) - start);
-		add_token(tokens, buf, TOKEN_WORD);
+		if (quote == '\'')
+			add_token(tokens, buf, TOKEN_SQUOTES);
+		else
+			add_token(tokens, buf, TOKEN_WORD);
 		if (input[*i])
 			(*i)++;
 	}

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/09 20:36:22 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:11:50 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -22,25 +22,32 @@ void	path_split_append(t_com *command, t_list *local_env, char **envp)
 	path_split = ft_split(getenv("PATH"), ':');
 	if (!path_split)
 	{
-		perror("Path environment variabe not set");
+		perror("Path environment variable not set");
 		return ;
 	}
 	current_path_split = path_split;
 	while (*current_path_split)
 	{
-		len = join_len(*current_path_split, command->argv[0]) + 2;
+		len = ft_strlen(*current_path_split) + ft_strlen(command->argv[0]) + 2;
 		exec_path = malloc(len);
-		ft_memcpy(exec_path, *current_path_split, ft_strlen(*path_split));
+		ft_strlcpy(exec_path, *current_path_split, len);
 		ft_strlcat(exec_path, "/", len);
 		ft_strlcat(exec_path, command->argv[0], len);
-		exec_path[len - 1] = '\0';
-		if (is_valid_path(exec_path, command, local_env, envp))
-			break ;
-		else
+		
+		if (access(exec_path, X_OK) == 0)
+		{
+			handle_command(exec_path, command, local_env, envp);
 			free(exec_path);
+			break;
+		}
+		free(exec_path);
 		current_path_split++;
 	}
 	free_double(path_split);
+	// If we get here, command was not found
+	ft_putstr_fd("Command not found: ", 2);
+	ft_putendl_fd(command->argv[0], 2);
+	exit(127);
 }
 
 int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
@@ -72,6 +79,9 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 	}
 	temp_argv[(*arg_count) - 1] = ft_strdup(cur_token->value);
 	temp_argv[(*arg_count)] = NULL;
+	// this solution works but it affects the whole command
+	if (cur_token->type == TOKEN_SQUOTES)
+		current_cmd->s_quotes = 1;
 	if(current_cmd->argv)
 	{
 		i = 0;
@@ -101,6 +111,7 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 	(*current_cmd)->has_inpipe = 0;
 	(*current_cmd)->has_outpipe = 0;
 	(*current_cmd)->input_file = 0;
+	(*current_cmd)->s_quotes = 0;
 	(*current_cmd)->append_output = 0;
 	(*current_cmd)->delim = 0;
 	(*current_cmd)->output_file = 0;
@@ -127,7 +138,7 @@ t_com	*parse_input(char *str)
 	arg_count = 0;
 	while (cur_token)
 	{
-		if (cur_token->type == TOKEN_WORD)
+		if (cur_token->type == TOKEN_WORD || cur_token->type == TOKEN_SQUOTES)
 		{
 			if (!current_cmd)
 			{
@@ -137,7 +148,6 @@ t_com	*parse_input(char *str)
 			}
 			else
 				create_new_arg(&arg_count, current_cmd, cur_token);
-				
 		}
 		else if (cur_token->type == TOKEN_PIPE)
 		{
