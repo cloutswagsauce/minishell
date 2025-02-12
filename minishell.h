@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/10 15:20:16 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:26:17 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -56,7 +56,7 @@ typedef struct s_com
 	char			*input_file;
 	int				append_output;
 	char			*delim;
-	int				s_quotes;
+	struct s_squote	*s_quote;
 	int				input_fd;
 	struct s_com	*next;
 }					t_com;
@@ -68,6 +68,11 @@ typedef struct s_token
 	struct s_token *next;
 }				t_token;
 
+typedef struct s_squote
+{
+	int		pos;
+	struct s_squote *next;
+}				t_squote;
 
 typedef struct s_list
 {
@@ -112,5 +117,7 @@ int					handle_pipe_token(t_com **current_cmd, int *arg_count);
 int					handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append);
 int					handle_heredoc_token(t_com *current_cmd, t_token *cur_token);
 int 				handle_redirect_heredoc(t_com *cmd);
+int					handle_squotes(t_com *cmd, int pos);
+int					check_if_quotes(t_com *cmd, int nb);
 
 #endif

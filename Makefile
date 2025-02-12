@@ -6,7 +6,7 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2025/02/09 19:51:41 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/02/12 16:28:18 by lfaria-m         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -24,7 +24,7 @@ $(SRC_DIR)/executor/handle_command.c $(SRC_DIR)/end/free_stuff.c $(SRC_DIR)/buil
 $(SRC_DIR)/builtin/ft_echo.c $(SRC_DIR)/builtin/ft_env.c $(SRC_DIR)/builtin/ft_exit.c $(SRC_DIR)/builtin/ft_export.c \
 $(SRC_DIR)/builtin/ft_unset.c $(SRC_DIR)/builtin/ft_pwd.c $(SRC_DIR)/ft_lst.c $(SRC_DIR)/executor/handle_variable.c \
 $(SRC_DIR)/executor/execute_process.c $(SRC_DIR)/executor/ft_pipex.c $(SRC_DIR)/parsing/tokenizer.c $(SRC_DIR)/parsing/parser_utils.c \
-$(SRC_DIR)/executor/ft_redirect.c $(SRC_DIR)/parsing/parser.c $(SRC_DIR)/parsing/handle_tokens.c
+$(SRC_DIR)/executor/ft_redirect.c $(SRC_DIR)/parsing/parser.c $(SRC_DIR)/parsing/handle_tokens.c $(SRC_DIR)/parsing/squotes.c
 
 
 # Object files (stored in objs/)

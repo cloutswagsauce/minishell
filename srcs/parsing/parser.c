@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/10 15:11:50 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:38:01 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -33,12 +33,11 @@ void	path_split_append(t_com *command, t_list *local_env, char **envp)
 		ft_strlcpy(exec_path, *current_path_split, len);
 		ft_strlcat(exec_path, "/", len);
 		ft_strlcat(exec_path, command->argv[0], len);
-		
 		if (access(exec_path, X_OK) == 0)
 		{
 			handle_command(exec_path, command, local_env, envp);
 			free(exec_path);
-			break;
+			break ;
 		}
 		free(exec_path);
 		current_path_split++;
@@ -57,7 +56,6 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 
 	if (!current_cmd)
 		return (1);
-
 	i = 0;
 	(*arg_count)++;
 	temp_argv = malloc(sizeof(char *) * ((*arg_count) + 1));
@@ -69,20 +67,19 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 	if (current_cmd->argv)
 	{
 		while (i < (*arg_count) - 1)
-	{
-		if (current_cmd->argv && current_cmd->argv[0])
-			temp_argv[i] = ft_strdup(current_cmd->argv[i]);
-		else
-			temp_argv[i] = NULL;
-		i++;
-	}
+		{
+			if (current_cmd->argv && current_cmd->argv[0])
+				temp_argv[i] = ft_strdup(current_cmd->argv[i]);
+			else
+				temp_argv[i] = NULL;
+			i++;
+		}
 	}
 	temp_argv[(*arg_count) - 1] = ft_strdup(cur_token->value);
 	temp_argv[(*arg_count)] = NULL;
-	// this solution works but it affects the whole command
 	if (cur_token->type == TOKEN_SQUOTES)
-		current_cmd->s_quotes = 1;
-	if(current_cmd->argv)
+		handle_squotes(current_cmd, *arg_count);
+	if (current_cmd->argv)
 	{
 		i = 0;
 		while (current_cmd->argv[i])
@@ -91,7 +88,6 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 			current_cmd->argv[i] = NULL;
 			i++;
 		}
-			
 		free(current_cmd->argv);
 		current_cmd->argv = NULL;
 	}
@@ -111,7 +107,7 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 	(*current_cmd)->has_inpipe = 0;
 	(*current_cmd)->has_outpipe = 0;
 	(*current_cmd)->input_file = 0;
-	(*current_cmd)->s_quotes = 0;
+	(*current_cmd)->s_quote = NULL;
 	(*current_cmd)->append_output = 0;
 	(*current_cmd)->delim = 0;
 	(*current_cmd)->output_file = 0;
@@ -121,7 +117,6 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 	*arg_count = 1;
 	return (0);
 }
-
 
 t_com	*parse_input(char *str)
 {
