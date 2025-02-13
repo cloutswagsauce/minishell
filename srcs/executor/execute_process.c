@@ -6,28 +6,31 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/09 20:36:18 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:21:30 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
 
-void handle_absolute(t_com *command, char **envp)
+void	handle_absolute(t_com *command, char **envp)
 {
-	char *com;
-	char **args;
-	
+	char	*com;
+	char	**args;
+
 	com = command->argv[0];
 	args = command->argv;
 	if (!access(com, X_OK))
 		execve(com, args, envp);
-	
+}
+void	store_exit_status(int nb)
+{
+	(void)nb;
 }
 
 void	execute_process(t_com *cmd, t_list **local_env, char **envp)
 {
-	pid_t pid;
-	
+	pid_t	pid;
+
 	if (!cmd->is_builtin)
 	{
 		pid = fork();
@@ -45,4 +48,3 @@ void	execute_process(t_com *cmd, t_list **local_env, char **envp)
 	else
 		execute_builtin_command(cmd, local_env, envp);
 }
-

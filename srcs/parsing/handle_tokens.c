@@ -5,7 +5,6 @@ int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 	t_com	*new_cmd;
 
 	(*current_cmd)->has_outpipe = 1;
-
 	new_cmd = malloc(sizeof(t_com));
 	if (!new_cmd)
 		return (1);
@@ -27,10 +26,10 @@ int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 	return (0);
 }
 
-
 int	handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append)
 {
-	if (cur_token->type == TOKEN_REDIRECT_OUT || cur_token->type == TOKEN_APPEND)
+	if (cur_token->type == TOKEN_REDIRECT_OUT
+		|| cur_token->type == TOKEN_APPEND)
 	{
 		if (!cur_token->next)
 		{
@@ -41,17 +40,16 @@ int	handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append)
 		if (append)
 			current_cmd->append_output = 1;
 	}
-	else if(cur_token->type == TOKEN_HEREDOC)
+	else if (cur_token->type == TOKEN_HEREDOC)
 		handle_heredoc_token(current_cmd, cur_token);
 	*cur_token = *cur_token->next;
 	return (0);
 }
 
-int handle_heredoc_token(t_com *current_cmd, t_token *cur_token)
+int	handle_heredoc_token(t_com *current_cmd, t_token *cur_token)
 {
 	if (cur_token->next->value)
 		current_cmd->delim = ft_strdup(cur_token->next->value);
 	*cur_token = *cur_token->next;
 	return (0);
-
 }

@@ -6,14 +6,14 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/10 11:33:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:23:45 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
 
-// i should create a data struct to contain localenv and envp cuz if not, it will be a fucking pain to pass everything i
-
+// i should create a data struct to contain localenv and envp cuz if not,
+	//it will be a fucking pain to pass everything i
 
 void	call_child_action(t_com command, t_list *local_env, char **envp)
 {
@@ -25,7 +25,6 @@ void	finish_execution(t_com *command, char *input)
 {
 	add_history(input);
 	free_commands(command);
-		
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -33,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*input;
 	t_list	*local_env;
 	t_com	*commands;
-	
+
 	local_env = 0;
 	(void)argc;
 	(void)argv;
@@ -51,5 +50,5 @@ int	main(int argc, char **argv, char **envp)
 			wait(0);
 			finish_execution(commands, input);
 		}
-}
+	}
 }

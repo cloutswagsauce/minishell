@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:45:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/09 20:41:06 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:20:54 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -15,7 +15,7 @@
 void	ft_echo(t_com command)
 {
 	int	i;
-	
+
 	if (command.argv[1] && !ft_strncmp(command.argv[1], "-n", 2))
 	{
 		i = 2;

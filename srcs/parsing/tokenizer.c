@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/10 14:57:29 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:22:27 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -15,7 +15,7 @@
 t_token	*new_token(char *value, int type)
 {
 	t_token	*token;
-	size_t len;
+	size_t	len;
 
 	len = ft_strlen(value);
 	token = malloc(sizeof(t_token));
@@ -33,14 +33,14 @@ void	add_token(t_token **tokens, char *value, int type)
 {
 	t_token	*new;
 	t_token	*temp;
+
 	new = new_token(value, type);
 	if (!new)
 	{
 		free(value);
 		return ;
 	}
-		
-	if (!*tokens) 
+	if (!*tokens)
 		*tokens = new;
 	else
 	{
@@ -117,24 +117,25 @@ void	handle_operators(char *input, int *i, t_token **tokens)
 	}
 }
 
-void handle_word(char *input, int *i, t_token **tokens)
+void	handle_word(char *input, int *i, t_token **tokens)
 {
-	int start;
-	char *buf;
+	int		start;
+	char	*buf;
+
 	start = *i;
-		while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|'
-			&& input[*i] != '<' && input[*i] != '>' && input[*i] != '"'
-			&& input[*i] != '\'')
-			(*i)++;
-		buf = ft_substr(input, start, (*i) - start);
-		add_token(tokens, buf, TOKEN_WORD);
+	while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|'
+		&& input[*i] != '<' && input[*i] != '>' && input[*i] != '"'
+		&& input[*i] != '\'')
+		(*i)++;
+	buf = ft_substr(input, start, (*i) - start);
+	add_token(tokens, buf, TOKEN_WORD);
 }
 
 t_token	*tokenize_input(char *input)
 {
 	t_token	*tokens;
 	int		i;
-	
+
 	tokens = 0;
 	i = 0;
 	while (input[i])
@@ -149,7 +150,7 @@ t_token	*tokenize_input(char *input)
 		{
 			if (!handle_quotes(input, &i, &tokens))
 				return (NULL);
-			continue;
+			continue ;
 		}
 		while (input[i] && isspace((char)input[i]))
 			i++;

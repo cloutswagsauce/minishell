@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:15:53 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/27 13:00:20 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:22:34 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -17,29 +17,25 @@ int	join_len(char *s1, char *s2)
 	return ((int)ft_strlen(s1) + ft_strlen(s2));
 }
 
-int num_commands(char **str)
+int	num_commands(char **str)
 {
-	int i;
-
-	i = 0;
-	while(str[i])
-		i++;
-	return (i);
-}
- t_com *malloc_commands(char **str)
-{
-	t_com *commands;
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 		i++;
-	
-	
-	commands = malloc(sizeof(t_com) * (i+1));
-	
+	return (i);
+}
+t_com	*malloc_commands(char **str)
+{
+	t_com	*commands;
+	int		i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	commands = malloc(sizeof(t_com) * (i + 1));
 	return (commands);
-	
 }
 
 void	free_double(char **arr)

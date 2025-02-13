@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/05 13:00:39 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:20:35 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -22,7 +22,7 @@ char	*get_name(char *str, char *equal)
 		i = equal - str;
 		name = malloc(i + 1);
 		if (!name)
-		return (NULL);
+			return (NULL);
 		ft_memmove(name, str, i);
 		name[i] = '\0';
 	}
@@ -72,24 +72,24 @@ int	update_var(char *name, char *value, t_list **local_env)
 void	handle_no_args(char **envp, t_list **local_env)
 {
 	char	*equals;
-	t_list *temp;
+	t_list	*temp;
 
 	while (*envp)
 	{
 		equals = ft_strchr(*envp, '=');
-		printf("declare -x %s=\"%s\"\n", get_name(*envp, equals), get_value(equals));
+		printf("declare -x %s=\"%s\"\n", get_name(*envp, equals),
+				get_value(equals));
 		envp++;
 	}
 	temp = *local_env;
-	while(temp)
+	while (temp)
 	{
 		printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
 		temp = temp->next;
 	}
-	
 }
 
-void	ft_export(char *name_and_value, t_list **local_env, char **envp,
+void	ft_export(char **name_and_value, t_list **local_env, char **envp,
 		int flag)
 {
 	char	*equals;
@@ -102,19 +102,18 @@ void	ft_export(char *name_and_value, t_list **local_env, char **envp,
 		handle_no_args(envp, local_env);
 		return ;
 	}
-	equals = ft_strchr(name_and_value, '=');
-	
-	
+	equals = ft_strchr((*(name_and_value + 1)), '=');
 	if (equals)
 	{
-		name = get_name(name_and_value, equals);
+		name = get_name((*(name_and_value + 1)), equals);
 		value = get_value(equals);
+		if (!value)
+			value = (*(name_and_value + 2));
 		if (update_var(name, value, local_env))
 			return ;
-		if (!name || !value)
+		if (!name)
 		{
 			free(name);
-			free(value);
 			return ;
 		}
 		new = ft_lstnew(name, value);
@@ -122,7 +121,7 @@ void	ft_export(char *name_and_value, t_list **local_env, char **envp,
 	}
 	else
 	{
-		name = ft_strdup(name_and_value);
+		name = ft_strdup((*(name_and_value + 1)));
 		new = ft_lstnew(name, "");
 		printf("envp: %s", new->name);
 		ft_lstadd_back(local_env, new);

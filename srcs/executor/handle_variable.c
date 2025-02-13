@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:13 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/12 16:45:02 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:22:03 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -47,12 +47,11 @@ void	command_has_variable(t_com *com, t_list *local_env)
 	j = 0;
 	while (com->argv[j])
 	{
-		if (com->argv[j] && ft_strchr(com->argv[j], '$') )
+		if (com->argv[j] && ft_strchr(com->argv[j], '$'))
 		{
 			if (!check_if_quotes(com, j))
 				expand_variable(com, j, local_env);
 		}
-	j++;
-	}	
+		j++;
+	}
 }
-

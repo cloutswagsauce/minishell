@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:49:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/01/24 18:19:22 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:21:26 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,7 +14,7 @@
 
 void	free_commands(t_com *cmd)
 {
-	t_com *temp;
+	t_com	*temp;
 
 	while (cmd)
 	{
@@ -25,10 +25,10 @@ void	free_commands(t_com *cmd)
 	}
 }
 
-void free_tokens(t_token *tokens)
+void	free_tokens(t_token *tokens)
 {
-	t_token *temp;
-	
+	t_token	*temp;
+
 	while (tokens)
 	{
 		temp = tokens->next;

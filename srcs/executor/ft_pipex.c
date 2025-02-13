@@ -6,12 +6,11 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:34:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/09 20:57:30 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:27:19 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
-
 
 void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
 		t_list **local_env, char **envp)
@@ -38,24 +37,8 @@ void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
 	}
 	else
 	{
-	/*	// DEBUG: Print command arguments
-		printf("\n=== EXECVE DEBUG INFO ===\n");
-		printf("Command Path: %s\n", cmd->argv[0]);
-
-		int i = 0;
-		while (cmd->argv[i])
-		{
-			printf("Arg[%d]: %s\n", i, cmd->argv[i]);
-			i++;
-		}
-		printf("Arg[%d]: (NULL)\n", i);  // Should be NULL*/
-
-	
-		// EXECVE CALL
-		execvp(cmd->argv[0], cmd->argv);
-		//path_split_append(cmd, *local_env, envp);
-
-		// If execve fails
+		//execvp(cmd->argv[0], cmd->argv);
+		path_split_append(cmd, *local_env, envp);
 		perror("execve failed");
 		exit(1);
 	}
@@ -90,7 +73,7 @@ void	execute_pipeline(t_com *commands, t_list **local_env, char **envp)
 	int		fd_in;
 	pid_t	pid;
 	t_com	*cmd;
-	
+
 	fd_in = 0;
 	cmd = commands;
 	while (cmd)
@@ -104,9 +87,9 @@ void	execute_pipeline(t_com *commands, t_list **local_env, char **envp)
 		}
 		else if (pid == 0)
 			child_pipe_process(cmd, fd_in, pipe_fd, local_env, envp);
-			
 		parent_pipe_process(cmd, &fd_in, pipe_fd);
 		cmd = cmd->next;
 	}
-	while (wait(NULL) > 0);
+	while (wait(NULL) > 0)
+		;
 }

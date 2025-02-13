@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/12 16:26:17 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:12:58 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -46,18 +46,15 @@
 
 typedef struct s_com
 {
-	int				argc;
 	char			**argv;
-	int				total_commands;
 	int				is_builtin;
 	int				has_inpipe;
 	int				has_outpipe;
 	char 			*output_file;
-	char			*input_file;
 	int				append_output;
+	int				d_quote;
 	char			*delim;
 	struct s_squote	*s_quote;
-	int				input_fd;
 	struct s_com	*next;
 }					t_com;
 
@@ -94,7 +91,7 @@ void				free_commands(t_com *cmd);
 void				ft_echo(t_com command);
 void				ft_env(char **envp, t_list *local_env);
 void				ft_pwd(void);
-void				ft_export(char *name_and_value, t_list **local_env, char **envp, int flag);
+void				ft_export(char **name_and_value, t_list **local_env, char **envp, int flag);
 void				ft_cd(t_com command);
 void				ft_exit(void);
 t_list				*ft_lstnew(char *name, char *value);

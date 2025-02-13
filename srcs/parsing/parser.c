@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/12 16:38:01 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:22:19 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -79,6 +79,8 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 	temp_argv[(*arg_count)] = NULL;
 	if (cur_token->type == TOKEN_SQUOTES)
 		handle_squotes(current_cmd, *arg_count);
+	if (cur_token->type == TOKEN_DQUOTES)
+		current_cmd->d_quote = 1;
 	if (current_cmd->argv)
 	{
 		i = 0;
@@ -106,12 +108,11 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 	(*current_cmd)->argv[1] = NULL;
 	(*current_cmd)->has_inpipe = 0;
 	(*current_cmd)->has_outpipe = 0;
-	(*current_cmd)->input_file = 0;
+	(*current_cmd)->d_quote = 0;
 	(*current_cmd)->s_quote = NULL;
 	(*current_cmd)->append_output = 0;
 	(*current_cmd)->delim = 0;
 	(*current_cmd)->output_file = 0;
-	(*current_cmd)->input_fd = -1;
 	(*current_cmd)->is_builtin = 0;
 	(*current_cmd)->next = NULL;
 	*arg_count = 1;
@@ -133,7 +134,8 @@ t_com	*parse_input(char *str)
 	arg_count = 0;
 	while (cur_token)
 	{
-		if (cur_token->type == TOKEN_WORD || cur_token->type == TOKEN_SQUOTES)
+		if (cur_token->type == TOKEN_WORD || cur_token->type == TOKEN_SQUOTES ||
+			cur_token->type == TOKEN_DQUOTES)
 		{
 			if (!current_cmd)
 			{
