@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 16:17:38 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 20:52:46 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -22,6 +22,7 @@ void	handle_absolute(t_com *command, t_data *data)
 	if (!access(com, X_OK))
 		execve(com, args, data->envp);
 }
+
 void	store_exit_status(int nb)
 {
 	(void)nb;
@@ -30,7 +31,6 @@ void	store_exit_status(int nb)
 void	execute_process(t_com *cmd, t_data *data)
 {
 	pid_t	pid;
-	// ** for for local_env
 
 	if (!cmd->is_builtin)
 	{

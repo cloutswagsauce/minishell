@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 16:42:41 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 20:48:54 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -48,51 +48,6 @@ void	add_token(t_token **tokens, char *value, int type)
 		while (temp->next)
 			temp = temp->next;
 		temp->next = new;
-	}
-}
-
-int	handle_quotes(char *input, int *i, t_token **tokens)
-{
-	int		start;
-	char	quote;
-	char	*buf;
-
-	if (input[*i] == '"' || input[*i] == '\'')
-	{
-		quote = input[(*i)++];
-		start = *i;
-		while (input[*i] && input[*i] != quote)
-			(*i)++;
-		if (!input[*i])
-		{
-			ft_printf("you forgot to close the damn quote!\n");
-			return (0);
-		}
-		buf = ft_substr(input, start, (*i) - start);
-		if (quote == '\'')
-			add_token(tokens, buf, TOKEN_SQUOTES);
-		else if (quote== '"')
-			add_token(tokens, buf, TOKEN_DQUOTES);
-			
-		else
-			add_token(tokens, buf, TOKEN_WORD);
-		if (input[*i])
-			(*i)++;
-	}
-	return (1);
-}
-
-void	handle_redirections_in(char *input, int *i, t_token **tokens)
-{
-	if (input[(*i) + 1] && input[(*i) + 1] == '<')
-	{
-		add_token(tokens, "<<", TOKEN_HEREDOC);
-		(*i) += 2;
-	}
-	else
-	{
-		add_token(tokens, "<", TOKEN_REDIRECT_IN);
-		(*i)++;
 	}
 }
 

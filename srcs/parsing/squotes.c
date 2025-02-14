@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:19:32 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/12 16:37:13 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 20:41:58 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -21,6 +21,7 @@ int	create_new_squote(t_com *cmd, int nb)
 	cmd->s_quote->next = NULL;
 	return (0);
 }
+
 int	add_to_squote(t_com *cmd, int pos)
 {
 	t_squote	*tmp;
@@ -39,6 +40,7 @@ int	add_to_squote(t_com *cmd, int pos)
 	tmp->next = new;
 	return (0);
 }
+
 int	check_if_quotes(t_com *cmd, int nb)
 {
 	t_squote	*tmp;
@@ -52,6 +54,7 @@ int	check_if_quotes(t_com *cmd, int nb)
 	}
 	return (0);
 }
+
 int	handle_squotes(t_com *cmd, int pos)
 {
 	if (cmd->s_quote == NULL)

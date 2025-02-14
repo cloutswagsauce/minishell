@@ -1,5 +1,35 @@
 #include "../../minishell.h"
 
+int	handle_quotes(char *input, int *i, t_token **tokens)
+{
+	int		start;
+	char	quote;
+	char	*buf;
+
+	if (input[*i] == '"' || input[*i] == '\'')
+	{
+		quote = input[(*i)++];
+		start = *i;
+		while (input[*i] && input[*i] != quote)
+			(*i)++;
+		if (!input[*i])
+		{
+			ft_printf("you forgot to close the damn quote!\n");
+			return (0);
+		}
+		buf = ft_substr(input, start, (*i) - start);
+		if (quote == '\'')
+			add_token(tokens, buf, TOKEN_SQUOTES);
+		else if (quote == '"')
+			add_token(tokens, buf, TOKEN_DQUOTES);
+		else
+			add_token(tokens, buf, TOKEN_WORD);
+		if (input[*i])
+			(*i)++;
+	}
+	return (1);
+}
+
 int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 		int *arg_count)
 {
@@ -17,7 +47,7 @@ int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 	}
 	else if (tokens->type == TOKEN_PIPE)
 	{
-		if (!current_cmd)
+		if (current_cmd)
 			handle_pipe_token(current_cmd, arg_count);
 	}
 	else if (tokens->type == TOKEN_REDIRECT_OUT)
@@ -28,8 +58,6 @@ int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 		handle_heredoc_token(*current_cmd, tokens);
 	return (0);
 }
-
-
 
 int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 {

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 18:31:48 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 20:51:23 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -95,7 +95,8 @@ void				free_commands(t_com *cmd);
 void				ft_echo(t_com command);
 void				ft_env(t_data *data);
 void				ft_pwd(void);
-void				ft_export(char **name_and_value, t_com *cmd, t_data *data, int flag);
+void				ft_export(char **name_and_value, t_com *cmd, t_data *data,
+						int flag);
 void				ft_cd(t_com command);
 void				ft_exit(void);
 t_list				*ft_lstnew(char *name, char *value);
@@ -116,15 +117,27 @@ int					is_valid_path(char *exec_path, t_com *command,
 						t_data *data);
 int					handle_redirect_out(t_com *cmd);
 int					handle_pipe_token(t_com **current_cmd, int *arg_count);
-int					handle_redirect_token(t_com *current_cmd,
-						t_token *cur_token, int append);
-int					handle_heredoc_token(t_com *current_cmd,
-						t_token *cur_token);
+int	handle_redirect_token(t_com *current_cmd,
+							t_token *cur_token,
+							int append);
+int	handle_heredoc_token(t_com *current_cmd,
+							t_token *cur_token);
 int					handle_redirect_heredoc(t_com *cmd);
 int					handle_squotes(t_com *cmd, int pos);
 int					check_if_quotes(t_com *cmd, int nb);
-int					token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens, int *arg_count );
-int					create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token);
-int					create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token);
+int					token_dispatcher(t_com **commands, t_com **current_cmd,
+						t_token *tokens, int *arg_count);
+int					create_new_arg(int *arg_count, t_com *current_cmd,
+						t_token *cur_token);
+int					create_new_command(t_com **current_cmd, int *arg_count,
+						t_token *cur_token);
+int					arg_helper(t_token *cur_token, t_com *current_cmd,
+						int *arg_count);
+int					temp_arg_creator(t_com *current_cmd, char **temp_argv,
+						int *arg_count);
+int					handle_quotes(char *input, int *i, t_token **tokens);
+void				handle_redirections_in(char *input, int *i,
+						t_token **tokens);
+void				add_token(t_token **tokens, char *value, int type);
 
 #endif
