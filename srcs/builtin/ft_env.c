@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/13 14:43:37 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:22:05 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -21,15 +21,17 @@ void	ft_env(char **envp, t_list *local_env)
 	i = 0;
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i++], "PWD", ft_strlen("PWD")))
+		if (!ft_strncmp(envp[i], "PWD", ft_strlen("PWD")))
 		{
 			ft_printf("PWD=");
 			ft_pwd();
+			i++;
 		}
-		else if (!ft_strncmp(envp[i++], "OLDPWD", ft_strlen("OLDPWD")))
+		if (!ft_strncmp(envp[i], "OLDPWD", ft_strlen("OLDPWD")))
 		{
 			ft_printf("OLDPWD=%s", getenv("OLDPWD"));
 			write(1, "\n", 1);
+			i++;
 		}
 		ft_printf(envp[i++]);
 		write(1, "\n", 1);

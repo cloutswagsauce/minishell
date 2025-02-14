@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/13 11:12:58 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:01:38 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <ctype.h>
 # include <curses.h> // Often provides termcap functionality
 # include <dirent.h> // For opendir, readdir, closedir
 # include <fcntl.h>  // For open
@@ -32,7 +33,6 @@
 # include <termios.h>   // For tcsetattr, tcgetattr
 # include <unistd.h>    // For write, access, read, close
 # include <unistd.h>    // For getcwd, chdir, unlink
-# include <ctype.h>
 
 # define TOKEN_WORD 1
 # define TOKEN_PIPE 2
@@ -43,14 +43,13 @@
 # define TOKEN_DQUOTES 7
 # define TOKEN_SQUOTES 8
 
-
 typedef struct s_com
 {
 	char			**argv;
 	int				is_builtin;
 	int				has_inpipe;
 	int				has_outpipe;
-	char 			*output_file;
+	char			*output_file;
 	int				append_output;
 	int				d_quote;
 	char			*delim;
@@ -58,18 +57,25 @@ typedef struct s_com
 	struct s_com	*next;
 }					t_com;
 
+typedef struct s_data
+{
+	char			**envp;
+	struct s_list	*local_env;
+
+}					t_data;
+
 typedef struct s_token
 {
-	char	*value;
-	int		type;
-	struct s_token *next;
-}				t_token;
+	char			*value;
+	int				type;
+	struct s_token	*next;
+}					t_token;
 
 typedef struct s_squote
 {
-	int		pos;
-	struct s_squote *next;
-}				t_squote;
+	int				pos;
+	struct s_squote	*next;
+}					t_squote;
 
 typedef struct s_list
 {
@@ -81,39 +87,41 @@ typedef struct s_list
 t_com				*parse_input(char *str);
 int					join_len(char *s1, char *s2);
 void				free_double(char **arr);
-void				handle_command(char *str, t_com *command,
-						t_list *local_env, char **envp);
+void				handle_command(char *str, t_com *command, t_data *data);
 int					is_command_builtin(t_com *com);
-void				execute_builtin_command(t_com *command, t_list **local_env,
-						char **envp);
-void				path_split_append(t_com *command, t_list *local_env, char **envp);
+void				execute_builtin_command(t_com *command, t_data *data);
+void				path_split_append(t_com *command, t_data *data);
 void				free_commands(t_com *cmd);
 void				ft_echo(t_com command);
 void				ft_env(char **envp, t_list *local_env);
 void				ft_pwd(void);
-void				ft_export(char **name_and_value, t_list **local_env, char **envp, int flag);
+void				ft_export(char **name_and_value, t_list **local_env,
+						char **envp, int flag);
 void				ft_cd(t_com command);
 void				ft_exit(void);
 t_list				*ft_lstnew(char *name, char *value);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstadd_back(t_list **lst, t_list *new);
 void				command_has_variable(t_com *com, t_list *local_env);
-void				ft_unset(t_com *com, t_list **lenv, char **envp);
+void				ft_unset(t_com *com, t_data *data);
 t_com				*malloc_commands(char **str);
-void				execute_process(t_com *cmd, t_list **local_env, char **envp);
-void				call_child_action(t_com command, t_list *local_env, char **envp);
+void				execute_process(t_com *cmd, t_data *data);
+void				call_child_action(t_com command, t_data *data);
 int					num_commands(char **str);
 t_token				*tokenize_input(char *input);
 void				free_tokens(t_token *tokens);
-void				execute_pipeline(t_com *commands, t_list **local_env, char **envp);
+void				execute_pipeline(t_com *commands, t_data *data);
 char				**get_builtin_list(void);
 int					is_command_builtin(t_com *com);
-int					is_valid_path(char *exec_path, t_com *command, t_list *local_env, char **envp);
+int					is_valid_path(char *exec_path, t_com *command,
+						t_data *data);
 int					handle_redirect_out(t_com *cmd);
 int					handle_pipe_token(t_com **current_cmd, int *arg_count);
-int					handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append);
-int					handle_heredoc_token(t_com *current_cmd, t_token *cur_token);
-int 				handle_redirect_heredoc(t_com *cmd);
+int					handle_redirect_token(t_com *current_cmd,
+						t_token *cur_token, int append);
+int					handle_heredoc_token(t_com *current_cmd,
+						t_token *cur_token);
+int					handle_redirect_heredoc(t_com *cmd);
 int					handle_squotes(t_com *cmd, int pos);
 int					check_if_quotes(t_com *cmd, int nb);
 

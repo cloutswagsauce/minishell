@@ -6,14 +6,14 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:34:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/12 17:27:19 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:11:15 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
 
 void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
-		t_list **local_env, char **envp)
+		t_data *data)
 {
 	if (cmd->has_inpipe)
 	{
@@ -27,18 +27,15 @@ void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
 		close(pipe_fd[1]);
 	}
 	if (cmd->output_file)
-	{
 		handle_redirect_out(cmd);
-	}
 	if (is_command_builtin(cmd))
 	{
-		execute_builtin_command(cmd, local_env, envp);
+		execute_builtin_command(cmd, data);
 		exit(0);
 	}
 	else
 	{
-		//execvp(cmd->argv[0], cmd->argv);
-		path_split_append(cmd, *local_env, envp);
+		path_split_append(cmd, data);
 		perror("execve failed");
 		exit(1);
 	}
@@ -67,7 +64,7 @@ void	check_if_failed(t_com *cmd, int *pipe_fd)
 	}
 }
 
-void	execute_pipeline(t_com *commands, t_list **local_env, char **envp)
+void	execute_pipeline(t_com *commands, t_data *data)
 {
 	int		pipe_fd[2];
 	int		fd_in;
@@ -86,7 +83,7 @@ void	execute_pipeline(t_com *commands, t_list **local_env, char **envp)
 			exit(1);
 		}
 		else if (pid == 0)
-			child_pipe_process(cmd, fd_in, pipe_fd, local_env, envp);
+			child_pipe_process(cmd, fd_in, pipe_fd, data);
 		parent_pipe_process(cmd, &fd_in, pipe_fd);
 		cmd = cmd->next;
 	}

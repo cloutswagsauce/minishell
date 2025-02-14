@@ -26,12 +26,12 @@ int	is_command_builtin(t_com *com)
 	return (0);
 }
 
-int	is_valid_path(char *exec_path, t_com *command, t_list *local_env, char **envp)
+int	is_valid_path(char *exec_path, t_com *command, t_data *data)
 {
 	if (!access(exec_path, F_OK))
 	{
 		printf("the exec path is: %s\n", exec_path );
-		handle_command(exec_path, command, local_env, envp);
+		handle_command(exec_path, command, data);
 		free(exec_path);
 		return (1);
 	}

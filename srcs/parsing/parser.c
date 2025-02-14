@@ -6,25 +6,25 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/13 11:22:19 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:26:04 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
 
-void	path_split_append(t_com *command, t_list *local_env, char **envp)
+void	path_split_append(t_com *command, t_data *data)
 {
 	char	**path_split;
 	char	*exec_path;
 	char	**current_path_split;
 	int		len;
-
-	path_split = ft_split(getenv("PATH"), ':');
-	if (!path_split)
+	
+	if (!getenv("PATH"))
 	{
-		perror("Path environment variable not set");
+		perror("path not set");
 		return ;
-	}
+	}	
+	path_split = ft_split(getenv("PATH"), ':');
 	current_path_split = path_split;
 	while (*current_path_split)
 	{
@@ -35,7 +35,7 @@ void	path_split_append(t_com *command, t_list *local_env, char **envp)
 		ft_strlcat(exec_path, command->argv[0], len);
 		if (access(exec_path, X_OK) == 0)
 		{
-			handle_command(exec_path, command, local_env, envp);
+			handle_command(exec_path, command, data);
 			free(exec_path);
 			break ;
 		}
@@ -43,7 +43,6 @@ void	path_split_append(t_com *command, t_list *local_env, char **envp)
 		current_path_split++;
 	}
 	free_double(path_split);
-	// If we get here, command was not found
 	ft_putstr_fd("Command not found: ", 2);
 	ft_putendl_fd(command->argv[0], 2);
 	exit(127);
