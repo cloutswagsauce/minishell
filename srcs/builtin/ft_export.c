@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 20:53:43 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 21:09:03 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -107,7 +107,7 @@ void	ft_export(char **name_and_value, t_com *cmd, t_data *data,
 	{
 		name = get_name((*(name_and_value + 1)), equals);
 		value = get_value(equals);
-		if (!value)
+		if (!value && cmd->d_quote)
 		{
 			printf("in here");
 			value = (*(name_and_value + 2));

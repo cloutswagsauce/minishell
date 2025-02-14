@@ -6,7 +6,7 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/12 13:23:40 by lfaria-m          #+#    #+#              #
-#    Updated: 2025/02/14 20:55:13 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/02/14 22:15:01 by lfaria-m         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -27,7 +27,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -fsanitize=address -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 HEADER = libft.h 
 
