@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 14:03:45 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:16:20 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,10 +25,12 @@ void	finish_execution(t_com *command, char *input)
 	add_history(input);
 	free_commands(command);
 }
-int init_data(t_data *data, char **envp, t_list *local_env)
+
+int init_data(t_data **data, char **envp, t_list *local_env)
 {
-	data->envp = envp;
-	data->local_env = local_env;
+	*data = malloc(sizeof(t_data));
+	(*data)->envp = envp;
+	(*data)->local_env = local_env;
 	return (0);
 	
 }
@@ -43,10 +45,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	local_env = 0;
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (1);
-	init_data(data, envp, local_env);
+	data = 0;
+	init_data(&data, envp, local_env);
 	while (1)
 	{
 		rl_on_new_line();
