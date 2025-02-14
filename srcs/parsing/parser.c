@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 18:32:08 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:52:31 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -51,6 +51,27 @@ void	path_split_append(t_com *command, t_data *data)
 	exit(127);
 }
 
+int arg_helper(t_token *cur_token, t_com *current_cmd, int *arg_count)
+{
+	int i;
+	if (cur_token->type == TOKEN_SQUOTES)
+		handle_squotes(current_cmd, *arg_count);
+	if (cur_token->type == TOKEN_DQUOTES)
+		current_cmd->d_quote = 1;
+	if (current_cmd->argv)
+	{
+		i = 0;
+		while (current_cmd->argv[i])
+		{
+			free(current_cmd->argv[i]);
+			current_cmd->argv[i] = NULL;
+			i++;
+		}
+		free(current_cmd->argv);
+		current_cmd->argv = NULL;
+	}
+	return (0);
+}
 int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 {
 	char	**temp_argv;
@@ -79,22 +100,7 @@ int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 	}
 	temp_argv[(*arg_count) - 1] = ft_strdup(cur_token->value);
 	temp_argv[(*arg_count)] = NULL;
-	if (cur_token->type == TOKEN_SQUOTES)
-		handle_squotes(current_cmd, *arg_count);
-	if (cur_token->type == TOKEN_DQUOTES)
-		current_cmd->d_quote = 1;
-	if (current_cmd->argv)
-	{
-		i = 0;
-		while (current_cmd->argv[i])
-		{
-			free(current_cmd->argv[i]);
-			current_cmd->argv[i] = NULL;
-			i++;
-		}
-		free(current_cmd->argv);
-		current_cmd->argv = NULL;
-	}
+	arg_helper(cur_token, current_cmd, arg_count);
 	current_cmd->argv = temp_argv;
 	return (0);
 }
@@ -135,29 +141,6 @@ t_com	*parse_input(char *str)
 	while (tokens)
 	{
 		token_dispatcher(&commands, &current_cmd, tokens, &arg_count);
-		/*if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES ||
-			tokens->type == TOKEN_DQUOTES)
-		{
-			if (!current_cmd)
-			{
-				create_new_command(&current_cmd, &arg_count, tokens);
-				if (!commands)
-					commands = current_cmd;
-			}
-			else
-				create_new_arg(&arg_count, current_cmd, tokens);
-		}
-		else if (tokens->type == TOKEN_PIPE)
-		{
-			if (current_cmd)
-				handle_pipe_token(&current_cmd, &arg_count);
-		}
-		else if (tokens->type == TOKEN_REDIRECT_OUT)
-			handle_redirect_token(current_cmd, tokens, 0);
-		else if (tokens->type == TOKEN_APPEND)
-			handle_redirect_token(current_cmd, tokens, 1);
-		else if (tokens->type == TOKEN_HEREDOC)
-			handle_heredoc_token(current_cmd, tokens);*/
 		tokens = tokens->next;
 	}
 	if (current_cmd)
