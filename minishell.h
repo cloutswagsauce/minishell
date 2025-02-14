@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 14:01:38 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:04:26 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -93,10 +93,9 @@ void				execute_builtin_command(t_com *command, t_data *data);
 void				path_split_append(t_com *command, t_data *data);
 void				free_commands(t_com *cmd);
 void				ft_echo(t_com command);
-void				ft_env(char **envp, t_list *local_env);
+void				ft_env(t_data *data);
 void				ft_pwd(void);
-void				ft_export(char **name_and_value, t_list **local_env,
-						char **envp, int flag);
+void				ft_export(char **name_and_value, t_data *data, int flag);
 void				ft_cd(t_com command);
 void				ft_exit(void);
 t_list				*ft_lstnew(char *name, char *value);

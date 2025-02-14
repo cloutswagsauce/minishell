@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 14:52:52 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:01:38 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -69,19 +69,19 @@ int	update_var(char *name, char *value, t_list **local_env)
 	return (0);
 }
 
-void	handle_no_args(char **envp, t_list **local_env)
+void	handle_no_args(t_data *data)
 {
 	char	*equals;
 	t_list	*temp;
 
-	while (*envp)
+	while (*data->envp)
 	{
-		equals = ft_strchr(*envp, '=');
-		ft_printf("declare -x %s=\"%s\"\n", get_name(*envp, equals),
+		equals = ft_strchr(*data->envp, '=');
+		ft_printf("declare -x %s=\"%s\"\n", get_name(*data->envp, equals),
 				get_value(equals));
-		envp++;
+		data->envp++;
 	}
-	temp = *local_env;
+	temp = data->local_env;
 	while (temp)
 	{
 		ft_printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
@@ -89,9 +89,10 @@ void	handle_no_args(char **envp, t_list **local_env)
 	}
 }
 
-void	ft_export(char **name_and_value, t_list **local_env, char **envp,
+void	ft_export(char **name_and_value, t_data *data,
 		int flag)
 {
+	// local env is **
 	char	*equals;
 	char	*name;
 	char	*value;
@@ -99,7 +100,7 @@ void	ft_export(char **name_and_value, t_list **local_env, char **envp,
 
 	if (flag)
 	{
-		handle_no_args(envp, local_env);
+		handle_no_args(data);
 		return ;
 	}
 	equals = ft_strchr((*(name_and_value + 1)), '=');
@@ -109,7 +110,7 @@ void	ft_export(char **name_and_value, t_list **local_env, char **envp,
 		value = get_value(equals);
 		if (!value)
 			value = (*(name_and_value + 2));
-		if (update_var(name, value, local_env))
+		if (update_var(name, value, &data->local_env))
 			return ;
 		if (!name)
 		{
@@ -117,13 +118,13 @@ void	ft_export(char **name_and_value, t_list **local_env, char **envp,
 			return ;
 		}
 		new = ft_lstnew(name, value);
-		ft_lstadd_back(local_env, new);
+		ft_lstadd_back(&data->local_env, new);
 	}
 	else
 	{
 		name = ft_strdup((*(name_and_value + 1)));
 		new = ft_lstnew(name, "");
 		ft_printf("envp: %s", new->name);
-		ft_lstadd_back(local_env, new);
+		ft_lstadd_back(&data->local_env, new);
 	}
 }

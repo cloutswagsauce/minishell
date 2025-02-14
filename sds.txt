@@ -1,0 +1,5 @@
+VSCODE_GIT_ASKPASS_NODE=/private/var/folders/qk/pv0ljyz961jf9y8pptr0psrw0000gn/T/AppTranslocation/2A0C2747-0C81-4384-9AF5-F4C27FC3BF66/d/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=--ms-enable-electron-run-as-node
+VSCODE_GIT_ASKPASS_MAIN=/private/var/folders/qk/pv0ljyz961jf9y8pptr0psrw0000gn/T/AppTranslocation/2A0C2747-0C81-4384-9AF5-F4C27FC3BF66/d/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_IPC_HANDLE=/var/folders/qk/pv0ljyz961jf9y8pptr0psrw0000gn/T/vscode-git-d3cea0aa01.sock
+VSCODE_INJECTION=1

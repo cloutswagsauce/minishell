@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 15:26:19 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:29:28 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -124,42 +124,40 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 t_com	*parse_input(char *str)
 {
 	t_token	*tokens;
-	t_token	*cur_token;
 	t_com	*commands;
 	t_com	*current_cmd;
 	int		arg_count;
 
 	tokens = tokenize_input(str);
-	cur_token = tokens;
 	commands = NULL;
 	current_cmd = NULL;
 	arg_count = 0;
-	while (cur_token)
+	while (tokens)
 	{
-		if (cur_token->type == TOKEN_WORD || cur_token->type == TOKEN_SQUOTES ||
-			cur_token->type == TOKEN_DQUOTES)
+		if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES ||
+			tokens->type == TOKEN_DQUOTES)
 		{
 			if (!current_cmd)
 			{
-				create_new_command(&current_cmd, &arg_count, cur_token);
+				create_new_command(&current_cmd, &arg_count, tokens);
 				if (!commands)
 					commands = current_cmd;
 			}
 			else
-				create_new_arg(&arg_count, current_cmd, cur_token);
+				create_new_arg(&arg_count, current_cmd, tokens);
 		}
-		else if (cur_token->type == TOKEN_PIPE)
+		else if (tokens->type == TOKEN_PIPE)
 		{
 			if (current_cmd)
 				handle_pipe_token(&current_cmd, &arg_count);
 		}
-		else if (cur_token->type == TOKEN_REDIRECT_OUT)
-			handle_redirect_token(current_cmd, cur_token, 0);
-		else if (cur_token->type == TOKEN_APPEND)
-			handle_redirect_token(current_cmd, cur_token, 1);
-		else if (cur_token->type == TOKEN_HEREDOC)
-			handle_heredoc_token(current_cmd, cur_token);
-		cur_token = cur_token->next;
+		else if (tokens->type == TOKEN_REDIRECT_OUT)
+			handle_redirect_token(current_cmd, tokens, 0);
+		else if (tokens->type == TOKEN_APPEND)
+			handle_redirect_token(current_cmd, tokens, 1);
+		else if (tokens->type == TOKEN_HEREDOC)
+			handle_heredoc_token(current_cmd, tokens);
+		tokens = tokens->next;
 	}
 	if (current_cmd)
 		current_cmd->is_builtin = is_command_builtin(current_cmd);
