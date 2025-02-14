@@ -6,11 +6,21 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 14:26:04 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:26:19 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
+
+int create_cmd_path(int *len, char **current_path_split, t_com *cmd, char **exec_path)
+{
+		*len = ft_strlen(*current_path_split) + ft_strlen(cmd->argv[0]) + 2;
+		*exec_path = malloc(*len);
+		ft_strlcpy(*exec_path, *current_path_split, *len);
+		ft_strlcat(*exec_path, "/", *len);
+		ft_strlcat(*exec_path, cmd->argv[0], *len);
+		return (0);
+}
 
 void	path_split_append(t_com *command, t_data *data)
 {
@@ -20,19 +30,12 @@ void	path_split_append(t_com *command, t_data *data)
 	int		len;
 	
 	if (!getenv("PATH"))
-	{
-		perror("path not set");
 		return ;
-	}	
 	path_split = ft_split(getenv("PATH"), ':');
 	current_path_split = path_split;
 	while (*current_path_split)
 	{
-		len = ft_strlen(*current_path_split) + ft_strlen(command->argv[0]) + 2;
-		exec_path = malloc(len);
-		ft_strlcpy(exec_path, *current_path_split, len);
-		ft_strlcat(exec_path, "/", len);
-		ft_strlcat(exec_path, command->argv[0], len);
+		create_cmd_path(&len, current_path_split, command, &exec_path);
 		if (access(exec_path, X_OK) == 0)
 		{
 			handle_command(exec_path, command, data);

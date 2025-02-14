@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/13 11:22:27 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:53:26 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -65,7 +65,7 @@ int	handle_quotes(char *input, int *i, t_token **tokens)
 			(*i)++;
 		if (!input[*i])
 		{
-			printf("you forgot to close the damn quote!\n");
+			ft_printf("you forgot to close the damn quote!\n");
 			return (0);
 		}
 		buf = ft_substr(input, start, (*i) - start);

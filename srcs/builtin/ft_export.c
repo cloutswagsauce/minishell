@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/13 11:20:35 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:52:52 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -77,14 +77,14 @@ void	handle_no_args(char **envp, t_list **local_env)
 	while (*envp)
 	{
 		equals = ft_strchr(*envp, '=');
-		printf("declare -x %s=\"%s\"\n", get_name(*envp, equals),
+		ft_printf("declare -x %s=\"%s\"\n", get_name(*envp, equals),
 				get_value(equals));
 		envp++;
 	}
 	temp = *local_env;
 	while (temp)
 	{
-		printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
+		ft_printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
 		temp = temp->next;
 	}
 }
@@ -123,7 +123,7 @@ void	ft_export(char **name_and_value, t_list **local_env, char **envp,
 	{
 		name = ft_strdup((*(name_and_value + 1)));
 		new = ft_lstnew(name, "");
-		printf("envp: %s", new->name);
+		ft_printf("envp: %s", new->name);
 		ft_lstadd_back(local_env, new);
 	}
 }

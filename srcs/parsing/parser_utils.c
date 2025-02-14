@@ -30,15 +30,15 @@ int	is_valid_path(char *exec_path, t_com *command, t_data *data)
 {
 	if (!access(exec_path, F_OK))
 	{
-		printf("the exec path is: %s\n", exec_path );
+		ft_printf("the exec path is: %s\n", exec_path );
 		handle_command(exec_path, command, data);
 		free(exec_path);
 		return (1);
 	}
 	else
 	{
-		printf("it didnt work\n");
-		printf("the exec path is: %s\n", exec_path );
+		ft_printf("it didnt work\n");
+		ft_printf("the exec path is: %s\n", exec_path );
 		return (0);
 	}
 		
