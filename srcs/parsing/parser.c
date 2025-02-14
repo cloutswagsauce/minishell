@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 15:29:28 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:32:08 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -134,7 +134,8 @@ t_com	*parse_input(char *str)
 	arg_count = 0;
 	while (tokens)
 	{
-		if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES ||
+		token_dispatcher(&commands, &current_cmd, tokens, &arg_count);
+		/*if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES ||
 			tokens->type == TOKEN_DQUOTES)
 		{
 			if (!current_cmd)
@@ -156,7 +157,7 @@ t_com	*parse_input(char *str)
 		else if (tokens->type == TOKEN_APPEND)
 			handle_redirect_token(current_cmd, tokens, 1);
 		else if (tokens->type == TOKEN_HEREDOC)
-			handle_heredoc_token(current_cmd, tokens);
+			handle_heredoc_token(current_cmd, tokens);*/
 		tokens = tokens->next;
 	}
 	if (current_cmd)

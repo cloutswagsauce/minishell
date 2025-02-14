@@ -1,5 +1,34 @@
 #include "../../minishell.h"
 
+int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
+		int *arg_count)
+{
+	if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES ||
+		tokens->type == TOKEN_DQUOTES)
+	{
+		if (!*current_cmd)
+		{
+			create_new_command(current_cmd, arg_count, tokens);
+			if (!*commands)
+				*commands = *current_cmd;
+		}
+		else
+			create_new_arg(arg_count, *current_cmd, tokens);
+	}
+	else if (tokens->type == TOKEN_PIPE)
+	{
+		if (!current_cmd)
+			handle_pipe_token(current_cmd, arg_count);
+	}
+	else if (tokens->type == TOKEN_REDIRECT_OUT)
+		handle_redirect_token(*current_cmd, tokens, 0);
+	else if (tokens->type == TOKEN_APPEND)
+		handle_redirect_token(*current_cmd, tokens, 1);
+	else if (tokens->type == TOKEN_HEREDOC)
+		handle_heredoc_token(*current_cmd, tokens);
+	return (0);
+}
+
 int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 {
 	t_com	*new_cmd;

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 16:01:38 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:36:12 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -89,7 +89,7 @@ void	handle_no_args(t_data *data)
 	}
 }
 
-void	ft_export(char **name_and_value, t_data *data,
+void	ft_export(char **name_and_value, t_com *cmd, t_data *data,
 		int flag)
 {
 	// local env is **
@@ -97,6 +97,8 @@ void	ft_export(char **name_and_value, t_data *data,
 	char	*name;
 	char	*value;
 	t_list	*new;
+
+	printf("is command in quotes: %d\n", cmd->d_quote);
 
 	if (flag)
 	{
@@ -109,7 +111,11 @@ void	ft_export(char **name_and_value, t_data *data,
 		name = get_name((*(name_and_value + 1)), equals);
 		value = get_value(equals);
 		if (!value)
+		{
+			printf("in here");
 			value = (*(name_and_value + 2));
+		}
+			
 		if (update_var(name, value, &data->local_env))
 			return ;
 		if (!name)

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 16:12:57 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:31:53 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,7 +14,6 @@
 
 void builtin_caller(t_com *com, t_data *data)
 {
-	printf("this was called");
 	if (com->delim)
 		handle_redirect_heredoc(com);
 	if (com->output_file)
@@ -22,11 +21,7 @@ void builtin_caller(t_com *com, t_data *data)
 	if (!ft_strncmp(com->argv[0], "echo", ft_strlen("echo")))
 		ft_echo(*com);
 	else if (!ft_strncmp(com->argv[0], "env", ft_strlen("env")))
-	{
-		printf("%s", com->argv[0]);
 		ft_env(data);
-	}
-		
 	else if (!ft_strncmp(com->argv[0], "pwd", ft_strlen("pwd")))
 		ft_pwd();
 	else if (!ft_strncmp(com->argv[0], "cd", ft_strlen("cd")))
@@ -34,15 +29,14 @@ void builtin_caller(t_com *com, t_data *data)
 	else if (!ft_strncmp(com->argv[0], "export", ft_strlen("export")))
 	{
 		if (com->argv[1])
-			ft_export(com->argv, data, 0);
+			ft_export(com->argv, com, data,  0);
 		else
-			ft_export(com->argv, data, 1);
+			ft_export(com->argv,com, data, 1);
 	}
 	else if (!ft_strncmp(com->argv[0], "exit", ft_strlen("exit")))
 		ft_exit();
 	else if (!ft_strncmp(com->argv[0], "unset", ft_strlen("unset")))
 		ft_unset(com, data);
-	
 }
 
 void	execute_builtin_command(t_com *com, t_data *data)
