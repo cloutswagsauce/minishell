@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 20:51:23 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/15 12:36:31 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -139,5 +139,9 @@ int					handle_quotes(char *input, int *i, t_token **tokens);
 void				handle_redirections_in(char *input, int *i,
 						t_token **tokens);
 void				add_token(t_token **tokens, char *value, int type);
+int					set_variable(char **name_and_value, char *equals, t_data *data, t_com *cmd);
+char				*get_value(char *equals);
+char				*get_name(char *str, char *equal);
+int					update_var(char *name, char *value, t_list **local_env);
 
 #endif

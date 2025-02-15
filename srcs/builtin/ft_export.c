@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 21:09:03 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/15 13:34:09 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -28,6 +28,7 @@ char	*get_name(char *str, char *equal)
 	}
 	else
 	{
+		printf("in this case");
 		name = malloc(ft_strlen(str) + 1);
 		name[ft_strlen(str)] = '\0';
 	}
@@ -36,6 +37,7 @@ char	*get_name(char *str, char *equal)
 
 char	*get_value(char *equals)
 {
+	//problem - export no args is 
 	int		i;
 	char	*value;
 
@@ -73,13 +75,28 @@ void	handle_no_args(t_data *data)
 {
 	char	*equals;
 	t_list	*temp;
+	char	**temp_env;
 
-	while (*data->envp)
+	temp_env = data->envp;
+
+	while (*temp_env)
 	{
-		equals = ft_strchr(*data->envp, '=');
-		ft_printf("declare -x %s=\"%s\"\n", get_name(*data->envp, equals),
-				get_value(equals));
-		data->envp++;
+		equals = ft_strchr(*temp_env, '=');
+		// problem  - equals exist in both cases for temp env lets find another way to differentiate
+		if (equals)
+		{
+			ft_printf("declare -x %s=", get_name(*temp_env, equals));
+			ft_printf("\"%s\"\n", get_value(equals));
+		}
+		else
+		{
+			printf("hereeeeee");
+			ft_printf("declare -x %s", get_name(*temp_env, equals));
+		}
+			
+			
+		
+		temp_env++;
 	}
 	temp = data->local_env;
 	while (temp)
@@ -94,18 +111,19 @@ void	ft_export(char **name_and_value, t_com *cmd, t_data *data,
 {
 	char	*equals;
 	char	*name;
-	char	*value;
+	//char	*value;
 	t_list	*new;
 
 	if (flag)
 	{
+		printf("we are in this case");
 		handle_no_args(data);
 		return ;
 	}
 	equals = ft_strchr((*(name_and_value + 1)), '=');
 	if (equals)
 	{
-		name = get_name((*(name_and_value + 1)), equals);
+		/*name = get_name((*(name_and_value + 1)), equals);
 		value = get_value(equals);
 		if (!value && cmd->d_quote)
 		{
@@ -120,11 +138,13 @@ void	ft_export(char **name_and_value, t_com *cmd, t_data *data,
 			return ;
 		}
 		new = ft_lstnew(name, value);
-		ft_lstadd_back(&data->local_env, new);
+		ft_lstadd_back(&data->local_env, new);*/
+		set_variable(name_and_value, equals, data, cmd);
 	}
 	else
 	{
 		name = ft_strdup((*(name_and_value + 1)));
+		printf("name is: %s", name);
 		new = ft_lstnew(name, "");
 		ft_printf("envp: %s", new->name);
 		ft_lstadd_back(&data->local_env, new);

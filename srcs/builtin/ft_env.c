@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 16:47:36 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/15 13:15:05 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -33,12 +33,15 @@ void	ft_env(t_data *data)
 {
 	int		i;
 	t_list	*temp;
+	char	**envp_temp;
+	printf("env was called");
 
 	i = 0;
-	while (data->envp[i])
+	envp_temp = data->envp;
+	while (envp_temp[i])
 	{
 		handle_PWD(data, &i);
-		ft_printf(data->envp[i++]);
+		ft_printf(envp_temp[i++]);
 		write(1, "\n", 1);
 	}
 	i = 0;
