@@ -6,13 +6,13 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 16:16:20 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:17:03 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
 
-
+int g_exit_status = 0;
 
 void	call_child_action(t_com command, t_data *data)
 {
@@ -47,10 +47,20 @@ int	main(int argc, char **argv, char **envp)
 	local_env = 0;
 	data = 0;
 	init_data(&data, envp, local_env);
+	if (isatty(STDIN_FILENO))
+		signal_handler_interactive();
+	else
+		signal_handler_non_interactive();
 	while (1)
 	{
+		if (isatty(STDIN_FILENO))
+			signal_handler_interactive();
+		else
+			signal_handler_non_interactive();
 		rl_on_new_line();
 		input = readline("mini$hell 🤖: ");
+		if (input == NULL)
+            exit(0);
 		if (*input)
 		{
 			commands = parse_input(input);

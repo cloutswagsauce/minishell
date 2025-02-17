@@ -6,7 +6,7 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2025/02/14 22:15:06 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/02/17 10:16:43 by lfaria-m         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -25,8 +25,8 @@ $(SRC_DIR)/builtin/ft_echo.c $(SRC_DIR)/builtin/ft_env.c $(SRC_DIR)/builtin/ft_e
 $(SRC_DIR)/builtin/ft_unset.c $(SRC_DIR)/builtin/ft_pwd.c $(SRC_DIR)/ft_lst.c $(SRC_DIR)/executor/handle_variable.c \
 $(SRC_DIR)/executor/execute_process.c $(SRC_DIR)/executor/ft_pipex.c $(SRC_DIR)/parsing/tokenizer.c $(SRC_DIR)/parsing/parser_utils.c \
 $(SRC_DIR)/executor/ft_redirect.c $(SRC_DIR)/parsing/parser.c $(SRC_DIR)/parsing/handle_tokens.c $(SRC_DIR)/parsing/squotes.c $(SRC_DIR)/parsing/parser_helpers.c \
-$(SRC_DIR)/parsing/token_utils.c $(SRC_DIR)/builtin/export_utils.c
-
+$(SRC_DIR)/parsing/token_utils.c $(SRC_DIR)/builtin/export_utils.c \
+$(SRC_DIR)/signals/signals.c \
 
 # Object files (stored in objs/)
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -39,7 +39,9 @@ CC = cc
 CFLAGS = -Wall -fsanitize=address -Wextra -Werror
 
 # To link readline
-RD = -lreadline -lncurses
+#RD = -lreadline -lncurses
+RD = -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include -lreadline -lncurses
+
 
 # Libraries
 LIB = $(LIB_DIR)/libft.a
@@ -53,13 +55,23 @@ RM = rm -f
 all: $(NAME)
 
 # Link the final program
+#$(NAME): $(OBJS) $(LIB)
+#	$(CC) $(CFLAGS) $(OBJS) $(LIB_FLAGS) $(RD) -o $(NAME)
 $(NAME): $(OBJS) $(LIB)
-	$(CC) $(CFLAGS) $(OBJS) $(LIB_FLAGS) $(RD) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIB_FLAGS) -L/opt/homebrew/opt/readline/lib -lreadline -lncurses -o $(NAME)
+
+
 
 # Compile source files to object files
+#$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+#	mkdir -p $(dir $@)  # Ensure the directory exists
+#	$(CC) $(CFLAGS) -I$(LIB_DIR) -c $< -o $@
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	mkdir -p $(dir $@)  # Ensure the directory exists
-	$(CC) $(CFLAGS) -I$(LIB_DIR) -c $< -o $@
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -I$(LIB_DIR) -I/opt/homebrew/opt/readline/include -c $< -o $@
+
+
 
 # Ensure all necessary subdirectories exist before compiling
 $(DIRS):

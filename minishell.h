@@ -6,13 +6,14 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/15 12:36:31 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:17:22 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <signal.h> // For signal, sigaction, sigemptyset, sigaddset, kill
 # include "libft.h"
 # include <ctype.h>
 # include <curses.h> // Often provides termcap functionality
@@ -20,7 +21,6 @@
 # include <fcntl.h>  // For open
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <signal.h> // For signal, sigaction, sigemptyset, sigaddset, kill
 # include <stdio.h>
 # include <stdio.h>  // For printf
 # include <stdlib.h> // For malloc, free
@@ -42,6 +42,8 @@
 # define TOKEN_HEREDOC 5
 # define TOKEN_DQUOTES 7
 # define TOKEN_SQUOTES 8
+
+extern int	g_exit_status;
 
 typedef struct s_com
 {
@@ -143,5 +145,8 @@ int					set_variable(char **name_and_value, char *equals, t_data *data, t_com *c
 char				*get_value(char *equals);
 char				*get_name(char *str, char *equal);
 int					update_var(char *name, char *value, t_list **local_env);
+void				signal_handler_interactive(void);
+void				signal_handler_non_interactive(void);
+void				signal_handler_heredoc(void);
 
 #endif

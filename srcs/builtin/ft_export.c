@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/15 13:34:09 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/15 13:41:57 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -51,6 +51,7 @@ char	*get_value(char *equals)
 	value[i] = '\0';
 	return (value);
 }
+
 int	update_var(char *name, char *value, t_list **local_env)
 {
 	t_list	**current;
@@ -94,8 +95,6 @@ void	handle_no_args(t_data *data)
 			ft_printf("declare -x %s", get_name(*temp_env, equals));
 		}
 			
-			
-		
 		temp_env++;
 	}
 	temp = data->local_env;
@@ -122,25 +121,7 @@ void	ft_export(char **name_and_value, t_com *cmd, t_data *data,
 	}
 	equals = ft_strchr((*(name_and_value + 1)), '=');
 	if (equals)
-	{
-		/*name = get_name((*(name_and_value + 1)), equals);
-		value = get_value(equals);
-		if (!value && cmd->d_quote)
-		{
-			printf("in here");
-			value = (*(name_and_value + 2));
-		}
-		if (update_var(name, value, &data->local_env))
-			return ;
-		if (!name)
-		{
-			free(name);
-			return ;
-		}
-		new = ft_lstnew(name, value);
-		ft_lstadd_back(&data->local_env, new);*/
 		set_variable(name_and_value, equals, data, cmd);
-	}
 	else
 	{
 		name = ft_strdup((*(name_and_value + 1)));
