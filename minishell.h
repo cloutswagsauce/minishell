@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/19 11:50:51 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:16:18 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -94,18 +94,18 @@ int					is_command_builtin(t_com *com);
 void				execute_builtin_command(t_com *command, t_data *data);
 void				path_split_append(t_com *command, t_data *data);
 void				free_commands(t_com *cmd);
-void				ft_echo(t_com command);
-void				ft_env(t_data *data);
-void				ft_pwd(void);
-void				ft_export(char **name_and_value, t_com *cmd, t_data *data,
+int					ft_echo(t_com command);
+int					ft_env(t_data *data);
+int					ft_pwd(void);
+int					ft_export(char **name_and_value, t_com *cmd, t_data *data,
 						int flag);
-void				ft_cd(t_com command);
-void				ft_exit(void);
+int					ft_cd(t_com command);
+int					ft_exit(void);
 t_list				*ft_lstnew(char *name, char *value);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstadd_back(t_list **lst, t_list *new);
 void				command_has_variable(t_com *com, t_list *local_env);
-void				ft_unset(t_com *com, t_data *data);
+int					ft_unset(t_com *com, t_data *data);
 t_com				*malloc_commands(char **str);
 void				execute_process(t_com *cmd, t_data *data);
 void				call_child_action(t_com command, t_data *data);
@@ -149,5 +149,7 @@ void				signal_handler_interactive(void);
 void				signal_handler_non_interactive(void);
 void				signal_handler_heredoc(void);
 void				store_exit_status(int status);
+void				handle_no_args(t_data *data);
+int					handle_both_cases(char *equals, char **name_and_value, t_com *cmd, t_data *data);
 
 #endif

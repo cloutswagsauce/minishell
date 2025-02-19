@@ -6,13 +6,13 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:45:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/13 11:20:54 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 12:40:43 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
 
-void	ft_echo(t_com command)
+int	ft_echo(t_com command)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ void	ft_echo(t_com command)
 			write(1, " ", 1);
 			i++;
 		}
-		return ;
+		return (0);
 	}
 	else
 	{
@@ -37,6 +37,6 @@ void	ft_echo(t_com command)
 			i++;
 		}
 		write(1, "\n", 1);
-		return ;
+		return (0) ;
 	}
 }

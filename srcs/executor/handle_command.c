@@ -6,37 +6,38 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 16:31:53 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 13:28:21 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
 
-void builtin_caller(t_com *com, t_data *data)
+int builtin_caller(t_com *com, t_data *data)
 {
 	if (com->delim)
-		handle_redirect_heredoc(com);
+		return (handle_redirect_heredoc(com));
 	if (com->output_file)
-		handle_redirect_out(com);
-	if (!ft_strncmp(com->argv[0], "echo", ft_strlen("echo")))
-		ft_echo(*com);
-	else if (!ft_strncmp(com->argv[0], "env", ft_strlen("env")))
-		ft_env(data);
-	else if (!ft_strncmp(com->argv[0], "pwd", ft_strlen("pwd")))
-		ft_pwd();
-	else if (!ft_strncmp(com->argv[0], "cd", ft_strlen("cd")))
-		ft_cd(*com);
-	else if (!ft_strncmp(com->argv[0], "export", ft_strlen("export")))
+		return (handle_redirect_out(com));
+	if (!ft_strncmp(com->argv[0], "echo", ft_strlen(com->argv[0])))
+		return (ft_echo(*com));
+	else if (!ft_strncmp(com->argv[0], "env", ft_strlen(com->argv[0])))
+		return (ft_env(data));
+	else if (!ft_strncmp(com->argv[0], "pwd", ft_strlen(com->argv[0])))
+		return (ft_pwd());
+	else if (!ft_strncmp(com->argv[0], "cd", ft_strlen(com->argv[0])))
+		return (ft_cd(*com));
+	else if (!ft_strncmp(com->argv[0], "export", ft_strlen(com->argv[0])))
 	{
 		if (com->argv[1])
-			ft_export(com->argv, com, data,  0);
+			return (ft_export(com->argv, com, data,  0));
 		else
-			ft_export(com->argv,com, data, 1);
+			return (ft_export(com->argv,com, data, 1));
 	}
-	else if (!ft_strncmp(com->argv[0], "exit", ft_strlen("exit")))
-		ft_exit();
-	else if (!ft_strncmp(com->argv[0], "unset", ft_strlen("unset")))
-		ft_unset(com, data);
+	else if (!ft_strncmp(com->argv[0], "exit", ft_strlen(com->argv[0])))
+		return (ft_exit());
+	else if (!ft_strncmp(com->argv[0], "unset", ft_strlen(com->argv[0])))
+		return (ft_unset(com, data));
+	return (127);
 }
 
 void	execute_builtin_command(t_com *com, t_data *data)
@@ -47,7 +48,7 @@ void	execute_builtin_command(t_com *com, t_data *data)
 	stdout_fd = dup(STDOUT_FILENO);
 	stdin_fd = dup(STDIN_FILENO);
 	command_has_variable(com, data->local_env);
-	builtin_caller(com, data);
+	store_exit_status(builtin_caller(com, data));
 	dup2(stdout_fd, STDOUT_FILENO);
 	dup2(stdin_fd, STDIN_FILENO);
 	close(stdout_fd);

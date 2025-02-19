@@ -19,7 +19,7 @@ int	is_command_builtin(t_com *com)
 	builtin_list = get_builtin_list();
 	while (i < 7)
 	{
-		if (!ft_strncmp(com->argv[0], builtin_list[i], ft_strlen(builtin_list[i])))
+		if (!ft_strncmp(com->argv[0], builtin_list[i], ft_strlen(com->argv[0])))
 			return (1);
 		i++;
 	}
