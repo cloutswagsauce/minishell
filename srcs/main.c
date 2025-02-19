@@ -6,13 +6,16 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/17 16:45:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:55:31 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
 
 int g_exit_status = 0;
+
+// crtl D on heredoc caused leak
+// crtl c on heredoc causes leak
 
 void	call_child_action(t_com command, t_data *data)
 {

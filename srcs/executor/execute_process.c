@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 20:52:46 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:47:31 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -23,14 +23,19 @@ void	handle_absolute(t_com *command, t_data *data)
 		execve(com, args, data->envp);
 }
 
-void	store_exit_status(int nb)
+void	store_exit_status(int status)
 {
-	(void)nb;
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_status = 128 + WTERMSIG(status);
+	
 }
 
 void	execute_process(t_com *cmd, t_data *data)
 {
 	pid_t	pid;
+	int status;
 
 	if (!cmd->is_builtin)
 	{
@@ -45,11 +50,13 @@ void	execute_process(t_com *cmd, t_data *data)
 				handle_absolute(cmd, data);
 			call_child_action(*cmd, data);
 		}
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+			store_exit_status(status);
+		}
 	}
 	else
-	{
-		printf("do i think this is builtin : %d\n", cmd->is_builtin);
 		execute_builtin_command(cmd, data);
-	}
 		
 }

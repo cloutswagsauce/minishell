@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:13 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/13 11:22:03 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 12:28:44 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,6 +25,8 @@ void	expand_variable(t_com *com, int j, t_list *vars)
 		com->argv[j] = new_value;
 		return ;
 	}
+	if (!ft_strncmp(com->argv[j], "$?", 2))
+		ft_printf(ft_itoa(g_exit_status));
 	while (vars)
 	{
 		if (!ft_memcmp(com->argv[1] + 1, vars->name, ft_strlen(com->argv[j])))

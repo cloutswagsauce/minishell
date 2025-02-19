@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/17 10:17:22 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:50:51 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -119,10 +119,10 @@ int					is_valid_path(char *exec_path, t_com *command,
 						t_data *data);
 int					handle_redirect_out(t_com *cmd);
 int					handle_pipe_token(t_com **current_cmd, int *arg_count);
-int	handle_redirect_token(t_com *current_cmd,
+int					handle_redirect_token(t_com *current_cmd,
 							t_token *cur_token,
 							int append);
-int	handle_heredoc_token(t_com *current_cmd,
+int					handle_heredoc_token(t_com *current_cmd,
 							t_token *cur_token);
 int					handle_redirect_heredoc(t_com *cmd);
 int					handle_squotes(t_com *cmd, int pos);
@@ -148,5 +148,6 @@ int					update_var(char *name, char *value, t_list **local_env);
 void				signal_handler_interactive(void);
 void				signal_handler_non_interactive(void);
 void				signal_handler_heredoc(void);
+void				store_exit_status(int status);
 
 #endif
