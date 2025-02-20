@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/19 14:16:18 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:07:14 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -140,7 +140,7 @@ int					temp_arg_creator(t_com *current_cmd, char **temp_argv,
 int					handle_quotes(char *input, int *i, t_token **tokens);
 void				handle_redirections_in(char *input, int *i,
 						t_token **tokens);
-void				add_token(t_token **tokens, char *value, int type);
+void				add_token(t_token **tokens, char *value, int type, int owner);
 int					set_variable(char **name_and_value, char *equals, t_data *data, t_com *cmd);
 char				*get_value(char *equals);
 char				*get_name(char *str, char *equal);
