@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   free_stuff.c                                       :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:49:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/13 11:21:26 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:28:34 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -20,19 +20,23 @@ void	free_commands(t_com *cmd)
 	{
 		temp = cmd->next;
 		free_double(cmd->argv);
+        if (cmd->delim)
+            free(cmd->delim);
 		free(cmd);
 		cmd = temp;
 	}
 }
 
-void	free_tokens(t_token *tokens)
+void free_tokens(t_token *tokens)
 {
-	t_token	*temp;
-
-	while (tokens)
-	{
-		temp = tokens->next;
-		free(tokens);
-		tokens = temp;
-	}
+    t_token *tmp;
+    while (tokens)
+    {
+        printf("freeing token: %s\n", tokens->value);
+        tmp = tokens->next;
+        if (tokens->value) 
+            free(tokens->value);
+        free(tokens);
+        tokens = tmp;
+    }
 }

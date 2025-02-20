@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
@@ -6,113 +6,128 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 20:48:54 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:08:39 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_token	*new_token(char *value, int type)
+t_token *new_token(char *value, int type, int take_ownership)
 {
-	t_token	*token;
-	size_t	len;
+    t_token *token;
+    size_t len;
 
-	len = ft_strlen(value);
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = malloc(len + 1);
-	ft_memcpy(token->value, value, ft_strlen(value));
-	token->value[len] = '\0';
-	token->type = type;
-	token->next = NULL;
-	return (token);
+    printf("new token was called!\n");
+    token = malloc(sizeof(t_token));
+    if (!token)
+        return (NULL);
+    if (take_ownership)
+    {
+        token->value = value;  // Take ownership of the pointer
+    }
+    else
+    {
+        len = ft_strlen(value);
+        token->value = malloc(len + 1);
+        if (!token->value)
+        {
+            free(token);
+            return (NULL);
+        }
+        ft_memcpy(token->value, value, len);
+        token->value[len] = '\0';
+    }
+    token->type = type;
+    token->next = NULL;
+    return (token);
 }
 
-void	add_token(t_token **tokens, char *value, int type)
+void add_token(t_token **tokens, char *value, int type, int take_ownership)
 {
-	t_token	*new;
-	t_token	*temp;
+    t_token *new;
+    t_token *temp;
 
-	new = new_token(value, type);
-	if (!new)
-	{
-		free(value);
-		return ;
-	}
-	if (!*tokens)
-		*tokens = new;
-	else
-	{
-		temp = *tokens;
-		while (temp->next)
-			temp = temp->next;
-		temp->next = new;
-	}
+    new = new_token(value, type, take_ownership);
+    if (!new)
+    {
+        if (take_ownership)
+            free(value);  // Free only if we own it and allocation fails
+        return;
+    }
+    if (!*tokens)
+        *tokens = new;
+    else
+    {
+        temp = *tokens;
+        while (temp->next)
+            temp = temp->next;
+        temp->next = new;
+    }
 }
 
-void	handle_operators(char *input, int *i, t_token **tokens)
+void handle_operators(char *input, int *i, t_token **tokens)
 {
-	if (input[*i] == '|')
-	{
-		add_token(tokens, "|", TOKEN_PIPE);
-		(*i)++;
-	}
-	else if (input[*i] == '<')
-		handle_redirections_in(input, i, tokens);
-	else if (input[*i] == '>')
-	{
-		if (input[(*i) + 1] == '>')
-		{
-			add_token(tokens, ">>", TOKEN_APPEND);
-			(*i) += 2;
-		}
-		else
-		{
-			add_token(tokens, ">", TOKEN_REDIRECT_OUT);
-			(*i)++;
-		}
-	}
+    if (input[*i] == '|')
+    {
+        add_token(tokens, "|", TOKEN_PIPE, 0);  // Copy literal
+        (*i)++;
+    }
+    else if (input[*i] == '<')
+        handle_redirections_in(input, i, tokens);
+    else if (input[*i] == '>')
+    {
+        if (input[(*i) + 1] == '>')
+        {
+            add_token(tokens, ">>", TOKEN_APPEND, 0);  // Copy literal
+            (*i) += 2;
+        }
+        else
+        {
+            add_token(tokens, ">", TOKEN_REDIRECT_OUT, 0);  // Copy literal
+            (*i)++;
+        }
+    }
 }
 
-void	handle_word(char *input, int *i, t_token **tokens)
+void handle_word(char *input, int *i, t_token **tokens)
 {
-	int		start;
-	char	*buf;
+    int start;
+    char *buf;
 
-	start = *i;
-	while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|'
-		&& input[*i] != '<' && input[*i] != '>' && input[*i] != '"'
-		&& input[*i] != '\'')
-		(*i)++;
-	buf = ft_substr(input, start, (*i) - start);
-	add_token(tokens, buf, TOKEN_WORD);
+    start = *i;
+    while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|'
+        && input[*i] != '<' && input[*i] != '>' && input[*i] != '"'
+        && input[*i] != '\'')
+        (*i)++;
+    buf = ft_substr(input, start, (*i) - start);
+    if (buf)
+        add_token(tokens, buf, TOKEN_WORD, 1);  // Take ownership of buf
 }
 
-t_token	*tokenize_input(char *input)
+t_token *tokenize_input(char *input)
 {
-	t_token	*tokens;
-	int		i;
+    t_token *tokens;
+    int i;
 
-	tokens = 0;
-	i = 0;
-	while (input[i])
-	{
-		while (input[i] && isspace((char)input[i]))
-			i++;
-		if (!input[i])
-			break ;
-		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
-			handle_operators(input, &i, &tokens);
-		else if (input[i] == '"' || input[i] == '\'')
-		{
-			if (!handle_quotes(input, &i, &tokens))
-				return (NULL);
-			continue ;
-		}
-		while (input[i] && isspace((char)input[i]))
-			i++;
-		handle_word(input, &i, &tokens);
-	}
-	return (tokens);
+    tokens = NULL;  // Initialize to NULL
+    i = 0;
+    while (input[i])
+    {
+        while (input[i] && isspace((char)input[i]))
+            i++;
+        if (!input[i])
+            break;
+        if (input[i] == '|' || input[i] == '<' || input[i] == '>')
+            handle_operators(input, &i, &tokens);
+        else if (input[i] == '"' || input[i] == '\'')
+        {
+            if (!handle_quotes(input, &i, &tokens))
+                return (NULL);
+            continue;
+        }
+        while (input[i] && isspace((char)input[i]))
+            i++;
+        handle_word(input, &i, &tokens);
+    }
+    return (tokens);
 }

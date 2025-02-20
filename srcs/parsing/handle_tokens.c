@@ -1,33 +1,31 @@
 #include "../../minishell.h"
 
-int	handle_quotes(char *input, int *i, t_token **tokens)
+int handle_quotes(char *input, int *i, t_token **tokens)
 {
-	int		start;
-	char	quote;
-	char	*buf;
+    int start;
+    char quote;
+    char *buf;
 
-	if (input[*i] == '"' || input[*i] == '\'')
-	{
-		quote = input[(*i)++];
-		start = *i;
-		while (input[*i] && input[*i] != quote)
-			(*i)++;
-		if (!input[*i])
-		{
-			ft_printf("you forgot to close the damn quote!\n");
-			return (0);
-		}
-		buf = ft_substr(input, start, (*i) - start);
-		if (quote == '\'')
-			add_token(tokens, buf, TOKEN_SQUOTES);
-		else if (quote == '"')
-			add_token(tokens, buf, TOKEN_DQUOTES);
-		else
-			add_token(tokens, buf, TOKEN_WORD);
-		if (input[*i])
-			(*i)++;
-	}
-	return (1);
+    if (input[*i] == '"' || input[*i] == '\'')
+    {
+        quote = input[(*i)++];
+        start = *i;
+        while (input[*i] && input[*i] != quote)
+            (*i)++;
+        if (!input[*i])
+        {
+            ft_printf("you forgot to close the damn quote!\n");
+            return (0);
+        }
+        buf = ft_substr(input, start, (*i) - start);
+        if (quote == '\'')
+            add_token(tokens, buf, TOKEN_SQUOTES, 1);  
+        else if (quote == '"')
+            add_token(tokens, buf, TOKEN_DQUOTES, 1);  // taking ownership flag is onn boiiii
+        if (input[*i])
+            (*i)++;
+    }
+    return (1);
 }
 
 int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
@@ -55,13 +53,18 @@ int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 	else if (tokens->type == TOKEN_APPEND)
 		handle_redirect_token(*current_cmd, tokens, 1);
 	else if (tokens->type == TOKEN_HEREDOC)
+	{
+		printf("calling heredoc for token:%s\n", tokens->value);
 		handle_heredoc_token(*current_cmd, tokens);
+	}
+		
 	return (0);
 }
 
 int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 {
 	t_com	*new_cmd;
+	
 
 	(*current_cmd)->has_outpipe = 1;
 	new_cmd = malloc(sizeof(t_com));
@@ -105,10 +108,30 @@ int	handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append)
 	return (0);
 }
 
-int	handle_heredoc_token(t_com *current_cmd, t_token *cur_token)
+int handle_heredoc_token(t_com *current_cmd, t_token *cur_token)
 {
-	if (cur_token->next->value)
-		current_cmd->delim = ft_strdup(cur_token->next->value);
-	*cur_token = *cur_token->next;
-	return (0);
+    t_token *temp;
+
+    if (!cur_token || !cur_token->next)
+        return (1);
+
+    if (current_cmd->delim)
+    {
+        free(current_cmd->delim);
+        current_cmd->delim = NULL;
+    }
+
+    current_cmd->delim = ft_strdup(cur_token->next->value);
+    if (!current_cmd->delim)
+        return (1);
+
+    temp = cur_token->next;
+    if (cur_token->value)
+        free(cur_token->value);
+    cur_token->value = temp->value;
+    cur_token->next = temp->next;
+    free(temp);
+
+    return (0);
 }
+

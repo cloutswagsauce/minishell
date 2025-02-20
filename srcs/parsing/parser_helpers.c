@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser_helpers.c                                   :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:56:01 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 20:41:07 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:07:14 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -17,7 +17,11 @@ int	arg_helper(t_token *cur_token, t_com *current_cmd, int *arg_count)
 	int	i;
 
 	if (cur_token->type == TOKEN_SQUOTES)
+	{
+		printf("token thinks its squote\n");
 		handle_squotes(current_cmd, *arg_count);
+	}
+		
 	if (cur_token->type == TOKEN_DQUOTES)
 		current_cmd->d_quote = 1;
 	if (current_cmd->argv)

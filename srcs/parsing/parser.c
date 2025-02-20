@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/14 20:41:15 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:01:35 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -100,17 +100,22 @@ t_com	*parse_input(char *str)
 {
 	t_token	*tokens;
 	t_com	*commands;
+	t_token	*cur_token;
 	t_com	*current_cmd;
 	int		arg_count;
 
 	tokens = tokenize_input(str);
+	cur_token = tokens;
 	commands = NULL;
 	current_cmd = NULL;
 	arg_count = 0;
-	while (tokens)
+
+	printf("parse input was called!\n");
+	while (cur_token)
 	{
-		token_dispatcher(&commands, &current_cmd, tokens, &arg_count);
-		tokens = tokens->next;
+		printf("token being dispatched: %s\n", cur_token->value);
+		token_dispatcher(&commands, &current_cmd, cur_token, &arg_count);
+		cur_token = cur_token->next;
 	}
 	if (current_cmd)
 		current_cmd->is_builtin = is_command_builtin(current_cmd);
