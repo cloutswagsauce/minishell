@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 12:31:21 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:49:06 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -19,7 +19,7 @@ int g_exit_status = 0;
 
 void	call_child_action(t_com command, t_data *data)
 {
-	if (!ft_strncmp(command.argv[0], "eoc", ft_strlen(command.argv[0])))
+	if (!ft_strncmp(command.argv[0], "<<", ft_strlen("<<")))
 		exit(0);
 	path_split_append(&command, data);
 	exit(0);

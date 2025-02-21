@@ -54,7 +54,15 @@ int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 	else if (tokens->type == TOKEN_APPEND)
 		handle_redirect_token(*current_cmd, tokens, 1);
 	else if (tokens->type == TOKEN_HEREDOC)
+	{
+		if (!*current_cmd)
+		{
+			create_new_command(current_cmd, arg_count, tokens);
+			if (!*commands)
+				*commands = *current_cmd;
+		}
 		handle_heredoc_token(*current_cmd, tokens);
+	}
 	return (0);
 }
 
@@ -110,8 +118,6 @@ int	handle_heredoc_token(t_com *current_cmd, t_token *cur_token)
 
 	if (!cur_token || !cur_token->next)
 		return (1);
-	if (!current_cmd)
-		return (heredoc_no_cmd(cur_token));
 	if (current_cmd->delim)
 	{
 		free(current_cmd->delim);
