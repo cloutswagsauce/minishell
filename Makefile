@@ -1,4 +1,4 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,9 +6,9 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2025/02/20 10:57:03 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/02/21 12:08:35 by lfaria-m         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 # Program name
 NAME = minishell
@@ -25,8 +25,8 @@ $(SRC_DIR)/builtin/ft_echo.c $(SRC_DIR)/builtin/ft_env.c $(SRC_DIR)/builtin/ft_e
 $(SRC_DIR)/builtin/ft_unset.c $(SRC_DIR)/builtin/ft_pwd.c $(SRC_DIR)/ft_lst.c $(SRC_DIR)/executor/handle_variable.c \
 $(SRC_DIR)/executor/execute_process.c $(SRC_DIR)/executor/ft_pipex.c $(SRC_DIR)/parsing/tokenizer.c $(SRC_DIR)/parsing/parser_utils.c \
 $(SRC_DIR)/executor/ft_redirect.c $(SRC_DIR)/parsing/parser.c $(SRC_DIR)/parsing/handle_tokens.c $(SRC_DIR)/parsing/squotes.c $(SRC_DIR)/parsing/parser_helpers.c \
-$(SRC_DIR)/parsing/token_utils.c $(SRC_DIR)/builtin/export_utils.c \
-$(SRC_DIR)/signals/signals.c \
+$(SRC_DIR)/parsing/token_utils.c $(SRC_DIR)/builtin/export_utils.c $(SRC_DIR)/signals/signals.c $(SRC_DIR)/parsing/heredoc_helper.c \
+
 
 # Object files (stored in objs/)
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -36,7 +36,7 @@ DIRS = $(sort $(dir $(OBJS)))
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall  -Wextra -Werror
+CFLAGS = -Wall -fsanitize=address -Wextra -Werror
 
 # To link readline
 #RD = -lreadline -lncurses

@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/20 13:07:14 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:11:54 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -151,5 +151,7 @@ void				signal_handler_heredoc(void);
 void				store_exit_status(int status);
 void				handle_no_args(t_data *data);
 int					handle_both_cases(char *equals, char **name_and_value, t_com *cmd, t_data *data);
+int					create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token);
+int					heredoc_no_cmd(t_token *cur_token);
 
 #endif

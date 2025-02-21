@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/19 13:27:54 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:29:21 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -35,7 +35,7 @@ void	store_exit_status(int status)
 void	execute_process(t_com *cmd, t_data *data)
 {
 	pid_t	pid;
-	int status;
+	int		status;
 
 	if (!cmd->is_builtin)
 	{
