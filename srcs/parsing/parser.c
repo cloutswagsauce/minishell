@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 12:37:39 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:14:49 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -88,7 +88,7 @@ int	create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token)
 	(*current_cmd)->d_quote = 0;
 	(*current_cmd)->s_quote = NULL;
 	(*current_cmd)->append_output = 0;
-	(*current_cmd)->delim = 0;
+	(*current_cmd)->delim = NULL;
 	(*current_cmd)->output_file = 0;
 	(*current_cmd)->is_builtin = 0;
 	(*current_cmd)->next = NULL;

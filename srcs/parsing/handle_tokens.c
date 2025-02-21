@@ -116,7 +116,7 @@ int	handle_heredoc_token(t_com *current_cmd, t_token *cur_token)
 {
 	t_token	*temp;
 
-	if (!cur_token || !cur_token->next)
+	if (!cur_token || !cur_token->next || !cur_token->next->value)
 		return (1);
 	if (current_cmd->delim)
 	{
@@ -124,7 +124,7 @@ int	handle_heredoc_token(t_com *current_cmd, t_token *cur_token)
 		current_cmd->delim = NULL;
 	}
 	current_cmd->delim = ft_strdup(cur_token->next->value);
-	if (!current_cmd->delim)
+	if (!current_cmd->delim || !(ft_strncmp(current_cmd->delim, "", ft_strlen(current_cmd->delim))))
 		return (1);
 	temp = cur_token->next;
 	if (cur_token->value)

@@ -1,16 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 16:51:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/20 13:08:39 by lfaria-m         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../minishell.h"
+
+void handle_word(char *input, int *i, t_token **tokens)
+{
+    int start;
+    char *buf;
+
+    start = *i;
+    while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|' 
+           && input[*i] != '"' && input[*i] != '\'')
+        (*i)++;
+    buf = ft_substr(input, start, (*i) - start);
+    if (buf)
+        add_token(tokens, buf, TOKEN_WORD, 1);
+}
 
 t_token *new_token(char *value, int type, int take_ownership)
 {
@@ -22,9 +24,7 @@ t_token *new_token(char *value, int type, int take_ownership)
     if (!token)
         return (NULL);
     if (take_ownership)
-    {
-        token->value = value;  // Take ownership of the pointer
-    }
+        token->value = value;
     else
     {
         len = ft_strlen(value);
@@ -51,7 +51,7 @@ void add_token(t_token **tokens, char *value, int type, int take_ownership)
     if (!new)
     {
         if (take_ownership)
-            free(value);  // Free only if we own it and allocation fails
+            free(value);
         return;
     }
     if (!*tokens)
@@ -67,49 +67,54 @@ void add_token(t_token **tokens, char *value, int type, int take_ownership)
 
 void handle_operators(char *input, int *i, t_token **tokens)
 {
-    if (input[*i] == '|')
+    // Only treat as operator if preceded by space or start of input
+    int is_operator = (*i == 0 || isspace((char)input[*i - 1]));
+    
+    if (is_operator && input[*i] == '|')
     {
-        add_token(tokens, "|", TOKEN_PIPE, 0);  // Copy literal
+        add_token(tokens, "|", TOKEN_PIPE, 0);
         (*i)++;
     }
-    else if (input[*i] == '<')
-        handle_redirections_in(input, i, tokens);
-    else if (input[*i] == '>')
+    else if (is_operator && input[*i] == '<')
     {
-        if (input[(*i) + 1] == '>')
+        if (input[*i + 1] == '<')
         {
-            add_token(tokens, ">>", TOKEN_APPEND, 0);  // Copy literal
+            add_token(tokens, "<<", TOKEN_HEREDOC, 0);
             (*i) += 2;
         }
         else
         {
-            add_token(tokens, ">", TOKEN_REDIRECT_OUT, 0);  // Copy literal
+            add_token(tokens, "<", TOKEN_REDIRECT_IN, 0);
             (*i)++;
         }
     }
+    else if (is_operator && input[*i] == '>')
+    {
+        if (input[*i + 1] == '>')
+        {
+            add_token(tokens, ">>", TOKEN_APPEND, 0);
+            (*i) += 2;
+        }
+        else
+        {
+            add_token(tokens, ">", TOKEN_REDIRECT_OUT, 0);
+            (*i)++;
+        }
+    }
+    else
+    {
+        handle_word(input, i, tokens);  // Treat as part of word if not an operator
+    }
 }
 
-void handle_word(char *input, int *i, t_token **tokens)
-{
-    int start;
-    char *buf;
 
-    start = *i;
-    while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|'
-        && input[*i] != '<' && input[*i] != '>' && input[*i] != '"'
-        && input[*i] != '\'')
-        (*i)++;
-    buf = ft_substr(input, start, (*i) - start);
-    if (buf)
-        add_token(tokens, buf, TOKEN_WORD, 1);  // Take ownership of buf
-}
 
 t_token *tokenize_input(char *input)
 {
     t_token *tokens;
     int i;
 
-    tokens = NULL;  // Initialize to NULL
+    tokens = NULL;
     i = 0;
     while (input[i])
     {
@@ -117,17 +122,16 @@ t_token *tokenize_input(char *input)
             i++;
         if (!input[i])
             break;
-        if (input[i] == '|' || input[i] == '<' || input[i] == '>')
+        if ((input[i] == '|' || input[i] == '<' || input[i] == '>') 
+            && (i == 0 || isspace((char)input[i - 1])))
             handle_operators(input, &i, &tokens);
         else if (input[i] == '"' || input[i] == '\'')
         {
             if (!handle_quotes(input, &i, &tokens))
                 return (NULL);
-            continue;
         }
-        while (input[i] && isspace((char)input[i]))
-            i++;
-        handle_word(input, &i, &tokens);
+        else
+            handle_word(input, &i, &tokens);
     }
     return (tokens);
 }
