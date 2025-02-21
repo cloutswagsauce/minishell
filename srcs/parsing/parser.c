@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 13:14:49 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:33:37 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -111,8 +111,9 @@ t_com	*parse_input(char *str)
 	arg_count = 0;
 	while (cur_token)
 	{
-		printf("token being dispatched: %s\n", cur_token->value);
-		token_dispatcher(&commands, &current_cmd, cur_token, &arg_count);
+		ft_printf("token being dispatched: %s\n", cur_token->value);
+		if (token_dispatcher(&commands, &current_cmd, cur_token, &arg_count))
+			return (0);
 		cur_token = cur_token->next;
 	}
 	if (current_cmd)

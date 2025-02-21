@@ -47,7 +47,8 @@ int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 	else if (tokens->type == TOKEN_PIPE)
 	{
 		if (current_cmd)
-			handle_pipe_token(current_cmd, arg_count);
+			if (handle_pipe_token(current_cmd, arg_count))
+				return (1);
 	}
 	else if (tokens->type == TOKEN_REDIRECT_OUT)
 		handle_redirect_token(*current_cmd, tokens, 0);
@@ -69,6 +70,15 @@ int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 {
 	t_com	*new_cmd;
+
+	printf("called handle pipe token\n");
+
+	if (!*current_cmd)
+	{
+		ft_printf("unexpected syntax\n");
+		store_exit_status(1);
+		return (1);
+	}
 
 	(*current_cmd)->has_outpipe = 1;
 	new_cmd = malloc(sizeof(t_com));

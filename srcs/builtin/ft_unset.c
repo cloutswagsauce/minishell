@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
@@ -6,33 +6,48 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:57:09 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/19 13:13:23 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:44:04 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	del_node_contents(void *vars)
+void del_node_contents(void *vars)
 {
-	t_list	*node;
+    t_list *node;
 
-	node = (t_list *)vars;
-	free(node->name);
-	free(node->value);
+    node = (t_list *)vars;
+    if (node->name)
+        free(node->name);
+    if (node->value)
+        free(node->value);
 }
 
-void	check_local(t_com *com, t_list **vars)
+void check_local(t_com *com, t_list **vars)
 {
-	while (*vars)
-	{
-		if (!ft_memcmp(com->argv[1] + 1, (*vars)->name, ft_strlen(com->argv[1]
-					+ 1)))
-		{
-			ft_lstdelone(*vars, del_node_contents);
-			break ;
-		}
-		(*vars) = (*vars)->next;
-	}
+    t_list *temp;
+    t_list *prev;
+
+    temp = *vars;
+    prev = NULL;
+
+    printf("the arg is %s\n", com->argv[1]);
+    
+    while (temp)
+    {
+        if (!ft_strncmp(com->argv[1], temp->name, ft_strlen(com->argv[1])))
+        {
+            printf("we found variable name: %s\n", temp->name);
+            if (prev) // If temp is not the head
+                prev->next = temp->next;
+            else // If temp is the head
+                *vars = temp->next;
+            ft_lstdelone(temp, del_node_contents);
+            break;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
 }
 
 void	check_env(t_com *com, char ***envp)
@@ -44,6 +59,7 @@ void	check_env(t_com *com, char ***envp)
 	i = 0;
 	j = 0;
 	arr = *envp;
+
 	while (arr[i])
 	{
 		if (!ft_memcmp(com->argv[1], arr[i], ft_strlen(com->argv[1])))
@@ -58,6 +74,8 @@ void	check_env(t_com *com, char ***envp)
 
 int	ft_unset(t_com *com, t_data *data)
 {
+	if (!com->argv[1])
+		return (0);
 	check_local(com, &data->local_env);
 	check_env(com, &data->envp);
 	return (0);
