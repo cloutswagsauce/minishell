@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 12:14:30 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 16:22:03 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -57,6 +57,7 @@ void	execute_builtin_command(t_com *com, t_data *data)
 
 void	handle_command(char *exec_path, t_com *command, t_data *data)
 {
+	printf("handle command was called\n");
 	command_has_variable(command, data->local_env);
 	if (execve(exec_path, command->argv, env_list_to_envp(data->envp)) == -1)
 	{

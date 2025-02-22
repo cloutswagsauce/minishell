@@ -19,7 +19,6 @@ t_token *new_token(char *value, int type, int take_ownership)
     t_token *token;
     size_t len;
 
-    printf("new token was called!\n");
     token = malloc(sizeof(t_token));
     if (!token)
         return (NULL);

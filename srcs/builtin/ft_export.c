@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 15:06:42 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 16:11:34 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -73,28 +73,27 @@ char	*get_name(char *str, char *equal)
 	return (name);
 }
 
-int is_valid_identifier(char *str)
+int	is_valid_identifier(char *str)
 {
-    if (!str || !*str)
-        return (0);
-
-    if (!ft_isalpha(*str) && *str != '_')
-        return (0); 
-    str++;
-    while (*str && *str != '=')
-    {
-        if (!ft_isalnum(*str) && *str != '_')
-            return (0);
-        str++;
-    }
-    if (!*str)
-        return (1);
-    str++; 
-    if (!*str)
-        return (1);
-    if (*str == '<' || *str == '>' || *str == '|')
-        return (0);
-    return (1);
+	if (!str || !*str)
+		return (0);
+	if (!ft_isalpha(*str) && *str != '_')
+		return (0);
+	str++;
+	while (*str && *str != '=')
+	{
+		if (!ft_isalnum(*str) && *str != '_')
+			return (0);
+		str++;
+	}
+	if (!*str)
+		return (1);
+	str++;
+	if (!*str)
+		return (1);
+	if (*str == '<' || *str == '>' || *str == '|')
+		return (0);
+	return (1);
 }
 
 int	ft_export(char **name_and_value, t_com *cmd, t_data *data, int flag)

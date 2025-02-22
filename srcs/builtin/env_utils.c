@@ -3,28 +3,28 @@
 
 char **env_list_to_envp(t_list *env_list)
 {
-
-	printf("called list to envp");
     int count = 0;
     t_list *tmp = env_list;
+	char **envp;
+
     while (tmp)
     {
         count++;
         tmp = tmp->next;
     }
 
-    // Step 2: Allocate memory for the char ** array (+1 for NULL terminator)
-    char **envp = malloc(sizeof(char *) * (count + 1));
+    // Allocate memory for the char ** array (+1 for NULL terminator)
+    envp = malloc(sizeof(char *) * (count + 1));
     if (!envp)
         return (NULL); // Handle allocation failure
 
-    // Step 3: Fill the array with "name=value" strings
+    // Fill the array with "name=value" strings
     tmp = env_list;
     int i = 0;
     while (tmp)
     {
         // Calculate the length needed for "name=value"
-        size_t len = strlen(tmp->name) + strlen(tmp->value) + 2; // +1 for '=', +1 for '\0'
+        size_t len = ft_strlen(tmp->name) + ft_strlen(tmp->value) + 2; // +1 for '=', +1 for '\0'
         envp[i] = malloc(len);
         if (!envp[i])
         {
@@ -34,7 +34,10 @@ char **env_list_to_envp(t_list *env_list)
             free(envp);
             return (NULL);
         }
-        snprintf(envp[i], len, "%s=%s", tmp->name, tmp->value);
+        // Manually construct "name=value" using ft_strlcpy and ft_strlcat
+        ft_strlcpy(envp[i], tmp->name, len);          // Copy name
+        ft_strlcat(envp[i], "=", len);               // Append '='
+        ft_strlcat(envp[i], tmp->value, len);        // Append value
         tmp = tmp->next;
         i++;
     }
