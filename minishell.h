@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 12:32:24 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:45:25 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -155,5 +155,6 @@ int					create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_tok
 int					set_variable(char **name_and_value, char *equals, t_data *data, t_com *cmd);
 int					set_env(t_list **env_list, char **envp);
 char				**env_list_to_envp(t_list *env_list);
+int					find_path(t_data *data);
 
 #endif

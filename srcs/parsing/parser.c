@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 17:33:37 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:49:18 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -30,8 +30,12 @@ void	path_split_append(t_com *command, t_data *data)
 	char	**current_path_split;
 	int		len;
 
-	if (!getenv("PATH"))
+	if (!find_path(data))
+	{
+		printf("PATH variable not set dawg\n");
+		store_exit_status(127);
 		return ;
+	}
 	path_split = ft_split(getenv("PATH"), ':');
 	current_path_split = path_split;
 	while (*current_path_split)

@@ -44,3 +44,17 @@ int	is_valid_path(char *exec_path, t_com *command, t_data *data)
 		
 }
 
+int find_path(t_data *data)
+{
+	t_list *temp;
+	
+	temp = data->envp;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->name, "PATH", ft_strlen(temp->name)))
+			return (1);
+		temp = temp->next;
+	}
+	return 0;
+}
+

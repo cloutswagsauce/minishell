@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:57:09 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 12:15:56 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:32:43 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -23,7 +23,7 @@ void del_node_contents(void *vars)
         free(node->value);
 }
 
-void check_local(t_com *com, t_list **vars)
+int check_local(t_com *com, t_list **vars)
 {
     t_list *temp;
     t_list *prev;
@@ -48,20 +48,40 @@ void check_local(t_com *com, t_list **vars)
         prev = temp;
         temp = temp->next;
     }
+	return (0);
 }
 
-void	check_env(t_com *com, t_data *data)
+int	check_env(t_com *com, t_list **envp)
 {
+	t_list *temp;
+    t_list *prev;
 
-	(void)com;
-	(void)data;
+	temp = *envp;
+	prev = NULL;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->name, com->argv[1], ft_strlen(com->argv[1])))
+		{
+			if (prev) // If temp is not the head
+                prev->next = temp->next;
+			else
+				*envp = temp->next;
+			ft_lstdelone(temp, del_node_contents);
+			return (1);
+		}
+			prev = temp;
+        	temp = temp->next;
+	}
+	return (0);
 }
 
 int	ft_unset(t_com *com, t_data *data)
 {
 	if (!com->argv[1])
 		return (0);
-	check_local(com, &data->local_env);
-	check_env(com, data);
+	if (check_env(com, &data->envp))
+		return (0);
+	if (check_local(com, &data->local_env))
+		return (0);
 	return (0);
 }
