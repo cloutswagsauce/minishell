@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 13:21:52 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 15:23:59 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -30,25 +30,30 @@ int	handle_PWD(t_list *envp)
 	}
 	return (0);
 }
-int	update_env_var(char *name, char *value, t_list **envp)
+int update_env_var(t_com *cmd, t_data *data)
 {
-	t_list	**current;
-	char	*new_value;
-
-	current = envp;
-	while (*current)
+	t_list *temp;
+	char *name;
+	char *value;
+	name = get_name(cmd->argv[1], ft_strchr(cmd->argv[1], '='));
+	if (cmd->d_quote || cmd->s_quote)
+		value =cmd->argv[2];
+	else
+		value = ft_strchr(cmd->argv[1], '=') +  1;
+	temp = data->envp;
+	while (temp)
 	{
-		if (!ft_memcmp((*current)->name, name, ft_strlen(name)))
+		if (!ft_strncmp(name, temp->name, ft_strlen(name)))
 		{
-			new_value = ft_strdup(value);
-			free((*current)->value);
-			(*current)->value = new_value;
+			free(temp->value);
+			temp->value = ft_strdup(value);
 			return (1);
 		}
-		(*current) = (*current)->next;
+		temp = temp->next;
 	}
 	return (0);
 }
+
 int	set_env_variable(char *name_and_value, char *equals, t_list **env_list)
 {
 	char	*name;
@@ -99,6 +104,7 @@ int	ft_env(t_data *data)
 		envp_temp = envp_temp->next;
 	}
 	temp = data->local_env;
+	printf("got here");
 	while (temp)
 	{
 		if (temp->name && *temp->value)

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 13:45:25 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 14:59:17 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -156,5 +156,7 @@ int					set_variable(char **name_and_value, char *equals, t_data *data, t_com *c
 int					set_env(t_list **env_list, char **envp);
 char				**env_list_to_envp(t_list *env_list);
 int					find_path(t_data *data);
+int					update_env_var(t_com *cmd, t_data *envp);
+char				*get_value(char *equals);
 
 #endif

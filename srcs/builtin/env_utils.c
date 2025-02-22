@@ -1,8 +1,10 @@
 #include "../../minishell.h"
 
+
 char **env_list_to_envp(t_list *env_list)
 {
-    // Step 1: Count the number of environment variables
+
+	printf("called list to envp");
     int count = 0;
     t_list *tmp = env_list;
     while (tmp)
@@ -32,14 +34,10 @@ char **env_list_to_envp(t_list *env_list)
             free(envp);
             return (NULL);
         }
-        // Combine name and value into "name=value"
         snprintf(envp[i], len, "%s=%s", tmp->name, tmp->value);
         tmp = tmp->next;
         i++;
     }
-
-    // Step 4: Null-terminate the array
     envp[i] = NULL;
-
     return (envp);
 }
