@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 13:49:18 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 16:01:16 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -23,37 +23,38 @@ int	create_cmd_path(int *len, char **current_path_split, t_com *cmd,
 	return (0);
 }
 
-void	path_split_append(t_com *command, t_data *data)
+void path_split_append(t_com *command, t_data *data)
 {
-	char	**path_split;
-	char	*exec_path;
-	char	**current_path_split;
-	int		len;
+    char **path_split;
+    char *exec_path;
+    char **current_path_split;
+    int len;
 
-	if (!find_path(data))
-	{
-		printf("PATH variable not set dawg\n");
-		store_exit_status(127);
-		return ;
-	}
-	path_split = ft_split(getenv("PATH"), ':');
-	current_path_split = path_split;
-	while (*current_path_split)
-	{
-		create_cmd_path(&len, current_path_split, command, &exec_path);
-		if (access(exec_path, X_OK) == 0)
-		{
-			handle_command(exec_path, command, data);
-			free(exec_path);
-			break ;
-		}
-		free(exec_path);
-		current_path_split++;
-	}
-	free_double(path_split);
-	ft_putstr_fd("Command not found: ", 2);
-	ft_putendl_fd(command->argv[0], 2);
-	exit(127);
+    handle_direct_path(command, data);
+    if (!find_path(data))
+    {
+        printf("PATH variable not set dawg\n");
+        store_exit_status(127);
+        return;
+    }
+    path_split = ft_split(getenv("PATH"), ':');
+    current_path_split = path_split;
+    while (*current_path_split)
+    {
+        create_cmd_path(&len, current_path_split, command, &exec_path);
+        if (access(exec_path, X_OK) == 0)
+        {
+            handle_command(exec_path, command, data);
+            free(exec_path);
+            break;
+        }
+        free(exec_path);
+        current_path_split++;
+    }
+    free_double(path_split);
+    ft_putstr_fd("Command not found: ", 2);
+    ft_putendl_fd(command->argv[0], 2);
+    exit(127);
 }
 
 int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)

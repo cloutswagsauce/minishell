@@ -58,3 +58,23 @@ int find_path(t_data *data)
 	return 0;
 }
 
+int handle_direct_path(t_com *cmd, t_data *data)
+{
+	if (cmd->argv[0][0] == '/' || ft_strncmp(cmd->argv[0], "./", 2) == 0)
+    {
+        if (access(cmd->argv[0], X_OK) == 0)
+        {
+            handle_command(cmd->argv[0], cmd, data);
+            return;
+        }
+        else
+        {
+            ft_putstr_fd("Command not found: ", 2);
+            ft_putendl_fd(cmd->argv[0], 2);
+            store_exit_status(127);
+            return;
+        }
+    }
+
+}
+

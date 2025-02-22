@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 14:59:17 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 16:00:57 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -158,5 +158,6 @@ char				**env_list_to_envp(t_list *env_list);
 int					find_path(t_data *data);
 int					update_env_var(t_com *cmd, t_data *envp);
 char				*get_value(char *equals);
+int					handle_direct_path(t_com *cmd, t_data *data);
 
 #endif
