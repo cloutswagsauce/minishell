@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 12:29:21 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 12:16:31 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -20,7 +20,7 @@ void	handle_absolute(t_com *command, t_data *data)
 	com = command->argv[0];
 	args = command->argv;
 	if (!access(com, X_OK))
-		execve(com, args, data->envp);
+		execve(com, args, env_list_to_envp(data->envp));
 }
 
 void	store_exit_status(int status)

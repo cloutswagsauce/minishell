@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 12:50:12 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 12:32:24 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -61,7 +61,7 @@ typedef struct s_com
 
 typedef struct s_data
 {
-	char			**envp;
+	struct s_list	*envp;
 	struct s_list	*local_env;
 
 }					t_data;
@@ -152,5 +152,8 @@ void				store_exit_status(int status);
 void				handle_no_args(t_data *data);
 int					handle_both_cases(char *equals, char **name_and_value, t_com *cmd, t_data *data);
 int					create_new_command(t_com **current_cmd, int *arg_count, t_token *cur_token);
+int					set_variable(char **name_and_value, char *equals, t_data *data, t_com *cmd);
+int					set_env(t_list **env_list, char **envp);
+char				**env_list_to_envp(t_list *env_list);
 
 #endif

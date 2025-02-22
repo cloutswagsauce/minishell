@@ -37,7 +37,7 @@ void	print_local(t_data *data)
 	{
 		ft_printf("declare -x %s", temp->name);
 		if (temp->value)
-			ft_printf("=\"%s\"", temp->value);
+			ft_printf("=\"%s\"\n", temp->value);
 		ft_printf("\n");
 		temp = temp->next;
 	}
@@ -64,23 +64,13 @@ void	case_equals(char *equals, char **temp_env)
 
 void	handle_no_args(t_data *data)
 {
-	char	*equals;
-	char	**temp_env;
-	char	*name;
+	t_list	*temp_env;
 
 	temp_env = data->envp;
-	while (*temp_env)
+	while (temp_env)
 	{
-		equals = ft_strchr(*temp_env, '=');
-		if (equals)
-			case_equals(equals, temp_env);
-		else
-		{
-			name = get_name(*temp_env, NULL);
-			ft_printf("declare -x %s\n", name);
-			free(name);
-		}
-		temp_env++;
+		printf("declare -x %s = %s\n", temp_env->name,temp_env->value);
+		temp_env = temp_env->next;
 	}
 	print_local(data);
 }

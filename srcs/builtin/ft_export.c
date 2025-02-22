@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:40:16 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 13:43:15 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:11:18 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -112,6 +112,8 @@ int	ft_export(char **name_and_value, t_com *cmd, t_data *data, int flag)
 		return (1);
 	}
 	equals = ft_strchr(name_and_value[1], '=');
+	/*if (update_env_var(data->envp->name->, data, env_list))
+		return (0);*/
 	if (handle_both_cases(equals, name_and_value, cmd, data))
 	{
 		g_exit_status = 1;

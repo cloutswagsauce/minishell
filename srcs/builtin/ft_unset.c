@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:57:09 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 18:44:04 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 12:15:56 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -50,26 +50,11 @@ void check_local(t_com *com, t_list **vars)
     }
 }
 
-void	check_env(t_com *com, char ***envp)
+void	check_env(t_com *com, t_data *data)
 {
-	char	**arr;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
-	arr = *envp;
-
-	while (arr[i])
-	{
-		if (!ft_memcmp(com->argv[1], arr[i], ft_strlen(com->argv[1])))
-		{
-			i++;
-			continue ;
-		}
-		arr[j++] = arr[i++];
-	}
-	arr[j] = 0;
+	(void)com;
+	(void)data;
 }
 
 int	ft_unset(t_com *com, t_data *data)
@@ -77,6 +62,6 @@ int	ft_unset(t_com *com, t_data *data)
 	if (!com->argv[1])
 		return (0);
 	check_local(com, &data->local_env);
-	check_env(com, &data->envp);
+	check_env(com, data);
 	return (0);
 }

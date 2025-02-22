@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
@@ -6,13 +6,15 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 17:39:47 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/22 12:33:11 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
 
 int g_exit_status = 0;
+// now: make envp into a t_list
+
 
 // crtl D on heredoc caused leak
 // crtl c on heredoc causes leak
@@ -35,7 +37,10 @@ void	finish_execution(t_com *command, char *input)
 int init_data(t_data **data, char **envp, t_list *local_env)
 {
 	*data = malloc(sizeof(t_data));
-	(*data)->envp = envp;
+	set_env(&(*data)->envp, envp);
+	
+
+	
 	(*data)->local_env = local_env;
 	return (0);
 	
