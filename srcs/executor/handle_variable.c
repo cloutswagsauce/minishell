@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:13 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 17:56:17 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 19:30:07 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int expand_status(t_com *com, int j)
         free(com->argv[j]);
         com->argv[j] = NULL;
         com->argv[j] = ft_strdup(ft_itoa(g_exit_status));
-        printf("expanded $? at j=%d to: %s\n", j, com->argv[j]);
         return (1);
     }
     return (0);

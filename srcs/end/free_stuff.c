@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:49:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 17:42:24 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 20:27:10 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,39 @@ void	free_commands(t_com *cmd)
 		cmd = temp;
 	}
     cmd = NULL;
+}
+
+void free_lists(t_data *data)
+{
+    t_list *current;
+    t_list *next;
+
+    if (!data)
+        return;
+
+    // Free envp list
+    current = data->envp;
+    while (current)
+    {
+        next = current->next;
+        free(current->name);
+        free(current->value);
+        free(current);
+        current = next;
+    }
+    data->envp = NULL;
+
+    // Free local_env list
+    current = data->local_env;
+    while (current)
+    {
+        next = current->next;
+        free(current->name);
+        free(current->value);
+        free(current);
+        current = next;
+    }
+    data->local_env = NULL;
 }
 
 void free_tokens(t_token *tokens)

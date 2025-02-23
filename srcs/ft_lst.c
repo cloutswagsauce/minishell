@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_lst.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:50:59 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 13:07:34 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 19:48:58 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -47,18 +47,19 @@ int	ft_lstsize(t_list *lst)
 	return (i);
 }
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	t_list	*tmp;
-
-	if (!del || !lst || !*lst)
-		return ;
-	while (lst && *lst)
-	{
-		tmp = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		*lst = tmp;
-	}
+    t_list *tmp;
+    if (!del || !lst || !*lst)
+        return;
+    while (*lst)
+    {
+        tmp = (*lst)->next;
+        free((*lst)->name);   
+        free((*lst)->value);  
+        free(*lst);          
+        *lst = tmp;
+    }
 }
 
 t_list	*ft_lstnew(char *name, char *value)

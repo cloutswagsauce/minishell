@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 15:23:59 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 20:09:20 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -54,36 +54,46 @@ int update_env_var(t_com *cmd, t_data *data)
 	return (0);
 }
 
-int	set_env_variable(char *name_and_value, char *equals, t_list **env_list)
+int set_env_variable(char *name_and_value, char *equals, t_list **env_list)
 {
-	char	*name;
-	char	*value;
-	t_list	*new;
+    char *name;
+    char *value;
+    t_list *new;
 
-	name = get_name(name_and_value, equals);
-	value = get_value(equals);
-	if (!value)
-		return (1);
-	if (!name)
-	{
-		free(name);
-		return (1);
-	}
-	new = ft_lstnew(name, value);
-	ft_lstadd_back(env_list, new);
-	return (0);
+    name = get_name(name_and_value, equals);
+    if (!name)
+        return (1);  // Failed to allocate name
+
+    value = get_value(equals);
+    if (!value)
+    {
+        free(name);  // Free name if value allocation fails
+        return (1);
+    }
+
+    new = ft_lstnew(name, value);
+    if (!new)  // Check ft_lstnew failure
+    {
+        free(name);  // Free both if list node creation fails
+        free(value);
+        return (1);
+    }
+
+    ft_lstadd_back(env_list, new);
+    return (0);  // Success, name and value are now owned by the list
 }
 int set_env(t_list **env_list, char **envp)
 {
-	char *equals;
-	
-	while (*envp)
-	{
-		equals = ft_strchr(*envp, '=');
-		set_env_variable(*envp, equals, env_list);
-		envp++;
-	}
-	return (0);
+    char *equals;
+    
+    while (*envp)
+    {
+        equals = ft_strchr(*envp, '=');
+        if (set_env_variable(*envp, equals, env_list))
+            return (1);  // Optional: propagate error if desired
+        envp++;
+    }
+    return (0);
 }
 
 int	ft_env(t_data *data)

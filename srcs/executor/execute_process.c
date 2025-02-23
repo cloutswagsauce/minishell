@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 12:16:31 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 19:29:00 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -26,7 +26,10 @@ void	handle_absolute(t_com *command, t_data *data)
 void	store_exit_status(int status)
 {
 	if (WIFEXITED(status))
+	{
 		g_exit_status = WEXITSTATUS(status);
+	}
+		
 	else if (WIFSIGNALED(status))
 		g_exit_status = 128 + WTERMSIG(status);
 	

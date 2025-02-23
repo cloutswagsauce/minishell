@@ -1,13 +1,13 @@
 #include "../../minishell.h"
 
-char *handle_quotes(char *input, int *i)
+int handle_quotes(char *input, int *i, t_token **tokens)
 {
     int     start;
     char    quote;
     char    *buf;
 
     if (input[*i] != '"' && input[*i] != '\'')
-        return (NULL);
+        return (1); // Success, no quote to handle
     quote = input[(*i)++]; // Grab quote
     start = *i;
     while (input[*i] && input[*i] != quote)
@@ -15,11 +15,17 @@ char *handle_quotes(char *input, int *i)
     if (!input[*i])
     {
         ft_printf("you forgot to close the damn quote!\n");
-        return (NULL);
+        return (0); // Error: unclosed quote
     }
     buf = ft_substr(input, start, *i - start);
+    if (!buf)
+        return (0); // Allocation failure
+    if (quote == '\'')
+        add_token(tokens, buf, TOKEN_SQUOTES, 1); // Single quote token
+    else // quote == '"'
+        add_token(tokens, buf, TOKEN_DQUOTES, 1); // Double quote token
     (*i)++; // Move past closing quote
-    return (buf); // Return string, caller handles it
+    return (1); // Success
 }
 
 int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,

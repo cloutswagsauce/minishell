@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 17:55:37 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 20:23:44 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int builtin_caller(t_com *com, t_data *data)
 			return (ft_export(com->argv,com, data, 1));
 	}
 	else if (!ft_strncmp(com->argv[0], "exit", ft_strlen(com->argv[0])))
-		return (ft_exit());
+		return (ft_exit(com, data));
 	else if (!ft_strncmp(com->argv[0], "unset", ft_strlen(com->argv[0])))
 		return (ft_unset(com, data));
 	return (127);
@@ -57,15 +57,7 @@ void	execute_builtin_command(t_com *com, t_data *data)
 
 void handle_command(char *exec_path, t_com *command, t_data *data)
 {
-    int i;
-    printf("handle command was called\n");
     command_has_variable(command, data->local_env);
-    i = 0;
-    while (command->argv[i])
-    {
-        printf("argv[%d]: %s\n", i, command->argv[i]);
-        i++;
-    }
     if (execve(exec_path, command->argv, env_list_to_envp(data->envp)) == -1)
     {
         perror("execve failed");

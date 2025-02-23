@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 17:08:26 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 20:23:29 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int					ft_pwd(void);
 int					ft_export(char **name_and_value, t_com *cmd, t_data *data,
 						int flag);
 int					ft_cd(t_com command);
-int					ft_exit(void);
+int					ft_exit(t_com *cmd, t_data *data);
 t_list				*ft_lstnew(char *name, char *value);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstadd_back(t_list **lst, t_list *new);
@@ -137,7 +137,7 @@ int					arg_helper(t_token *cur_token, t_com *current_cmd,
 						int *arg_count);
 int					temp_arg_creator(t_com *current_cmd, char **temp_argv,
 						int *arg_count);
-char				*handle_quotes(char *input, int *i);
+int					handle_quotes(char *input, int *i, t_token **tokens);
 void				handle_redirections_in(char *input, int *i,
 						t_token **tokens);
 void				add_token(t_token **tokens, char *value, int type, int owner);
@@ -160,6 +160,8 @@ int					update_env_var(t_com *cmd, t_data *envp);
 char				*get_value(char *equals);
 void				handle_direct_path(t_com *cmd, t_data *data);
 char				*ft_strjoin_free(char *s1, char *s2);
+void				ft_lstclear(t_list **lst, void (*del)(void *));
+void				free_lists(t_data *data);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 18:00:44 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 19:29:19 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,56 +28,59 @@ void path_split_append(t_com *command, t_data *data)
     char **path_split;
     char *exec_path;
     char **current_path_split;
-    int len;
+    int len, status;
     pid_t pid;
-    int status;
 
     handle_direct_path(command, data);
     if (!find_path(data))
     {
-        printf("PATH variable not found\n");
+        printf("PATH variable not set dawg\n");
         store_exit_status(127);
         return;
     }
     path_split = ft_split(getenv("PATH"), ':');
+    if (!path_split)
+    {
+        store_exit_status(127);
+        return;
+    }
     current_path_split = path_split;
     while (*current_path_split)
     {
         create_cmd_path(&len, current_path_split, command, &exec_path);
-        printf("right before executing\n");
         if (access(exec_path, X_OK) == 0)
         {
             pid = fork();
-            if (pid == 0) // Child
+            if (pid < 0)
+            {
+                perror("fork failed");
+                free(exec_path);
+                free_double(path_split);
+                store_exit_status(1);
+                return;
+            }
+            if (pid == 0)
             {
                 handle_command(exec_path, command, data);
-                exit(126); // Shouldn’t reach here
-            }
-            else if (pid > 0) // Parent
-            {
-                waitpid(pid, &status, 0);
-                store_exit_status(WEXITSTATUS(status));
-                free(exec_path);
-                break;
+                exit(126);
             }
             else
             {
-                perror("fork failed");
-                store_exit_status(1);
+                waitpid(pid, &status, 0);
+                free(exec_path);
+                free_double(path_split);
+                store_exit_status(status);
+                return;
             }
         }
         free(exec_path);
         current_path_split++;
     }
     free_double(path_split);
-    if (!*current_path_split)
-    {
-        ft_putstr_fd("Command not found: ", 2);
-        ft_putendl_fd(command->argv[0], 2);
-        store_exit_status(127);
-    }
+    ft_putstr_fd("Command not found: ", 2);
+    ft_putendl_fd(command->argv[0], 2);
+    store_exit_status(127);
 }
-
 int	create_new_arg(int *arg_count, t_com *current_cmd, t_token *cur_token)
 {
 	char	**temp_argv;

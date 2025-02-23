@@ -123,10 +123,9 @@ t_token *tokenize_input(char *input)
         {
             if (input[i] == '"' || input[i] == '\'')
             {
-                temp = handle_quotes(input, &i); // Correct call
-                if (!temp) // Quote error
+                if (!handle_quotes(input, &i, &tokens)) // Check int return
                     return (free_tokens(tokens), NULL);
-                // No continue here—merge temp into buf
+                // No temp or merging—handle_quotes adds token
             }
             else if ((input[i] == '|' || input[i] == '<' || input[i] == '>') 
                      && (i == 0 || isspace((char)input[i - 1])))
@@ -142,9 +141,6 @@ t_token *tokenize_input(char *input)
                 temp = handle_word(input, &i);
                 if (!temp)
                     break;
-            }
-            if (temp)
-            {
                 if (!buf)
                     buf = temp;
                 else
