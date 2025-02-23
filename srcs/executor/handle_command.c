@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   handle_command.c                                   :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 16:22:03 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:55:37 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -55,13 +55,20 @@ void	execute_builtin_command(t_com *com, t_data *data)
 	close(stdin_fd);
 }
 
-void	handle_command(char *exec_path, t_com *command, t_data *data)
+void handle_command(char *exec_path, t_com *command, t_data *data)
 {
-	printf("handle command was called\n");
-	command_has_variable(command, data->local_env);
-	if (execve(exec_path, command->argv, env_list_to_envp(data->envp)) == -1)
-	{
-		perror("execve failed");
-		exit(126);
-	}
+    int i;
+    printf("handle command was called\n");
+    command_has_variable(command, data->local_env);
+    i = 0;
+    while (command->argv[i])
+    {
+        printf("argv[%d]: %s\n", i, command->argv[i]);
+        i++;
+    }
+    if (execve(exec_path, command->argv, env_list_to_envp(data->envp)) == -1)
+    {
+        perror("execve failed");
+        exit(126);
+    }
 }

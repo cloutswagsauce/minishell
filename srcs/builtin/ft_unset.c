@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:57:09 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 13:32:43 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 15:25:09 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -35,7 +35,7 @@ int check_local(t_com *com, t_list **vars)
     
     while (temp)
     {
-        if (!ft_strncmp(com->argv[1], temp->name, ft_strlen(com->argv[1])))
+        if (!ft_strncmp(com->argv[1], temp->name, ft_strlen(temp->name)))
         {
             printf("we found variable name: %s\n", temp->name);
             if (prev) // If temp is not the head
@@ -60,7 +60,7 @@ int	check_env(t_com *com, t_list **envp)
 	prev = NULL;
 	while (temp)
 	{
-		if (!ft_strncmp(temp->name, com->argv[1], ft_strlen(com->argv[1])))
+		if (!ft_strncmp(temp->name, com->argv[1], ft_strlen(temp->name)))
 		{
 			if (prev) // If temp is not the head
                 prev->next = temp->next;

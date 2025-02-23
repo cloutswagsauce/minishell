@@ -1,17 +1,12 @@
 #include "../../minishell.h"
 
-void handle_word(char *input, int *i, t_token **tokens)
+char *handle_word(char *input, int *i)
 {
-    int start;
-    char *buf;
-
-    start = *i;
+    int start = *i;
     while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|' 
            && input[*i] != '"' && input[*i] != '\'')
         (*i)++;
-    buf = ft_substr(input, start, (*i) - start);
-    if (buf)
-        add_token(tokens, buf, TOKEN_WORD, 1);
+    return (ft_substr(input, start, *i - start));
 }
 
 t_token *new_token(char *value, int type, int take_ownership)
@@ -66,7 +61,6 @@ void add_token(t_token **tokens, char *value, int type, int take_ownership)
 
 void handle_operators(char *input, int *i, t_token **tokens)
 {
-    // Only treat as operator if preceded by space or start of input
     int is_operator = (*i == 0 || isspace((char)input[*i - 1]));
     
     if (is_operator && input[*i] == '|')
@@ -102,7 +96,9 @@ void handle_operators(char *input, int *i, t_token **tokens)
     }
     else
     {
-        handle_word(input, i, tokens);  // Treat as part of word if not an operator
+        char *word = handle_word(input, i);
+        if (word)
+            add_token(tokens, word, TOKEN_WORD, 1);
     }
 }
 
@@ -110,27 +106,56 @@ void handle_operators(char *input, int *i, t_token **tokens)
 
 t_token *tokenize_input(char *input)
 {
-    t_token *tokens;
-    int i;
+    t_token *tokens = NULL;
+    int i = 0;
+    char *buf = NULL;
+    char *temp;
 
-    tokens = NULL;
-    i = 0;
     while (input[i])
     {
         while (input[i] && isspace((char)input[i]))
             i++;
         if (!input[i])
             break;
-        if ((input[i] == '|' || input[i] == '<' || input[i] == '>') 
-            && (i == 0 || isspace((char)input[i - 1])))
-            handle_operators(input, &i, &tokens);
-        else if (input[i] == '"' || input[i] == '\'')
+
+        buf = NULL;
+        while (input[i] && !isspace((char)input[i]))
         {
-            if (!handle_quotes(input, &i, &tokens))
-                return (NULL);
+            if (input[i] == '"' || input[i] == '\'')
+            {
+                temp = handle_quotes(input, &i); // Correct call
+                if (!temp) // Quote error
+                    return (free_tokens(tokens), NULL);
+                // No continue here—merge temp into buf
+            }
+            else if ((input[i] == '|' || input[i] == '<' || input[i] == '>') 
+                     && (i == 0 || isspace((char)input[i - 1])))
+            {
+                if (buf)
+                    add_token(&tokens, buf, TOKEN_WORD, 1);
+                handle_operators(input, &i, &tokens);
+                buf = NULL;
+                break;
+            }
+            else
+            {
+                temp = handle_word(input, &i);
+                if (!temp)
+                    break;
+            }
+            if (temp)
+            {
+                if (!buf)
+                    buf = temp;
+                else
+                {
+                    buf = ft_strjoin_free(buf, temp);
+                    free(temp);
+                }
+            }
         }
-        else
-            handle_word(input, &i, &tokens);
+        if (buf)
+            add_token(&tokens, buf, TOKEN_WORD, 1);
     }
     return (tokens);
 }

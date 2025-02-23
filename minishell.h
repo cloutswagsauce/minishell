@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/22 16:04:07 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:08:26 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -137,7 +137,7 @@ int					arg_helper(t_token *cur_token, t_com *current_cmd,
 						int *arg_count);
 int					temp_arg_creator(t_com *current_cmd, char **temp_argv,
 						int *arg_count);
-int					handle_quotes(char *input, int *i, t_token **tokens);
+char				*handle_quotes(char *input, int *i);
 void				handle_redirections_in(char *input, int *i,
 						t_token **tokens);
 void				add_token(t_token **tokens, char *value, int type, int owner);
@@ -159,5 +159,7 @@ int					find_path(t_data *data);
 int					update_env_var(t_com *cmd, t_data *envp);
 char				*get_value(char *equals);
 void				handle_direct_path(t_com *cmd, t_data *data);
+char				*ft_strjoin_free(char *s1, char *s2);
+
 
 #endif

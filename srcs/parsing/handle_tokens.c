@@ -1,32 +1,25 @@
 #include "../../minishell.h"
 
-int	handle_quotes(char *input, int *i, t_token **tokens)
+char *handle_quotes(char *input, int *i)
 {
-	int		start;
-	char	quote;
-	char	*buf;
+    int     start;
+    char    quote;
+    char    *buf;
 
-	if (input[*i] == '"' || input[*i] == '\'')
-	{
-		quote = input[(*i)++];
-		start = *i;
-		while (input[*i] && input[*i] != quote)
-			(*i)++;
-		if (!input[*i])
-		{
-			ft_printf("you forgot to close the damn quote!\n");
-			return (0);
-		}
-		buf = ft_substr(input, start, (*i) - start);
-		if (quote == '\'')
-			add_token(tokens, buf, TOKEN_SQUOTES, 1);
-		else if (quote == '"')
-			add_token(tokens, buf, TOKEN_DQUOTES, 1);
-				// taking ownership flag is onn boiiii
-		if (input[*i])
-			(*i)++;
-	}
-	return (1);
+    if (input[*i] != '"' && input[*i] != '\'')
+        return (NULL);
+    quote = input[(*i)++]; // Grab quote
+    start = *i;
+    while (input[*i] && input[*i] != quote)
+        (*i)++;
+    if (!input[*i])
+    {
+        ft_printf("you forgot to close the damn quote!\n");
+        return (NULL);
+    }
+    buf = ft_substr(input, start, *i - start);
+    (*i)++; // Move past closing quote
+    return (buf); // Return string, caller handles it
 }
 
 int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
