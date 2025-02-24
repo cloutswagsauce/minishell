@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 20:37:42 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:02:56 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../minishell.h"
 
@@ -66,12 +66,10 @@ int main(int argc, char **argv, char **envp)
     data = 0;
     if (init_data(&data, envp, local_env))
         return (1);
-
     if (isatty(STDIN_FILENO))
         signal_handler_interactive();
     else
         signal_handler_non_interactive();
-
     while (1)
     {
         if (isatty(STDIN_FILENO))
@@ -96,7 +94,6 @@ int main(int argc, char **argv, char **envp)
                 execute_process(commands, data);
             wait(0);
             finish_execution(commands, input, data);
-			
         }
         else
             free(input);

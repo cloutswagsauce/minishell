@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 19:29:00 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:22:07 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -45,6 +45,7 @@ void	execute_process(t_com *cmd, t_data *data)
 		pid = fork();
 		if (pid == 0)
 		{
+			printf("in the first case\n");
 			if (cmd->delim)
 				handle_redirect_heredoc(cmd);
 			if (cmd->output_file)
@@ -61,5 +62,4 @@ void	execute_process(t_com *cmd, t_data *data)
 	}
 	else
 		execute_builtin_command(cmd, data);
-		
 }

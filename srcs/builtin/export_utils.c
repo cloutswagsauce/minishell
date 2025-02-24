@@ -8,9 +8,10 @@ int	set_variable(char **name_and_value, char *equals, t_data *data, t_com *cmd)
 	char	*value;
 	t_list	*new;
 
+
 	name = get_name((*(name_and_value + 1)), equals);
 	value = get_value(equals);
-	if (!value && cmd->d_quote)
+	if (!value && (cmd->d_quote || cmd->s_quote))
 	{
 		value = (*(name_and_value + 2));
 	}
@@ -81,13 +82,17 @@ int	handle_both_cases(char *equals, char **name_and_value, t_com *cmd,
 	char	*name;
 	t_list	*new;
 
+
+	printf("im here");
 	if (equals)
 	{
+		printf("in equals case\n");
 		if (!set_variable(name_and_value, equals, data, cmd))
 			return (1);
 	}
 	else
 	{
+		printf("in else case\n");
 		name = ft_strdup(name_and_value[1]);
 		if (!name)
 			return (1);

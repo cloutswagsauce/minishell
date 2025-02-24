@@ -7,7 +7,7 @@ int handle_quotes(char *input, int *i, t_token **tokens)
     char    *buf;
 
     if (input[*i] != '"' && input[*i] != '\'')
-        return (1); // Success, no quote to handle
+        return (1);
     quote = input[(*i)++]; // Grab quote
     start = *i;
     while (input[*i] && input[*i] != quote)
@@ -15,18 +15,19 @@ int handle_quotes(char *input, int *i, t_token **tokens)
     if (!input[*i])
     {
         ft_printf("you forgot to close the damn quote!\n");
-        return (0); // Error: unclosed quote
+        return (0);
     }
     buf = ft_substr(input, start, *i - start);
     if (!buf)
-        return (0); // Allocation failure
+        return (0);
     if (quote == '\'')
-        add_token(tokens, buf, TOKEN_SQUOTES, 1); // Single quote token
-    else // quote == '"'
-        add_token(tokens, buf, TOKEN_DQUOTES, 1); // Double quote token
+        add_token(tokens, buf, TOKEN_SQUOTES, 1);
+    else
+        add_token(tokens, buf, TOKEN_DQUOTES, 1);
     (*i)++; // Move past closing quote
-    return (1); // Success
+    return (1);
 }
+
 
 int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 		int *arg_count)
@@ -70,15 +71,12 @@ int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 {
 	t_com	*new_cmd;
 
-	printf("called handle pipe token\n");
-
 	if (!*current_cmd)
 	{
 		ft_printf("unexpected syntax\n");
 		store_exit_status(1);
 		return (1);
 	}
-
 	(*current_cmd)->has_outpipe = 1;
 	new_cmd = malloc(sizeof(t_com));
 	if (!new_cmd)

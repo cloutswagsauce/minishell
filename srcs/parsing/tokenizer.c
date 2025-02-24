@@ -3,8 +3,9 @@
 char *handle_word(char *input, int *i)
 {
     int start = *i;
-    while (input[*i] && !isspace((char)input[*i]) && input[*i] != '|' 
-           && input[*i] != '"' && input[*i] != '\'')
+    while (input[*i] && !isspace((char)input[*i]) && 
+           input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && 
+           input[*i] != '"' && input[*i] != '\'')
         (*i)++;
     return (ft_substr(input, start, *i - start));
 }
@@ -110,6 +111,8 @@ t_token *tokenize_input(char *input)
     int i = 0;
     char *buf = NULL;
     char *temp;
+    char *new_buf;
+    t_token *last;
 
     while (input[i])
     {
@@ -117,41 +120,110 @@ t_token *tokenize_input(char *input)
             i++;
         if (!input[i])
             break;
-
-        buf = NULL;
-        while (input[i] && !isspace((char)input[i]))
+        
+        if (input[i] == '"' || input[i] == '\'')
         {
-            if (input[i] == '"' || input[i] == '\'')
+            if (buf)  // If we have a buffer, add it as a token first
             {
-                if (!handle_quotes(input, &i, &tokens)) // Check int return
-                    return (free_tokens(tokens), NULL);
-                // No temp or merging—handle_quotes adds token
-            }
-            else if ((input[i] == '|' || input[i] == '<' || input[i] == '>') 
-                     && (i == 0 || isspace((char)input[i - 1])))
-            {
-                if (buf)
-                    add_token(&tokens, buf, TOKEN_WORD, 1);
-                handle_operators(input, &i, &tokens);
+                add_token(&tokens, buf, TOKEN_WORD, 1);
                 buf = NULL;
-                break;
             }
-            else
+            
+            // Handle the first quoted string
+            if (!handle_quotes(input, &i, &tokens))
+                return (free_tokens(tokens), NULL);
+            
+            // Process any adjacent text without spaces
+            while (input[i] && !isspace((char)input[i]) && 
+                   input[i] != '|' && input[i] != '<' && input[i] != '>')
             {
-                temp = handle_word(input, &i);
-                if (!temp)
-                    break;
-                if (!buf)
-                    buf = temp;
+                if (input[i] == '"' || input[i] == '\'')
+                {
+                    // Save the current last token before adding a new one
+                    last = tokens;
+                    while (last && last->next)
+                        last = last->next;
+                    
+                    // Handle the next quoted string
+                    if (!handle_quotes(input, &i, &tokens))
+                        return (free_tokens(tokens), NULL);
+                    
+                    // Join with the previous token if there was one
+                    if (last)
+                    {
+                        t_token *new_last = tokens;
+                        while (new_last && new_last->next)
+                            new_last = new_last->next;
+                        
+                        // Combine the values without adding a space
+                        char *joined = ft_strjoin(last->value, new_last->value);
+                        free(last->value);
+                        free(new_last->value);
+                        
+                        // Update the last token and remove the new one
+                        last->value = joined;
+                        last->next = new_last->next;
+                        free(new_last);
+                    }
+                }
                 else
                 {
-                    buf = ft_strjoin_free(buf, temp);
-                    free(temp);
+                    temp = handle_word(input, &i);
+                    if (temp)
+                    {
+                        last = tokens;
+                        while (last->next)
+                            last = last->next;
+                        char *joined = ft_strjoin(last->value, temp);
+                        free(last->value);
+                        free(temp);
+                        last->value = joined;
+                    }
                 }
             }
+            continue;
         }
+        
+        // Handle operators
+        if (input[i] == '|' || input[i] == '<' || input[i] == '>')
+        {
+            if (buf)
+            {
+                add_token(&tokens, buf, TOKEN_WORD, 1);
+                buf = NULL;
+            }
+            handle_operators(input, &i, &tokens);
+            continue;
+        }
+        
+        // Handle regular words
+        temp = handle_word(input, &i);
+        if (!temp)
+            continue;
+        
+        if (!buf)
+            buf = temp;
+        else
+        {
+            new_buf = ft_strjoin(buf, temp);
+            free(buf);
+            free(temp);
+            buf = new_buf;
+        }
+
+        // Check if next char continues the argument
+        if (input[i] && !isspace((char)input[i]) && 
+            (input[i] == '"' || input[i] == '\''))
+            continue;
+        
         if (buf)
+        {
             add_token(&tokens, buf, TOKEN_WORD, 1);
+            buf = NULL;
+        }
     }
+    if (buf)
+        add_token(&tokens, buf, TOKEN_WORD, 1);
+
     return (tokens);
 }

@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   handle_command.c                                   :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:04:31 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 20:23:44 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:20:59 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -17,7 +17,7 @@ int builtin_caller(t_com *com, t_data *data)
 	if (com->delim)
 		return (handle_redirect_heredoc(com));
 	if (com->output_file)
-		return (handle_redirect_out(com));
+		handle_redirect_out(com);
 	if (!ft_strncmp(com->argv[0], "echo", ft_strlen(com->argv[0])))
 		return (ft_echo(*com));
 	else if (!ft_strncmp(com->argv[0], "env", ft_strlen(com->argv[0])))

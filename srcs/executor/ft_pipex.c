@@ -6,14 +6,13 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:34:58 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/19 12:00:10 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:57:32 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../minishell.h"
 
-void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd,
-		t_data *data)
+void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd, t_data *data)
 {
 	if (cmd->has_inpipe)
 	{
@@ -70,7 +69,7 @@ void	execute_pipeline(t_com *commands, t_data *data)
 	int		fd_in;
 	pid_t	pid;
 	t_com	*cmd;
-	int 	status;
+	int		status;
 
 	fd_in = 0;
 	cmd = commands;

@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:18:05 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 13:23:39 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:59:59 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -15,6 +15,8 @@
 int	handle_redirect_out(t_com *cmd)
 {
 	int	fd;
+
+	printf("called handle redirect out\n");
 
 	if (cmd->delim)
 		return (handle_redirect_heredoc(cmd));
