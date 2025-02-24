@@ -25,6 +25,8 @@ int	set_variable(char **name_and_value, char *equals, t_data *data, t_com *cmd)
 		return (1);
 	}
 	new = ft_lstnew(name, value);
+	free(name);
+	free(value);
 	ft_lstadd_back(&data->local_env, new);
 	return (0);
 }

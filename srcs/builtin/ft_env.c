@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 16:58:37 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:22:54 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -62,25 +62,25 @@ int set_env_variable(char *name_and_value, char *equals, t_list **env_list)
 
     name = get_name(name_and_value, equals);
     if (!name)
-        return (1);  // Failed to allocate name
+        return (1);
 
     value = get_value(equals);
     if (!value)
     {
-        free(name);  // Free name if value allocation fails
+        free(name);  
         return (1);
     }
-
     new = ft_lstnew(name, value);
-    if (!new)  // Check ft_lstnew failure
+    if (!new) 
     {
-        free(name);  // Free both if list node creation fails
+        free(name);
         free(value);
         return (1);
     }
-
+	free(name);
+	free(value);
     ft_lstadd_back(env_list, new);
-    return (0);  // Success, name and value are now owned by the list
+    return (0);
 }
 int set_env(t_list **env_list, char **envp)
 {
@@ -90,7 +90,7 @@ int set_env(t_list **env_list, char **envp)
     {
         equals = ft_strchr(*envp, '=');
         if (set_env_variable(*envp, equals, env_list))
-            return (1);  // Optional: propagate error if desired
+            return (1);
         envp++;
     }
     return (0);

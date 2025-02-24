@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   free_stuff.c                                       :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:49:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 16:33:16 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:00:42 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -22,6 +22,8 @@ void	free_commands(t_com *cmd)
 		free_double(cmd->argv);
         if (cmd->delim)
             free(cmd->delim);
+        if (cmd->output_file)
+            free(cmd->output_file);
 		free(cmd);
 		cmd = temp;
 	}
@@ -33,8 +35,7 @@ void free_lists(t_data *data)
     t_list *current;
     t_list *next;
 
-    if (!data)
-        return;
+  
 
 	printf("free lists was called");
     // Free envp list
@@ -67,6 +68,7 @@ void free_tokens(t_token *tokens)
     t_token *tmp;
     while (tokens)
     {
+        printf("freeing token: %s\n", tokens->value);
         tmp = tokens->next;
         if (tokens->value) 
             free(tokens->value);

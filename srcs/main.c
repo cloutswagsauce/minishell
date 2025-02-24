@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 17:00:54 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 22:48:06 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -30,7 +30,7 @@ void finish_execution(t_com *command, char *input, t_data *data)
 {
     add_history(input);
     free(input);
-	free_lists(data);
+	(void)(data);
     free_commands(command);
 }
 
@@ -64,34 +64,7 @@ int setup_main(t_data **data, char **envp, t_list **local_env)
     return (0);
 }
 
-char *handle_input(void)
-{
-    char *input;
 
-    if (isatty(STDIN_FILENO))
-        signal_handler_interactive();
-    else
-        signal_handler_non_interactive();
-    rl_on_new_line();
-    input = readline("mini$hell 🤖: ");
-    return (input);
-}
-
-void execute_input(char *input, t_com **commands, t_data *data)
-{
-    if (*input)
-    {
-        *commands = parse_input(input);
-        if (*commands && (*commands)->has_outpipe)
-            execute_pipeline(*commands, data);
-        else if (*commands)
-            execute_process(*commands, data);
-        wait(0);
-        //finish_execution(*commands, input, data);
-    }
-    else
-        free(input);
-}
 
 int main(int argc, char **argv, char **envp)
 {

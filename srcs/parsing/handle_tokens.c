@@ -43,29 +43,25 @@ void handle_word_tokens(t_com **commands, t_com **current_cmd, t_token *tokens, 
 
 int token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens, int *arg_count)
 {
-    int ret;
-
-    ret = 0;
+    int ret = 0;
     if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES || tokens->type == TOKEN_DQUOTES)
         handle_word_tokens(commands, current_cmd, tokens, arg_count);
-    else if (tokens->type == TOKEN_PIPE)
-    {
+    else if (tokens->type == TOKEN_PIPE) {
         if (*current_cmd)
             ret = handle_pipe_token(current_cmd, arg_count);
-    }
-    else if (tokens->type == TOKEN_REDIRECT_OUT)
+    } else if (tokens->type == TOKEN_REDIRECT_OUT) {
         handle_redirect_token(*current_cmd, tokens, 0);
-    else if (tokens->type == TOKEN_APPEND)
+        tokens = tokens->next; // Advance past operator
+    } else if (tokens->type == TOKEN_APPEND) {
         handle_redirect_token(*current_cmd, tokens, 1);
-    else if (tokens->type == TOKEN_HEREDOC)
-    {
-        if (!*current_cmd)
-        {
+        tokens = tokens->next; // Advance past operator
+    } else if (tokens->type == TOKEN_HEREDOC) {
+        if (!*current_cmd) {
             create_new_command(current_cmd, arg_count, tokens);
-            if (!*commands)
-                *commands = *current_cmd;
+            if (!*commands) *commands = *current_cmd;
         }
         handle_heredoc_token(*current_cmd, tokens);
+        tokens = tokens->next; // Advance past operator
     }
     return (ret);
 }

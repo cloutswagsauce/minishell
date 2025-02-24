@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 20:23:29 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 22:48:20 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,44 @@ void				handle_direct_path(t_com *cmd, t_data *data);
 char				*ft_strjoin_free(char *s1, char *s2);
 void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				free_lists(t_data *data);
+void				free_single_token(t_token *token);
+char				*handle_input(void);
+void				execute_input(char *input, t_com **commands, t_data *data);
+void				finish_execution(t_com *command, char *input, t_data *data);
+void				handle_interactive(int sig);
+void				handle_non_interactive(int sig);
+void				ignore_sigquit(void);
+int					create_cmd_path(int *len, char **current_path_split, t_com *cmd, char **exec_path);
+void				execute_command_from_path(char *exec_path, char **path_split, t_com *command, t_data *data);
+char				*handle_word(char *input, int *i);
+t_token				*new_token(char *value, int type, int take_ownership);
+void				add_token(t_token **tokens, char *value, int type, int take_ownership);
+void				free_single_token(t_token *token);
+int					is_operator_start(char *input, int *i);
+void				handle_pipe(char *input, int *i, t_token **tokens);
+void				handle_redirect_it(char *input, int *i, t_token **tokens);
+void				handle_redirect_ot(char *input, int *i, t_token **tokens);
+void				handle_non_operator(char *input, int *i, t_token **tokens);
+void				handle_operators(char *input, int *i, t_token **tokens);
+void				skip_spaces(char *input, int *i);
+t_token				*get_last_token(t_token *tokens);
+int 				join_quoted_token(char *input, int *i, t_token **tokens, t_token *last);
+int					join_word_token(char *input, int *i, t_token **tokens, t_token *last);
+int					process_operator(char *input, int *i, t_token **tokens, char **buf);
+int					process_quoted_string(char *input, int *i, t_token **tokens, char **buf);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #endif
