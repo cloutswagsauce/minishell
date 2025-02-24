@@ -67,6 +67,16 @@ int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
 	return (0);
 }
 
+int init_new_pipe_cmd(t_com *new_cmd)
+{
+	new_cmd->argv[0] = NULL;
+	new_cmd->argv[1] = NULL;
+	new_cmd->has_inpipe = 1;
+	new_cmd->has_outpipe = 0;
+	new_cmd->next = NULL;
+	return (0);
+
+}
 int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 {
 	t_com	*new_cmd;
@@ -88,11 +98,7 @@ int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 		free(new_cmd);
 		return (1);
 	}
-	new_cmd->argv[0] = NULL;
-	new_cmd->argv[1] = NULL;
-	new_cmd->has_inpipe = 1;
-	new_cmd->has_outpipe = 0;
-	new_cmd->next = NULL;
+	init_new_pipe_cmd(new_cmd);
 	(*current_cmd)->next = new_cmd;
 	(*current_cmd) = new_cmd;
 	(*arg_count) = 0;
