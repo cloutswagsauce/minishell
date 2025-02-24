@@ -34,8 +34,7 @@ void	child_pipe_process(t_com *cmd, int fd_in, int *pipe_fd, t_data *data)
 	}
 	else
 	{
-		path_split_append(cmd, data);
-		perror("execve failed");
+		call_child_action(*cmd, data);
 		exit(1);
 	}
 }
