@@ -64,7 +64,7 @@ void	execute_process(t_com *cmd, t_data *data)
 			store_exit_status(status);
 			if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 			{
-				//rl_on_new_line();
+				rl_on_new_line();
 				rl_replace_line("", 0);
 				rl_redisplay();
 			}

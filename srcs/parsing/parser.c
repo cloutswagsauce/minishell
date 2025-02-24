@@ -75,21 +75,24 @@ void try_exec_from_path(char **path_split, t_com *command, t_data *data)
 void path_split_append(t_com *command, t_data *data)
 {
     char **path_split;
+    char *path_value;
 
     handle_direct_path(command, data);
-    if (!find_path(data))
+    path_value = getenv("PATH");
+    if (!path_value)
     {
-        printf("PATH variable not set dawg\n");
-        store_exit_status(127);
-        return;
+        ft_putstr_fd("PATH variable not set dawg\n", 2);
+        exit(127);  // Exit with appropriate error code
     }
-    path_split = ft_split(getenv("PATH"), ':');
+    path_split = ft_split(path_value, ':');
     if (!path_split)
     {
-        store_exit_status(127);
-        return;
+        ft_putstr_fd("Failed to split PATH\n", 2);
+        exit(127);
     }
     try_exec_from_path(path_split, command, data);
+    // If we get here, command was not found
+    exit(127);
 }
 
 

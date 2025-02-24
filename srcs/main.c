@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 16:25:19 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:34:03 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -24,7 +24,8 @@ void	call_child_action(t_com command, t_data *data)
 	if (!ft_strncmp(command.argv[0], "<<", ft_strlen(command.argv[0])))
 		exit(0);
 	path_split_append(&command, data);
-	exit(0);
+	perror("execve failed");  // Only reached if path_split_append fails
+	exit(1);  // Exit with error if we get here
 }
 
 
@@ -93,7 +94,7 @@ void execute_input(char *input, t_com **commands, t_data *data)
         else if (*commands)
             execute_process(*commands, data);
         wait(0);
-        finish_execution(*commands, input, data);
+        //finish_execution(*commands, input, data);
     }
     else
         free(input);
