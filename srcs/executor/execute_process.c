@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 12:22:07 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:08:37 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -34,19 +34,9 @@ void	store_exit_status(int status)
 		g_exit_status = 128 + WTERMSIG(status);
 	
 }
-
-void	execute_process(t_com *cmd, t_data *data)
+void handle_child(t_com *cmd, t_data *data)
 {
-	pid_t	pid;
-	int		status;
-
-	if (!cmd->is_builtin)
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			printf("in the first case\n");
-			if (cmd->delim)
+	if (cmd->delim)
 			{
 				if (handle_redirect_heredoc(cmd) != 0)
 					exit(130);  // Exit if heredoc was interrupted
@@ -56,14 +46,25 @@ void	execute_process(t_com *cmd, t_data *data)
 			if (cmd->argv[0][0] == '/')
 				handle_absolute(cmd, data);
 			call_child_action(*cmd, data);
-		}
+	
+}
+void	execute_process(t_com *cmd, t_data *data)
+{
+	pid_t	pid;
+	int		status;
+
+	if (!cmd->is_builtin)
+	{
+		pid = fork();
+		if (pid == 0)
+			handle_child(cmd, data);
 		else if (pid > 0)
 		{
 			waitpid(pid, &status, 0);
 			store_exit_status(status);
 			if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 			{
-				rl_on_new_line();
+				//rl_on_new_line();
 				rl_replace_line("", 0);
 				rl_redisplay();
 			}
