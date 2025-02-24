@@ -67,7 +67,8 @@ static void	handle_heredoc_signal(int sig)
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
-		exit(130); // Exit heredoc process immediately
+		close(STDIN_FILENO); // Close stdin to force readline to return
+		exit(130);
 	}
 }
 
@@ -77,6 +78,8 @@ void	signal_handler_heredoc(void)
 
 	ft_memset(&act, 0, sizeof(act));
 	act.sa_handler = &handle_heredoc_signal;
+	act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL); // Optional: Ignore SIGQUIT
+	signal(SIGQUIT, SIG_IGN); // Ignore SIGQUIT in heredoc
 }

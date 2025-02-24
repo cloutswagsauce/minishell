@@ -47,7 +47,10 @@ void	execute_process(t_com *cmd, t_data *data)
 		{
 			printf("in the first case\n");
 			if (cmd->delim)
-				handle_redirect_heredoc(cmd);
+			{
+				if (handle_redirect_heredoc(cmd) != 0)
+					exit(130);  // Exit if heredoc was interrupted
+			}
 			if (cmd->output_file)
 				handle_redirect_out(cmd);
 			if (cmd->argv[0][0] == '/')
@@ -58,6 +61,12 @@ void	execute_process(t_com *cmd, t_data *data)
 		{
 			waitpid(pid, &status, 0);
 			store_exit_status(status);
+			if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+			{
+				rl_on_new_line();
+				rl_replace_line("", 0);
+				rl_redisplay();
+			}
 		}
 	}
 	else

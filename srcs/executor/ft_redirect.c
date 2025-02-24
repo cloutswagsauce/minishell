@@ -47,6 +47,7 @@ int	handle_redirect_heredoc(t_com *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal_handler_heredoc();
 		close(pipe_fd[0]);
 		while (1)
 		{
@@ -68,8 +69,14 @@ int	handle_redirect_heredoc(t_com *cmd)
 			free(line);
 		}
 	}
-	waitpid(pid, &status, 0);
 	close(pipe_fd[1]);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status))
+	{
+		close(pipe_fd[0]);
+		g_exit_status = 130;
+		return (1);
+	}
 	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[0]);
 	return (0);
