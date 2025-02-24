@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 13:02:56 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:25:19 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -33,8 +33,7 @@ void finish_execution(t_com *command, char *input, t_data *data)
 {
     add_history(input);
     free(input);
-	//free_lists(data);
-	(void)data;
+	free_lists(data);
     free_commands(command);
 }
 
@@ -53,6 +52,53 @@ int init_data(t_data **data, char **envp, t_list *local_env)
 	
 }
 
+
+int setup_main(t_data **data, char **envp, t_list **local_env)
+{
+    int ret;
+
+    ret = 0;
+    *local_env = NULL;
+    *data = NULL;
+    ret = init_data(data, envp, *local_env);
+    if (ret)
+        return (1);
+    if (isatty(STDIN_FILENO))
+        signal_handler_interactive();
+    else
+        signal_handler_non_interactive();
+    return (0);
+}
+
+char *handle_input(void)
+{
+    char *input;
+
+    if (isatty(STDIN_FILENO))
+        signal_handler_interactive();
+    else
+        signal_handler_non_interactive();
+    rl_on_new_line();
+    input = readline("mini$hell 🤖: ");
+    return (input);
+}
+
+void execute_input(char *input, t_com **commands, t_data *data)
+{
+    if (*input)
+    {
+        *commands = parse_input(input);
+        if (*commands && (*commands)->has_outpipe)
+            execute_pipeline(*commands, data);
+        else if (*commands)
+            execute_process(*commands, data);
+        wait(0);
+        finish_execution(*commands, input, data);
+    }
+    else
+        free(input);
+}
+
 int main(int argc, char **argv, char **envp)
 {
     char    *input;
@@ -62,22 +108,11 @@ int main(int argc, char **argv, char **envp)
 
     (void)argc;
     (void)argv;
-    local_env = 0;
-    data = 0;
-    if (init_data(&data, envp, local_env))
+    if (setup_main(&data, envp, &local_env))
         return (1);
-    if (isatty(STDIN_FILENO))
-        signal_handler_interactive();
-    else
-        signal_handler_non_interactive();
     while (1)
     {
-        if (isatty(STDIN_FILENO))
-            signal_handler_interactive();
-        else
-            signal_handler_non_interactive();
-        rl_on_new_line();
-        input = readline("mini$hell 🤖: ");
+        input = handle_input();
         if (input == NULL)
         {
             free_lists(data);
@@ -85,18 +120,8 @@ int main(int argc, char **argv, char **envp)
             rl_clear_history();
             exit(0);
         }
-        if (*input)
-        {
-            commands = parse_input(input);
-            if (commands && commands->has_outpipe)
-                execute_pipeline(commands, data);
-            else if (commands)
-                execute_process(commands, data);
-            wait(0);
-            finish_execution(commands, input, data);
-        }
-        else
-            free(input);
+        execute_input(input, &commands, data);
     }
     return (0);
 }
+

@@ -24,47 +24,50 @@ int handle_quotes(char *input, int *i, t_token **tokens)
         add_token(tokens, buf, TOKEN_SQUOTES, 1);
     else
         add_token(tokens, buf, TOKEN_DQUOTES, 1);
-    (*i)++; // Move past closing quote
+    (*i)++;
     return (1);
 }
 
 
-int	token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens,
-		int *arg_count)
+void handle_word_tokens(t_com **commands, t_com **current_cmd, t_token *tokens, int *arg_count)
 {
-	if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES ||
-		tokens->type == TOKEN_DQUOTES)
-	{
-		if (!*current_cmd)
-		{
-			create_new_command(current_cmd, arg_count, tokens);
-			if (!*commands)
-				*commands = *current_cmd;
-		}
-		else
-			create_new_arg(arg_count, *current_cmd, tokens);
-	}
-	else if (tokens->type == TOKEN_PIPE)
-	{
-		if (current_cmd)
-			if (handle_pipe_token(current_cmd, arg_count))
-				return (1);
-	}
-	else if (tokens->type == TOKEN_REDIRECT_OUT)
-		handle_redirect_token(*current_cmd, tokens, 0);
-	else if (tokens->type == TOKEN_APPEND)
-		handle_redirect_token(*current_cmd, tokens, 1);
-	else if (tokens->type == TOKEN_HEREDOC)
-	{
-		if (!*current_cmd)
-		{
-			create_new_command(current_cmd, arg_count, tokens);
-			if (!*commands)
-				*commands = *current_cmd;
-		}
-		handle_heredoc_token(*current_cmd, tokens);
-	}
-	return (0);
+    if (!*current_cmd)
+    {
+        create_new_command(current_cmd, arg_count, tokens);
+        if (!*commands)
+            *commands = *current_cmd;
+    }
+    else
+        create_new_arg(arg_count, *current_cmd, tokens);
+}
+
+int token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens, int *arg_count)
+{
+    int ret;
+
+    ret = 0;
+    if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES || tokens->type == TOKEN_DQUOTES)
+        handle_word_tokens(commands, current_cmd, tokens, arg_count);
+    else if (tokens->type == TOKEN_PIPE)
+    {
+        if (*current_cmd)
+            ret = handle_pipe_token(current_cmd, arg_count);
+    }
+    else if (tokens->type == TOKEN_REDIRECT_OUT)
+        handle_redirect_token(*current_cmd, tokens, 0);
+    else if (tokens->type == TOKEN_APPEND)
+        handle_redirect_token(*current_cmd, tokens, 1);
+    else if (tokens->type == TOKEN_HEREDOC)
+    {
+        if (!*current_cmd)
+        {
+            create_new_command(current_cmd, arg_count, tokens);
+            if (!*commands)
+                *commands = *current_cmd;
+        }
+        handle_heredoc_token(*current_cmd, tokens);
+    }
+    return (ret);
 }
 
 int init_new_pipe_cmd(t_com *new_cmd)
