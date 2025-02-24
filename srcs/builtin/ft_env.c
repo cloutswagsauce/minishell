@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/23 20:09:20 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:58:37 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../minishell.h"
 
@@ -103,9 +103,6 @@ int	ft_env(t_data *data)
 
 	
 	envp_temp = data->envp;
-
-	printf("callend env\n");
-	
 	while (envp_temp)
 	{
 		if (handle_PWD(envp_temp))
@@ -114,7 +111,6 @@ int	ft_env(t_data *data)
 		envp_temp = envp_temp->next;
 	}
 	temp = data->local_env;
-	printf("got here");
 	while (temp)
 	{
 		if (temp->name && *temp->value)

@@ -6,18 +6,14 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:24:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 16:34:03 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/24 17:00:54 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../minishell.h"
 
 int g_exit_status = 0;
-// now: make envp into a t_list
 
-
-// crtl D on heredoc caused leak
-// crtl c on heredoc causes leak
 
 void	call_child_action(t_com command, t_data *data)
 {
@@ -45,9 +41,6 @@ int init_data(t_data **data, char **envp, t_list *local_env)
 		return (1);
 	(*data)->envp = NULL;
 	set_env(&(*data)->envp, envp);
-
-
-	
 	(*data)->local_env = local_env;
 	return (0);
 	
