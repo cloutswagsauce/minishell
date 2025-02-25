@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:15:53 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/21 18:20:48 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/25 20:14:25 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ void ft_lstdelone(t_list *lst, void (*del)(void *))
     if (!lst)
         return ;
     if (del)
-        del(lst); // Pass the entire node to del
+        del(lst);
     free(lst);
 }

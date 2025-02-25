@@ -6,7 +6,7 @@
 #    By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 18:17:13 by lfaria-m          #+#    #+#              #
-#    Updated: 2025/02/24 22:45:46 by lfaria-m         ###   ########.fr        #
+#    Updated: 2025/02/25 20:14:29 by lfaria-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ $(SRC_DIR)/builtin/ft_unset.c $(SRC_DIR)/builtin/ft_pwd.c $(SRC_DIR)/ft_lst.c $(
 $(SRC_DIR)/executor/execute_process.c $(SRC_DIR)/executor/ft_pipex.c $(SRC_DIR)/parsing/tokenizer.c $(SRC_DIR)/parsing/parser_utils.c \
 $(SRC_DIR)/executor/ft_redirect.c $(SRC_DIR)/parsing/parser.c $(SRC_DIR)/parsing/handle_tokens.c $(SRC_DIR)/parsing/squotes.c $(SRC_DIR)/parsing/parser_helpers.c \
 $(SRC_DIR)/parsing/token_utils.c $(SRC_DIR)/builtin/export_utils.c $(SRC_DIR)/signals/signals.c $(SRC_DIR)/builtin/env_utils.c $(SRC_DIR)/signals/signals_extra.c $(SRC_DIR)/parsing/parser_extras.c $(SRC_DIR)/parsing/tokenizer_extras.c \
-$(SRC_DIR)/parsing/tokenizer_utils.c $(SRC_DIR)/parsing/tokenizer_helper.c
+$(SRC_DIR)/parsing/tokenizer_utils.c $(SRC_DIR)/parsing/tokenizer_helper.c $(SRC_DIR)/parsing/handle_tokens_helper.c
 
 
 

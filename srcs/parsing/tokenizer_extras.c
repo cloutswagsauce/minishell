@@ -2,7 +2,9 @@
 
 char *handle_word(char *input, int *i)
 {
-    int start = *i;
+    int start;
+
+    start = *i;
     while (input[*i] && !isspace((char)input[*i]) && 
            input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && 
            input[*i] != '"' && input[*i] != '\'')
@@ -39,16 +41,23 @@ t_token *new_token(char *value, int type, int take_ownership)
 
 void add_token(t_token **tokens, char *value, int type, int take_ownership)
 {
-    t_token *new = new_token(value, type, take_ownership);
-    if (!new) {
-        if (take_ownership) free(value);
+    t_token *new;
+    t_token *temp;
+
+    new = new_token(value, type, take_ownership);
+    if (!new)
+    {
+        printf("in this casddsse");
+        if (take_ownership)
+            free(value);
         return;
     }
     if (!*tokens)
         *tokens = new;
     else {
-        t_token *temp = *tokens;
-        while (temp->next) temp = temp->next;
+        temp = *tokens;
+        while (temp->next)
+            temp = temp->next;
         temp->next = new;
     }
 }

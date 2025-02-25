@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 09:53:11 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 22:48:20 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:01:37 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int					is_valid_path(char *exec_path, t_com *command,
 int					handle_redirect_out(t_com *cmd);
 int					handle_pipe_token(t_com **current_cmd, int *arg_count);
 int					handle_redirect_token(t_com *current_cmd,
-							t_token *cur_token,
+							t_token **cur_token,
 							int append);
 int					handle_heredoc_token(t_com *current_cmd,
 							t_token *cur_token);
@@ -128,7 +128,7 @@ int					handle_redirect_heredoc(t_com *cmd);
 int					handle_squotes(t_com *cmd, int pos);
 int					check_if_quotes(t_com *cmd, int nb);
 int					token_dispatcher(t_com **commands, t_com **current_cmd,
-						t_token *tokens, int *arg_count);
+						t_token **tokens, int *arg_count);
 int					create_new_arg(int *arg_count, t_com *current_cmd,
 						t_token *cur_token);
 int					create_new_command(t_com **current_cmd, int *arg_count,
@@ -187,6 +187,7 @@ int 				join_quoted_token(char *input, int *i, t_token **tokens, t_token *last);
 int					join_word_token(char *input, int *i, t_token **tokens, t_token *last);
 int					process_operator(char *input, int *i, t_token **tokens, char **buf);
 int					process_quoted_string(char *input, int *i, t_token **tokens, char **buf);
+void				handle_word_tokens(t_com **commands, t_com **current_cmd, t_token *tokens, int *arg_count);
 
 
 

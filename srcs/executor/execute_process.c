@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:02:20 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 20:41:51 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/25 20:16:29 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void handle_child(t_com *cmd, t_data *data)
 void	execute_process(t_com *cmd, t_data *data)
 {
 	pid_t	pid;
-	int		status;
 
 	if (!cmd->is_builtin)
 	{
@@ -60,9 +59,9 @@ void	execute_process(t_com *cmd, t_data *data)
 			handle_child(cmd, data);
 		else if (pid > 0)
 		{
-			waitpid(pid, &status, 0);
-			store_exit_status(status);
-			if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+			waitpid(pid, &g_exit_status, 0);
+			store_exit_status(g_exit_status);
+			if (WIFEXITED(g_exit_status) && WEXITSTATUS(g_exit_status) == 130)
 			{
 				rl_on_new_line();
 				rl_replace_line("", 0);

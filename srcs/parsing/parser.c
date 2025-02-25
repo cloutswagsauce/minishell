@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:59:34 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 22:25:47 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:22:10 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,15 @@ void path_split_append(t_com *command, t_data *data)
 {
     char **path_split;
     char *path_value;
+	int		has_path;
 
     handle_direct_path(command, data);
-    path_value = getenv("PATH");
-    if (!path_value)
+	path_value = getenv("PATH");
+    has_path = find_path(data);
+    if (!has_path)
     {
         ft_putstr_fd("PATH variable not set dawg\n", 2);
-        exit(127);  // Exit with appropriate error code
+        exit(127);
     }
     path_split = ft_split(path_value, ':');
     if (!path_split)
@@ -57,7 +59,6 @@ void path_split_append(t_com *command, t_data *data)
         exit(127);
     }
     try_exec_from_path(path_split, command, data);
-    // If we get here, command was not found
     exit(127);
 }
 
@@ -121,10 +122,8 @@ t_com	*parse_input(char *str)
 	arg_count = 0;
 	while (cur_token)
 	{
-		ft_printf("token being dispatched: %s\n", cur_token->value);
-		if (token_dispatcher(&commands, &current_cmd, cur_token, &arg_count))
+		if (token_dispatcher(&commands, &current_cmd, &cur_token, &arg_count))
 			return (0);
-		cur_token = cur_token->next;
 	}
 	if (current_cmd)
 		current_cmd->is_builtin = is_command_builtin(current_cmd);

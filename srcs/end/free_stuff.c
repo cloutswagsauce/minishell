@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:49:57 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 21:00:42 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/25 20:18:24 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	free_commands(t_com *cmd)
 {
 	t_com	*temp;
+    t_squote *quotes;
 
 	while (cmd)
 	{
@@ -24,6 +25,15 @@ void	free_commands(t_com *cmd)
             free(cmd->delim);
         if (cmd->output_file)
             free(cmd->output_file);
+        if (cmd->s_quote)
+        {
+            quotes = cmd->s_quote;
+            while(quotes)
+            {
+                quotes = cmd->s_quote->next;
+                free(cmd->s_quote);
+            }
+        }
 		free(cmd);
 		cmd = temp;
 	}
@@ -36,9 +46,6 @@ void free_lists(t_data *data)
     t_list *next;
 
   
-
-	printf("free lists was called");
-    // Free envp list
     current = data->envp;
     while (current)
     {
@@ -49,8 +56,6 @@ void free_lists(t_data *data)
         current = next;
     }
     data->envp = NULL;
-
-    // Free local_env list
     current = data->local_env;
     while (current)
     {

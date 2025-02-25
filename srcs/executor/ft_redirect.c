@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_redirect.c                                      :+:      :+:    :+:   */
@@ -6,15 +6,19 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:18:05 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 16:14:17 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:26:34 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
 int	handle_redirect_out(t_com *cmd)
 {
 	int	fd;
+	if (!cmd)
+	{
+		printf("hi");
+	}
 
 	if (cmd->delim)
 		return (handle_redirect_heredoc(cmd));
@@ -42,10 +46,11 @@ void	run_heredoc_child(int pipe_fd[2], t_com *cmd)
 {
 	char	*line;
 
-	signal_handler_heredoc();
+	
 	close(pipe_fd[0]);
 	while (1)
 	{
+		signal_handler_heredoc();
 		line = readline("heredoc> ");
 		if (!line)
 		{

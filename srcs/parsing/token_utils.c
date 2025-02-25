@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 20:46:41 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 22:46:26 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:15:41 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int process_quoted_string(char *input, int *i, t_token **tokens, char **buf)
 
 int process_operator(char *input, int *i, t_token **tokens, char **buf)
 {
+    printf("process operator was called\n");
     if (*buf) {
         add_token(tokens, *buf, TOKEN_WORD, 1);
         *buf = NULL;

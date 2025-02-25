@@ -46,6 +46,8 @@ void handle_redirect_it(char *input, int *i, t_token **tokens)
 void handle_redirect_ot(char *input, int *i, t_token **tokens)
 {
     t_token *token;
+    t_token *temp;
+
     if (input[*i + 1] == '>') {
         token = new_token(">>", TOKEN_APPEND, 0);
         (*i) += 2;
@@ -56,8 +58,9 @@ void handle_redirect_ot(char *input, int *i, t_token **tokens)
     if (token) {
         if (!*tokens) *tokens = token;
         else {
-            t_token *temp = *tokens;
-            while (temp->next) temp = temp->next;
+            temp = *tokens;
+            while (temp->next)
+                temp = temp->next;
             temp->next = token;
         }
     }

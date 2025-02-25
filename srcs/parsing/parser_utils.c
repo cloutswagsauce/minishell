@@ -55,6 +55,14 @@ int find_path(t_data *data)
 			return (1);
 		temp = temp->next;
 	}
+	temp = data->local_env;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->name, "PATH", ft_strlen(temp->name)))
+			return (1);
+		temp = temp->next;
+	}
+
 	return 0;
 }
 

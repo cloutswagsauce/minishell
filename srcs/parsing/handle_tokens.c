@@ -1,67 +1,34 @@
 #include "../../minishell.h"
 
-int handle_quotes(char *input, int *i, t_token **tokens)
+
+
+int token_dispatcher(t_com **commands, t_com **current_cmd, t_token **tokens, int *arg_count)
 {
-    int     start;
-    char    quote;
-    char    *buf;
+    int ret;s
+    t_token *current = *tokens;
 
-    if (input[*i] != '"' && input[*i] != '\'')
-        return (1);
-    quote = input[(*i)++]; // Grab quote
-    start = *i;
-    while (input[*i] && input[*i] != quote)
-        (*i)++;
-    if (!input[*i])
-    {
-        ft_printf("you forgot to close the damn quote!\n");
-        return (0);
-    }
-    buf = ft_substr(input, start, *i - start);
-    if (!buf)
-        return (0);
-    if (quote == '\'')
-        add_token(tokens, buf, TOKEN_SQUOTES, 1);
-    else
-        add_token(tokens, buf, TOKEN_DQUOTES, 1);
-    (*i)++;
-    return (1);
-}
+	ret = 0;
 
 
-void handle_word_tokens(t_com **commands, t_com **current_cmd, t_token *tokens, int *arg_count)
-{
-    if (!*current_cmd)
-    {
-        create_new_command(current_cmd, arg_count, tokens);
-        if (!*commands)
-            *commands = *current_cmd;
-    }
-    else
-        create_new_arg(arg_count, *current_cmd, tokens);
-}
-
-int token_dispatcher(t_com **commands, t_com **current_cmd, t_token *tokens, int *arg_count)
-{
-    int ret = 0;
-    if (tokens->type == TOKEN_WORD || tokens->type == TOKEN_SQUOTES || tokens->type == TOKEN_DQUOTES)
-        handle_word_tokens(commands, current_cmd, tokens, arg_count);
-    else if (tokens->type == TOKEN_PIPE) {
+	//handle_word_tokens(commands, current_cmd, *tokens,arg_count );
+    if (current->type == TOKEN_WORD || current->type == TOKEN_SQUOTES || current->type == TOKEN_DQUOTES) {
+        handle_word_tokens(commands, current_cmd, current, arg_count);
+        *tokens = current->next;
+    } else if (current->type == TOKEN_PIPE) {
         if (*current_cmd)
             ret = handle_pipe_token(current_cmd, arg_count);
-    } else if (tokens->type == TOKEN_REDIRECT_OUT) {
-        handle_redirect_token(*current_cmd, tokens, 0);
-        tokens = tokens->next; // Advance past operator
-    } else if (tokens->type == TOKEN_APPEND) {
-        handle_redirect_token(*current_cmd, tokens, 1);
-        tokens = tokens->next; // Advance past operator
-    } else if (tokens->type == TOKEN_HEREDOC) {
+        *tokens = current->next;
+    } else if (current->type == TOKEN_REDIRECT_OUT) {
+        ret = handle_redirect_token(*current_cmd, tokens, 0);
+    } else if (current->type == TOKEN_APPEND) {
+        ret = handle_redirect_token(*current_cmd, tokens, 1);
+    } else if (current->type == TOKEN_HEREDOC) {
         if (!*current_cmd) {
-            create_new_command(current_cmd, arg_count, tokens);
+            create_new_command(current_cmd, arg_count, current);
             if (!*commands) *commands = *current_cmd;
         }
-        handle_heredoc_token(*current_cmd, tokens);
-        tokens = tokens->next; // Advance past operator
+        handle_heredoc_token(*current_cmd, current);
+        *tokens = current->next;
     }
     return (ret);
 }
@@ -104,24 +71,43 @@ int	handle_pipe_token(t_com **current_cmd, int *arg_count)
 	return (0);
 }
 
-int	handle_redirect_token(t_com *current_cmd, t_token *cur_token, int append)
+int handle_redirect_token(t_com *current_cmd, t_token **cur_token, int append)
 {
-	if (cur_token->type == TOKEN_REDIRECT_OUT
-		|| cur_token->type == TOKEN_APPEND)
+    t_token *current;   
+    t_token *next;
+
+	printf("command is : %p\n", current_cmd);
+
+	current = *cur_token;
+	if (!current)
 	{
-		if (!cur_token->next)
-		{
-			printf("file not provided");
-			return (1);
-		}
-		current_cmd->output_file = ft_strdup(cur_token->next->value);
-		if (append)
-			current_cmd->append_output = 1;
+		printf("voided");
 	}
-	else if (cur_token->type == TOKEN_HEREDOC)
-		handle_heredoc_token(current_cmd, cur_token);
-	*cur_token = *cur_token->next;
-	return (0);
+	next = current->next;
+	
+    if (current->type == TOKEN_REDIRECT_OUT || current->type == TOKEN_APPEND) {
+        if (!next) {
+            printf("file not provided\n");
+			free_commands(current_cmd);
+			free_tokens(*cur_token);
+			store_exit_status(127);
+            return (1);
+        }
+		printf("9000");
+        if (current_cmd->output_file)
+		{
+			free(current_cmd->output_file);
+		}
+            
+        current_cmd->output_file = ft_strdup(next->value);
+        if (append)
+            current_cmd->append_output = 1;
+        *cur_token = next->next; 
+    } else if (current->type == TOKEN_HEREDOC) {
+        handle_heredoc_token(current_cmd, current);
+        *cur_token = current->next; 
+    }
+    return (0);
 }
 
 int	handle_heredoc_token(t_com *current_cmd, t_token *cur_token)

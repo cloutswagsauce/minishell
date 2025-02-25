@@ -12,13 +12,16 @@ int	set_variable(char **name_and_value, char *equals, t_data *data, t_com *cmd)
 	name = get_name((*(name_and_value + 1)), equals);
 	value = get_value(equals);
 	if (!value && (cmd->d_quote || cmd->s_quote))
-	{
 		value = (*(name_and_value + 2));
-	}
 	if (!value)
 		return (1);
 	if (update_var(name, value, &data->local_env))
+	{
+		free(name);
+		free(value);
 		return (0);
+	}
+		
 	if (!name)
 	{
 		free(name);
@@ -26,7 +29,8 @@ int	set_variable(char **name_and_value, char *equals, t_data *data, t_com *cmd)
 	}
 	new = ft_lstnew(name, value);
 	free(name);
-	free(value);
+	if (!(cmd->d_quote) && !(cmd->s_quote))
+		free(value);
 	ft_lstadd_back(&data->local_env, new);
 	return (0);
 }
@@ -72,7 +76,7 @@ void	handle_no_args(t_data *data)
 	temp_env = data->envp;
 	while (temp_env)
 	{
-		printf("declare -x %s = %s\n", temp_env->name,temp_env->value);
+		ft_printf("declare -x %s = %s\n", temp_env->name,temp_env->value);
 		temp_env = temp_env->next;
 	}
 	print_local(data);
@@ -85,16 +89,13 @@ int	handle_both_cases(char *equals, char **name_and_value, t_com *cmd,
 	t_list	*new;
 
 
-	printf("im here");
 	if (equals)
 	{
-		printf("in equals case\n");
 		if (!set_variable(name_and_value, equals, data, cmd))
 			return (1);
 	}
 	else
 	{
-		printf("in else case\n");
 		name = ft_strdup(name_and_value[1]);
 		if (!name)
 			return (1);
@@ -105,6 +106,7 @@ int	handle_both_cases(char *equals, char **name_and_value, t_com *cmd,
 			return (1);
 		}
 		ft_lstadd_back(&data->local_env, new);
+		free(name);
 	}
 	return (0);
 }

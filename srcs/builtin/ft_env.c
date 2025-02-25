@@ -6,7 +6,7 @@
 /*   By: lfaria-m <lfaria-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:08:48 by lfaria-m          #+#    #+#             */
-/*   Updated: 2025/02/24 20:22:54 by lfaria-m         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:33:02 by lfaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int update_env_var(t_com *cmd, t_data *data)
 	t_list *temp;
 	char *name;
 	char *value;
+	
 	name = get_name(cmd->argv[1], ft_strchr(cmd->argv[1], '='));
 	if (cmd->d_quote || cmd->s_quote)
 		value =cmd->argv[2];
@@ -46,11 +47,13 @@ int update_env_var(t_com *cmd, t_data *data)
 		if (!ft_strncmp(name, temp->name, ft_strlen(name)))
 		{
 			free(temp->value);
+			free(name);
 			temp->value = ft_strdup(value);
 			return (1);
 		}
 		temp = temp->next;
 	}
+	free(name);
 	return (0);
 }
 

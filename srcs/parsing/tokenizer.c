@@ -1,16 +1,14 @@
 #include "../../minishell.h"
 
 
-
-
-
-
-
 int process_word(char *input, int *i, t_token **tokens, char **buf)
 {
-    char *temp = handle_word(input, i);
+    char *temp;
     char *new_buf;
-    if (!temp) return (1);
+
+    temp = handle_word(input, i);
+    if (!temp)
+        return (1);
     if (!*buf)
         *buf = temp;
     else {
@@ -66,7 +64,9 @@ t_token *tokenize_input(char *input)
     while (input[i]) {
         skip_spaces(input, &i);
         if (!input[i]) break;
-        if (!process_next_char(input, &i, &tokens, &buf)) {
+        if (!process_next_char(input, &i, &tokens, &buf))
+        {
+            printf("joppppppp");
             free_tokens(tokens);
             free(buf);
             return (NULL);

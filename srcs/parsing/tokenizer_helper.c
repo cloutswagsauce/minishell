@@ -2,15 +2,31 @@
 
 void handle_operators(char *input, int *i, t_token **tokens)
 {
+    printf("handle opps\n");
     int is_op = is_operator_start(input, i);
     if (is_op && input[*i] == '|')
+    {
+        printf("1\n");
         handle_pipe(input, i, tokens);
+    }
+        
     else if (is_op && input[*i] == '<')
+    {
+        printf("2\n");
         handle_redirect_it(input, i, tokens);
+    }
     else if (is_op && input[*i] == '>')
+    {
+        printf("3\n");
         handle_redirect_ot(input, i, tokens);
+    }
+        
     else
+    {
+        printf("4\n");
         handle_non_operator(input, i, tokens);
+    }
+        
 }
 
 void skip_spaces(char *input, int *i)
